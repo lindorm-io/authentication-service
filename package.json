@@ -1,0 +1,83 @@
+{
+  "name": "@lindorm-io/authentication-service",
+  "description": "Authentication Service",
+  "version": "0.1.0",
+  "license": "ISC",
+  "main": "dist/server.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lindorm-io/authentication-service.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lindorm-io/authentication-service/issues"
+  },
+  "author": "Jonn Nilsson",
+  "maintainers": [
+    "jonn@jonn.nu"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "concurrently 'rimraf coverage' 'rimraf dist'",
+    "coverage": "jest --coverage --forceExit",
+    "lint": "eslint --ext .ts ./src/",
+    "lint:fix": "eslint --ext .ts ./src/ --fix",
+    "start": "node dist/server",
+    "start:dev": "nodemon",
+    "start:mongo": "cd docker && docker-compose up",
+    "test": "jest --config jest.config.js --forceExit",
+    "test:clear": "jest --clearCache",
+    "test:integration": "jest --config jest.integration.config.js --forceExit",
+    "test:integration:watch": "jest --config jest.integration.config.js --watch --",
+    "test:watch": "jest --config jest.config.js --watch --",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "update": "ncu -a && npm install",
+    "validate": "npm run test:clear && npm run lint && npm run typecheck && npm run test"
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@lindorm-io/core": "^0.1.0",
+    "@lindorm-io/crypto": "^0.1.0",
+    "@lindorm-io/jwt": "^0.1.0",
+    "@lindorm-io/key-pair": "^0.1.0",
+    "@lindorm-io/koa": "^0.1.0",
+    "@lindorm-io/koa-jwt": "^0.1.0",
+    "@lindorm-io/koa-mongo": "^0.1.0",
+    "@lindorm-io/mongo": "^0.1.0",
+    "@lindorm-io/winston": "^0.1.0",
+    "date-fns": "^2.16.1",
+    "dotenv": "^8.2.0",
+    "lodash": "^4.17.20",
+    "mailgun-js": "^0.22.0",
+    "otplib": "^12.0.1",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@types/hapi__joi": "^17.1.6",
+    "@types/jest": "^26.0.15",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/koa": "^2.11.6",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-router": "^7.4.1",
+    "@types/lodash": "^4.14.165",
+    "@types/mailgun-js": "^0.22.11",
+    "@types/mongodb": "^3.5.33",
+    "@types/node": "^14.14.6",
+    "@types/supertest": "^2.0.10",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "concurrently": "^5.3.0",
+    "eslint": "^7.13.0",
+    "husky": "^4.3.0",
+    "jest": "^26.6.3",
+    "jest-extended": "^0.11.5",
+    "lint-staged": "^10.5.1",
+    "mockdate": "^3.0.2",
+    "prettier": "2.1.2",
+    "rimraf": "^3.0.2",
+    "supertest": "^6.0.1",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  }
+}
