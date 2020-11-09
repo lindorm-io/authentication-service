@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateKeyPair should generate EC key pair 1`] = `
+KeyPair {
+  "_algorithm": "ec-algorithm",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [
+    Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "name": "key_pair_created",
+      "payload": Object {
+        "algorithm": "ec-algorithm",
+        "expires": null,
+        "passphrase": null,
+        "privateKey": "ec-privateKey",
+        "publicKey": "ec-publicKey",
+        "type": "ec-type",
+      },
+    },
+  ],
+  "_expires": null,
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_passphrase": null,
+  "_privateKey": "ec-privateKey",
+  "_publicKey": "ec-publicKey",
+  "_type": "ec-type",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`generateKeyPair should generate RSA key pair 1`] = `
+KeyPair {
+  "_algorithm": "rsa-algorithm",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [
+    Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "name": "key_pair_created",
+      "payload": Object {
+        "algorithm": "rsa-algorithm",
+        "expires": null,
+        "passphrase": "rsa-passphrase",
+        "privateKey": "rsa-privateKey",
+        "publicKey": "rsa-publicKey",
+        "type": "rsa-type",
+      },
+    },
+  ],
+  "_expires": null,
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_passphrase": "rsa-passphrase",
+  "_privateKey": "rsa-privateKey",
+  "_publicKey": "rsa-publicKey",
+  "_type": "rsa-type",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`generateKeys should generate EC keys 1`] = `
+Object {
+  "algorithm": "ec-algorithm",
+  "privateKey": "ec-privateKey",
+  "publicKey": "ec-publicKey",
+  "type": "ec-type",
+}
+`;
+
+exports[`generateKeys should generate RSA keys 1`] = `
+Object {
+  "algorithm": "rsa-algorithm",
+  "passphrase": "rsa-passphrase",
+  "privateKey": "rsa-privateKey",
+  "publicKey": "rsa-publicKey",
+  "type": "rsa-type",
+}
+`;

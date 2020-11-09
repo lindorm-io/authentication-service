@@ -1,0 +1,10 @@
+export { router as appRoot } from "./app-root";
+export { router as account } from "./account";
+export { router as client } from "./client";
+export { router as device } from "./device";
+export { router as keyPair } from "./key-pair";
+export { router as mfa } from "./mfa";
+export { router as oauth } from "./oauth";
+export { router as session } from "./session";
+export { router as userInfo } from "./userinfo";
+export { router as wellKnown } from "./well-known";

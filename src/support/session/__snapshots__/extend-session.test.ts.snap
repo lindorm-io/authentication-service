@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`extendSession should extend session with refresh token 1`] = `
+Session {
+  "_accountId": null,
+  "_agent": Object {
+    "browser": null,
+    "geoIp": null,
+    "os": null,
+    "platform": null,
+    "source": null,
+    "version": null,
+  },
+  "_authenticated": false,
+  "_authorization": Object {
+    "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+    "codeMethod": "sha256",
+    "deviceChallenge": null,
+    "email": "email@lindorm.io",
+    "id": "authorizationId",
+    "otpCode": null,
+    "redirectUri": "redirectUri",
+    "responseType": "responseType",
+  },
+  "_clientId": "clientId",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_deviceId": "deviceId",
+  "_events": Array [
+    Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "name": "session_expires_changed",
+      "payload": Object {
+        "expires": 2020-01-01T07:00:00.000Z,
+      },
+    },
+    Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "name": "session_refresh_id_changed",
+      "payload": Object {
+        "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+      },
+    },
+  ],
+  "_expires": 2020-01-01T07:00:00.000Z,
+  "_grantType": "grantType",
+  "_id": "sessionId",
+  "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_scope": "scope",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`extendSession should succeed when device does not exist 1`] = `
+Session {
+  "_accountId": null,
+  "_agent": Object {
+    "browser": null,
+    "geoIp": null,
+    "os": null,
+    "platform": null,
+    "source": null,
+    "version": null,
+  },
+  "_authenticated": false,
+  "_authorization": Object {
+    "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+    "codeMethod": "sha256",
+    "deviceChallenge": null,
+    "email": "email@lindorm.io",
+    "id": "authorizationId",
+    "otpCode": null,
+    "redirectUri": "redirectUri",
+    "responseType": "responseType",
+  },
+  "_clientId": "clientId",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_deviceId": null,
+  "_events": Array [
+    Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "name": "session_expires_changed",
+      "payload": Object {
+        "expires": 2020-01-01T07:00:00.000Z,
+      },
+    },
+    Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "name": "session_refresh_id_changed",
+      "payload": Object {
+        "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+      },
+    },
+  ],
+  "_expires": 2020-01-01T07:00:00.000Z,
+  "_grantType": "grantType",
+  "_id": "sessionId",
+  "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_scope": "scope",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;

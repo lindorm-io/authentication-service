@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Account.ts should create 1`] = `
+Array [
+  Object {
+    "created": 2020-01-01T07:00:00.000Z,
+    "name": "account_created",
+    "payload": Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "email": "email@lindorm.io",
+      "otp": Object {
+        "signature": "signature",
+        "uri": "uri",
+      },
+      "password": Object {
+        "signature": "password",
+        "updated": 2020-01-01T07:00:00.000Z,
+      },
+      "permission": "permission",
+      "updated": 2020-01-01T07:00:00.000Z,
+    },
+  },
+]
+`;
+
+exports[`Account.ts should get/set email 1`] = `
+Array [
+  Object {
+    "created": 2020-01-01T07:00:00.000Z,
+    "name": "account_email_changed",
+    "payload": Object {
+      "email": "new-email",
+    },
+  },
+]
+`;
+
+exports[`Account.ts should get/set otp 1`] = `
+Array [
+  Object {
+    "created": 2020-01-01T07:00:00.000Z,
+    "name": "account_otp_changed",
+    "payload": Object {
+      "otp": Object {
+        "signature": "new-signature",
+        "uri": "new-uri",
+      },
+    },
+  },
+]
+`;
+
+exports[`Account.ts should get/set password 1`] = `
+Array [
+  Object {
+    "created": 2020-01-01T07:00:00.000Z,
+    "name": "account_password_changed",
+    "payload": Object {
+      "password": Object {
+        "signature": "new-password",
+        "updated": 2020-01-01T07:00:00.000Z,
+      },
+    },
+  },
+]
+`;
+
+exports[`Account.ts should get/set permission 1`] = `
+Array [
+  Object {
+    "created": 2020-01-01T07:00:00.000Z,
+    "name": "account_permission_changed",
+    "payload": Object {
+      "permission": "new-permission",
+    },
+  },
+]
+`;
+
+exports[`Account.ts should have all data 1`] = `
+Account {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_email": "email@lindorm.io",
+  "_events": Array [],
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_otp": Object {
+    "signature": "signature",
+    "uri": "uri",
+  },
+  "_password": Object {
+    "signature": "password",
+    "updated": 2020-01-01T07:00:00.000Z,
+  },
+  "_permission": "permission",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`Account.ts should have optional data 1`] = `
+Account {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_email": "email@lindorm.io",
+  "_events": Array [],
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_otp": Object {
+    "signature": null,
+    "uri": null,
+  },
+  "_password": Object {
+    "signature": null,
+    "updated": null,
+  },
+  "_permission": "user",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;

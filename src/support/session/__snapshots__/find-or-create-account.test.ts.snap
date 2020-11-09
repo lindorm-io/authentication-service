@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`findOrCreateAccount should create a new account 1`] = `
+Account {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_email": "created",
+  "_events": Array [
+    Object {
+      "created": 2020-01-01T07:00:00.000Z,
+      "name": "account_created",
+      "payload": Object {
+        "created": 2020-01-01T07:00:00.000Z,
+        "email": "created",
+        "otp": Object {
+          "signature": null,
+          "uri": null,
+        },
+        "password": Object {
+          "signature": null,
+          "updated": null,
+        },
+        "permission": "user",
+        "updated": 2020-01-01T07:00:00.000Z,
+      },
+    },
+  ],
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_otp": Object {
+    "signature": null,
+    "uri": null,
+  },
+  "_password": Object {
+    "signature": null,
+    "updated": null,
+  },
+  "_permission": "user",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`findOrCreateAccount should return an existing account 1`] = `
+Account {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_email": "existing",
+  "_events": Array [],
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_otp": Object {
+    "signature": null,
+    "uri": null,
+  },
+  "_password": Object {
+    "signature": null,
+    "updated": null,
+  },
+  "_permission": "user",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;

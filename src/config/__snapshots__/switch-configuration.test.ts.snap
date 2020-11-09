@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`switchConfiguration should return DEVELOPMENT 1`] = `
+Object {
+  "ACCOUNT_OTP_ISSUER": "dev.lindorm.io",
+  "CRYPTO_AES_SECRET": "secret",
+  "CRYPTO_SHA_SECRET": "secret",
+  "HOST": "http://localhost/",
+  "JWT_ACCESS_TOKEN_EXPIRY": "1 minutes",
+  "JWT_AUTHORIZATION_TOKEN_EXPIRY": "30 minutes",
+  "JWT_IDENTITY_TOKEN_EXPIRY": "5 minutes",
+  "JWT_ISSUER": "https://dev.lindorm.io/",
+  "JWT_MULTI_FACTOR_TOKEN_EXPIRY": "30 minutes",
+  "JWT_REFRESH_TOKEN_EXPIRY": "5 minutes",
+  "MAILGUN_API_KEY": "api-key",
+  "MAILGUN_DOMAIN": "dev.lindorm.io",
+  "MAILGUN_FROM": "noreply@lindorm.io",
+  "MONGO_DB_NAME": "authentication",
+  "MONGO_EXPOSE_PORT": 27017,
+  "MONGO_HOST": "localhost",
+  "MONGO_INITDB_ROOT_PASSWORD": "password",
+  "MONGO_INITDB_ROOT_USERNAME": "root",
+  "NODE_ENVIRONMENT": "development",
+  "SERVER_PORT": 3000,
+}
+`;
+
+exports[`switchConfiguration should return PRODUCTION 1`] = `
+Object {
+  "ACCOUNT_OTP_ISSUER": "lindorm.io",
+  "CRYPTO_AES_SECRET": null,
+  "CRYPTO_SHA_SECRET": null,
+  "HOST": "https://lindorm.io/",
+  "JWT_ACCESS_TOKEN_EXPIRY": "3 minutes",
+  "JWT_AUTHORIZATION_TOKEN_EXPIRY": "15 minutes",
+  "JWT_IDENTITY_TOKEN_EXPIRY": "7 days",
+  "JWT_ISSUER": "https://lindorm.io/",
+  "JWT_MULTI_FACTOR_TOKEN_EXPIRY": "5 minutes",
+  "JWT_REFRESH_TOKEN_EXPIRY": "7 days",
+  "MAILGUN_API_KEY": null,
+  "MAILGUN_DOMAIN": "lindorm.io",
+  "MAILGUN_FROM": "noreply@lindorm.io",
+  "MONGO_DB_NAME": null,
+  "MONGO_EXPOSE_PORT": 0,
+  "MONGO_HOST": null,
+  "MONGO_INITDB_ROOT_PASSWORD": null,
+  "MONGO_INITDB_ROOT_USERNAME": null,
+  "NODE_ENVIRONMENT": "production",
+  "SERVER_PORT": 3000,
+}
+`;
+
+exports[`switchConfiguration should return STAGING 1`] = `
+Object {
+  "ACCOUNT_OTP_ISSUER": "staging.lindorm.io",
+  "CRYPTO_AES_SECRET": null,
+  "CRYPTO_SHA_SECRET": null,
+  "HOST": "https://staging.lindorm.io/",
+  "JWT_ACCESS_TOKEN_EXPIRY": "3 minutes",
+  "JWT_AUTHORIZATION_TOKEN_EXPIRY": "15 minutes",
+  "JWT_IDENTITY_TOKEN_EXPIRY": "7 days",
+  "JWT_ISSUER": "https://staging.lindorm.io/",
+  "JWT_MULTI_FACTOR_TOKEN_EXPIRY": "5 minutes",
+  "JWT_REFRESH_TOKEN_EXPIRY": "7 days",
+  "MAILGUN_API_KEY": null,
+  "MAILGUN_DOMAIN": "staging.lindorm.io",
+  "MAILGUN_FROM": "noreply@lindorm.io",
+  "MONGO_DB_NAME": null,
+  "MONGO_EXPOSE_PORT": 0,
+  "MONGO_HOST": null,
+  "MONGO_INITDB_ROOT_PASSWORD": null,
+  "MONGO_INITDB_ROOT_USERNAME": null,
+  "NODE_ENVIRONMENT": "staging",
+  "SERVER_PORT": 3000,
+}
+`;
+
+exports[`switchConfiguration should return TEST 1`] = `
+Object {
+  "ACCOUNT_OTP_ISSUER": "test.lindorm.io",
+  "CRYPTO_AES_SECRET": "secret",
+  "CRYPTO_SHA_SECRET": "secret",
+  "HOST": "http://localhost/",
+  "JWT_ACCESS_TOKEN_EXPIRY": "2 minutes",
+  "JWT_AUTHORIZATION_TOKEN_EXPIRY": "45 minutes",
+  "JWT_IDENTITY_TOKEN_EXPIRY": "1 days",
+  "JWT_ISSUER": "https://test.lindorm.io/",
+  "JWT_MULTI_FACTOR_TOKEN_EXPIRY": "30 minutes",
+  "JWT_REFRESH_TOKEN_EXPIRY": "1 days",
+  "MAILGUN_API_KEY": "api-key",
+  "MAILGUN_DOMAIN": "test.lindorm.io",
+  "MAILGUN_FROM": "noreply@lindorm.io",
+  "MONGO_DB_NAME": "authentication",
+  "MONGO_EXPOSE_PORT": 27017,
+  "MONGO_HOST": "localhost",
+  "MONGO_INITDB_ROOT_PASSWORD": "password",
+  "MONGO_INITDB_ROOT_USERNAME": "root",
+  "NODE_ENVIRONMENT": "development",
+  "SERVER_PORT": 3000,
+}
+`;

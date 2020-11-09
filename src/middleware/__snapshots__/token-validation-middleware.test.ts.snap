@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tokenValidationMiddleware should successfully set tokens on ctx 1`] = `
+Object {
+  "authorization": Object {
+    "audience": "authorization",
+    "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "token": "authorizationToken",
+  },
+  "multiFactor": Object {
+    "audience": "multi-factor",
+    "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "token": "multiFactorToken",
+  },
+  "refresh": Object {
+    "audience": "refresh",
+    "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "token": "refreshToken",
+  },
+}
+`;

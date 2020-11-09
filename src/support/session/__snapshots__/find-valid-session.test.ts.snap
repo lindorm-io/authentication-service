@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`findValidSession should find and validate session 1`] = `
+Session {
+  "_accountId": null,
+  "_agent": Object {
+    "browser": null,
+    "geoIp": null,
+    "os": null,
+    "platform": null,
+    "source": null,
+    "version": null,
+  },
+  "_authenticated": false,
+  "_authorization": Object {
+    "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+    "codeMethod": "sha256",
+    "deviceChallenge": null,
+    "email": "email@lindorm.io",
+    "id": "authorizationId",
+    "otpCode": null,
+    "redirectUri": "redirectUri",
+    "responseType": "responseType",
+  },
+  "_clientId": "clientId",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_deviceId": "deviceId",
+  "_events": Array [],
+  "_expires": 2999-12-12T11:12:12.000Z,
+  "_grantType": "grantType",
+  "_id": "sessionId",
+  "_refreshId": "refreshId",
+  "_scope": "scope",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`accountMiddleware should successfully set account on ctx 1`] = `
+Account {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_email": "email@lindorm.io",
+  "_events": Array [],
+  "_id": "accountId",
+  "_otp": Object {
+    "signature": null,
+    "uri": null,
+  },
+  "_password": Object {
+    "signature": null,
+    "updated": null,
+  },
+  "_permission": "user",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;

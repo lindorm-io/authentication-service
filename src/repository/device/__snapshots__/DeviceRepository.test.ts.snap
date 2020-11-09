@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeviceRepository should create 1`] = `
+Device {
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_name": "name",
+  "_pin": Object {
+    "signature": "c2lnbmF0dXJl",
+    "updated": 2020-01-01T07:00:00.000Z,
+  },
+  "_publicKey": "publicKey",
+  "_secret": "c2VjcmV0",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`DeviceRepository should find 1`] = `
+Device {
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_name": "name",
+  "_pin": Object {
+    "signature": "c2lnbmF0dXJl",
+    "updated": 2020-01-01T07:00:00.000Z,
+  },
+  "_publicKey": "publicKey",
+  "_secret": "c2VjcmV0",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`DeviceRepository should find many 1`] = `
+Array [
+  Device {
+    "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_created": 2020-01-01T07:00:00.000Z,
+    "_events": Array [],
+    "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_name": "name",
+    "_pin": Object {
+      "signature": "c2lnbmF0dXJl",
+      "updated": 2020-01-01T07:00:00.000Z,
+    },
+    "_publicKey": "publicKey",
+    "_secret": "c2VjcmV0",
+    "_updated": 2020-01-01T07:00:00.000Z,
+    "_version": 0,
+  },
+  Device {
+    "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_created": 2020-01-01T07:00:00.000Z,
+    "_events": Array [],
+    "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_name": "other",
+    "_pin": Object {
+      "signature": null,
+      "updated": null,
+    },
+    "_publicKey": "other-publicKey",
+    "_secret": null,
+    "_updated": 2020-01-01T07:00:00.000Z,
+    "_version": 0,
+  },
+]
+`;
+
+exports[`DeviceRepository should update 1`] = `
+Device {
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_name": "name",
+  "_pin": Object {
+    "signature": "c2lnbmF0dXJl",
+    "updated": 2020-01-01T07:00:00.000Z,
+  },
+  "_publicKey": "publicKey",
+  "_secret": "c2VjcmV0",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 1,
+}
+`;
