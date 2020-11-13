@@ -1,37 +1,30 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Account, Client, Device } from "../../entity";
+import { Account, Device } from "../../entity";
 import { GrantType, ResponseType } from "../../enum";
-import { MOCK_CODE_VERIFIER, MOCK_KEY_PAIR_OPTIONS } from "../mocks";
-import { accountInMemory, clientInMemory, deviceInMemory, keyPairInMemory } from "../../middleware";
-import { encryptClientSecret, encryptDevicePIN } from "../../support";
-import { generateRSAKeys, KeyPair, KeyPairHandler } from "@lindorm-io/key-pair";
-import { getRandomValue } from "@lindorm-io/core";
+import { MOCK_CODE_VERIFIER } from "../mocks";
+import { encryptDevicePIN } from "../../support";
+import { generateRSAKeys, KeyPairHandler } from "@lindorm-io/key-pair";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
+import {
+  TEST_ACCOUNT_REPOSITORY,
+  TEST_CLIENT_ID,
+  TEST_CLIENT_SECRET,
+  TEST_DEVICE_REPOSITORY,
+  loadMongoConnection,
+} from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth DEVICE_PIN", () => {
-  const clientId = uuid();
-  const clientSecret = getRandomValue(16);
-
   let handler: KeyPairHandler;
   let device: Device;
 
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
-
-    await clientInMemory.create(
-      new Client({
-        id: clientId,
-        secret: await encryptClientSecret(clientSecret),
-        approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
-      }),
-    );
-
-    await keyPairInMemory.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
 
     const { algorithm, privateKey, publicKey } = await generateRSAKeys("");
 
@@ -41,9 +34,9 @@ describe("/oauth DEVICE_PIN", () => {
       publicKey,
     });
 
-    const account = await accountInMemory.create(new Account({ email: "test@lindorm.io" }));
+    const account = await TEST_ACCOUNT_REPOSITORY.create(new Account({ email: "test@lindorm.io" }));
 
-    device = await deviceInMemory.create(
+    device = await TEST_DEVICE_REPOSITORY.create(
       new Device({
         accountId: account.id,
         pin: { signature: await encryptDevicePIN("123456"), updated: new Date() },
@@ -57,8 +50,8 @@ describe("/oauth DEVICE_PIN", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: TEST_CLIENT_ID,
+        client_secret: TEST_CLIENT_SECRET,
 
         device_id: device.id,
 
@@ -75,8 +68,8 @@ describe("/oauth DEVICE_PIN", () => {
 
     expect(initResponse.body).toStrictEqual({
       device_challenge: expect.any(String),
-      expires: 1577862900,
-      expires_in: 900,
+      expires: 1577864700,
+      expires_in: 2700,
       redirect_uri: "https://redirect.uri/",
       state: "MsohJgIeKSNgpvpp",
       token: expect.any(String),
@@ -92,8 +85,8 @@ describe("/oauth DEVICE_PIN", () => {
       .post("/oauth/token")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: TEST_CLIENT_ID,
+        client_secret: TEST_CLIENT_SECRET,
 
         authorization_token: token,
 
@@ -109,14 +102,14 @@ describe("/oauth DEVICE_PIN", () => {
 
     expect(tokenResponse.body).toStrictEqual({
       access_token: {
-        expires: 1577862180,
-        expires_in: 180,
+        expires: 1577862120,
+        expires_in: 120,
         id: expect.any(String),
         token: expect.any(String),
       },
       refresh_token: {
-        expires: 1579071600,
-        expires_in: 1209600,
+        expires: 1577948400,
+        expires_in: 86400,
         id: expect.any(String),
         token: expect.any(String),
       },
@@ -128,8 +121,8 @@ describe("/oauth DEVICE_PIN", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        // client_id: clientId,
-        // client_secret: clientSecret,
+        // client_id: TEST_CLIENT_ID,
+        // client_secret: TEST_CLIENT_SECRET,
 
         device_id: device.id,
 
@@ -167,8 +160,8 @@ describe("/oauth DEVICE_PIN", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: TEST_CLIENT_ID,
+        client_secret: TEST_CLIENT_SECRET,
 
         // device_id: device.id,
 

@@ -1,9 +1,9 @@
 import MockDate from "mockdate";
 import request from "supertest";
 import { generateECCKeys, generateRSAKeys, KeyPair } from "@lindorm-io/key-pair";
-import { keyPairInMemory } from "../../middleware";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
+import { TEST_KEY_PAIR_REPOSITORY, loadMongoConnection } from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -12,10 +12,12 @@ describe("/.well-known", () => {
   let ecKeyPair: KeyPair;
 
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
 
-    rsaKeyPair = await keyPairInMemory.create(new KeyPair(await generateRSAKeys()));
-    ecKeyPair = await keyPairInMemory.create(new KeyPair(await generateECCKeys()));
+    rsaKeyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(await generateRSAKeys()));
+    ecKeyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(await generateECCKeys()));
   });
 
   test("GET /openid-configuration", async () => {
@@ -31,7 +33,7 @@ describe("/.well-known", () => {
       id_token_encryption_alg_values_supported: [],
       id_token_encryption_enc_values_supported: [],
       id_token_signing_alg_values_supported: ["ES512", "RS512"],
-      issuer: "issuer",
+      issuer: "https://test.lindorm.io/",
       jwks_uri: "http://localhost/.well-known/jwks",
       request_parameter_supported: false,
       request_uri_parameter_supported: false,
@@ -50,6 +52,16 @@ describe("/.well-known", () => {
 
     expect(response.body).toStrictEqual({
       keys: [
+        {
+          alg: "ES512",
+          c: 1577862000,
+          e: "AQAB",
+          exp: null,
+          kid: expect.any(String),
+          kty: "ec",
+          n: expect.any(String),
+          use: "sig",
+        },
         {
           alg: rsaKeyPair.algorithm,
           c: 1577862000,

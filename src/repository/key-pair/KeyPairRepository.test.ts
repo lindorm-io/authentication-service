@@ -2,8 +2,8 @@ import MockDate from "mockdate";
 import { KeyPair } from "@lindorm-io/key-pair";
 import { KeyPairRepository } from "./KeyPairRepository";
 import { MOCK_LOGGER } from "../../test/mocks/logger";
-import { MOCK_UUID } from "../../test/mocks/data";
-import { MongoInMemoryConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
+import { MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
+import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -15,16 +15,12 @@ describe("KeyPairRepository", () => {
   let repository: KeyPairRepository;
   let keyPair: KeyPair;
 
-  beforeEach(() => {
-    const mongo = new MongoInMemoryConnection({
-      host: "host",
-      name: "name",
-      password: "password",
-      port: 999,
-      user: "user",
-    });
+  beforeEach(async () => {
+    const mongo = new MongoConnection(MOCK_MONGO_OPTIONS);
+    await mongo.connect();
+
     repository = new KeyPairRepository({
-      db: mongo.db(),
+      db: mongo.getDatabase(),
       logger: MOCK_LOGGER,
     });
     keyPair = new KeyPair({

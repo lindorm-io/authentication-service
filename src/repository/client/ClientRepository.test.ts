@@ -2,8 +2,8 @@ import MockDate from "mockdate";
 import { Client } from "../../entity";
 import { ClientRepository } from "./ClientRepository";
 import { MOCK_LOGGER } from "../../test/mocks/logger";
-import { MOCK_UUID } from "../../test/mocks/data";
-import { MongoInMemoryConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
+import { MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
+import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { baseHash } from "@lindorm-io/core";
 
 jest.mock("uuid", () => ({
@@ -16,16 +16,12 @@ describe("ClientRepository", () => {
   let repository: ClientRepository;
   let client: Client;
 
-  beforeEach(() => {
-    const mongo = new MongoInMemoryConnection({
-      host: "host",
-      name: "name",
-      password: "password",
-      port: 999,
-      user: "user",
-    });
+  beforeEach(async () => {
+    const mongo = new MongoConnection(MOCK_MONGO_OPTIONS);
+    await mongo.connect();
+
     repository = new ClientRepository({
-      db: mongo.db(),
+      db: mongo.getDatabase(),
       logger: MOCK_LOGGER,
     });
     client = new Client({

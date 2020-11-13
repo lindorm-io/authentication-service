@@ -1,18 +1,20 @@
 import Joi from "@hapi/joi";
 import { IAuthContext, ICreateTokensData } from "../../../typing";
-import { JOI_GRANT_TYPE } from "../../../constant";
-import { createTokens, extendSession } from "../../../support";
+import { InvalidPermissionError, InvalidRefreshTokenError, InvalidSubjectError } from "../../../error";
+import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import { Permission } from "../../../enum";
-import { InvalidPermissionError, InvalidRefreshTokenError } from "../../../error";
+import { createTokens, extendSession } from "../../../support";
 
 export interface IPerformRefreshTokenOptions {
   grantType: string;
   responseType: string;
+  subject: string;
 }
 
 const schema = Joi.object({
   grantType: JOI_GRANT_TYPE,
   responseType: Joi.string().required(),
+  subject: JOI_EMAIL,
 });
 
 export const performRefreshToken = (ctx: IAuthContext) => async (
@@ -21,7 +23,7 @@ export const performRefreshToken = (ctx: IAuthContext) => async (
   await schema.validateAsync(options);
 
   const { client, repository, token } = ctx;
-  const { responseType } = options;
+  const { responseType, subject } = options;
   const {
     refresh: { id: refreshId, authMethodsReference, permission },
   } = token;
@@ -35,6 +37,10 @@ export const performRefreshToken = (ctx: IAuthContext) => async (
 
   if (account.permission !== permission) {
     throw new InvalidRefreshTokenError(refreshId);
+  }
+
+  if (account.email !== subject) {
+    throw new InvalidSubjectError(subject);
   }
 
   return createTokens(ctx)({

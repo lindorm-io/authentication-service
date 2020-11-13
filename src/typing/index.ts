@@ -1,8 +1,10 @@
-import { Account, Client, Device } from "../entity";
+import { Account, Client, Device, RequestLimit } from "../entity";
 import { IKoaAppContext } from "@lindorm-io/koa";
 import { ITokenIssuerSignData, ITokenIssuerVerifyData, TokenIssuer } from "@lindorm-io/jwt";
 import { Keystore } from "@lindorm-io/key-pair";
-import { MongoConnection, MongoInMemoryConnection } from "@lindorm-io/mongo";
+import { MongoConnection } from "@lindorm-io/mongo";
+import { RedisConnection } from "@lindorm-io/redis";
+import { RequestLimitCache } from "../cache";
 import { TObject } from "@lindorm-io/core";
 import {
   AccountRepository,
@@ -11,6 +13,10 @@ import {
   KeyPairRepository,
   SessionRepository,
 } from "../repository";
+
+export interface IAuthCache {
+  requestLimit: RequestLimitCache;
+}
 
 export interface IAuthIssuer {
   tokenIssuer: TokenIssuer;
@@ -43,12 +49,15 @@ export interface IAuthUserAgent {
 
 export interface IAuthContext extends IKoaAppContext {
   account: Account;
+  cache: IAuthCache;
   client: Client;
   device: Device;
   issuer: IAuthIssuer;
   keystore: Keystore;
-  mongo: MongoConnection | MongoInMemoryConnection;
+  mongo: MongoConnection;
+  redis: RedisConnection;
   repository: IAuthRepository;
+  requestLimit: RequestLimit;
   token: IAuthToken;
   userAgent: IAuthUserAgent;
 }
@@ -79,6 +88,8 @@ export interface IConfiguration {
   MAILGUN_API_KEY: string;
   MAILGUN_DOMAIN: string;
   MAILGUN_FROM: string;
+
+  REDIS_PORT: number;
 
   MONGO_INITDB_ROOT_USERNAME: string;
   MONGO_INITDB_ROOT_PASSWORD: string;

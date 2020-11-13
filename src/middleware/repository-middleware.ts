@@ -12,7 +12,7 @@ export const repositoryMiddleware = async (ctx: IAuthContext, next: TPromise<voi
   const start = Date.now();
 
   const { logger, mongo } = ctx;
-  const db = await mongo.db();
+  const db = await mongo.getDatabase();
 
   ctx.repository = {
     account: new AccountRepository({ db, logger }),
@@ -30,6 +30,4 @@ export const repositoryMiddleware = async (ctx: IAuthContext, next: TPromise<voi
   };
 
   await next();
-
-  await mongo.disconnect();
 };

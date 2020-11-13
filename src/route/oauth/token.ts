@@ -1,7 +1,8 @@
 import { GrantType } from "../../enum";
+import { HttpStatus } from "@lindorm-io/core";
 import { IAuthContext } from "../../typing";
 import { Router } from "@lindorm-io/koa";
-import { tokenValidationMiddleware } from "../../middleware";
+import { requestLimitSuccessMiddleware, tokenValidationMiddleware } from "../../middleware";
 import {
   performDevicePINToken,
   performDeviceSecretToken,
@@ -15,6 +16,7 @@ import {
 export const router = new Router();
 
 router.use(tokenValidationMiddleware);
+router.use(requestLimitSuccessMiddleware);
 
 router.post(
   "/",
@@ -92,11 +94,14 @@ router.post(
         ctx.body = await performRefreshToken(ctx)({
           grantType,
           responseType,
+          subject,
         });
         break;
 
       default:
         throw new Error("unsupported grant type");
     }
+
+    ctx.status = HttpStatus.Success.OK;
   },
 );

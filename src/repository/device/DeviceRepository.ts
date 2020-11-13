@@ -1,8 +1,8 @@
 import { Device, IDevice } from "../../entity";
 import { IRepository, IRepositoryOptions, RepositoryBase } from "@lindorm-io/mongo";
 import { MongoCollection } from "../../enum";
-import { indices } from "./DeviceRepository.indices";
-import { schema } from "./DeviceRepository.schema";
+import { indices } from "./indices";
+import { schema } from "./schema";
 
 export interface IDeviceFilter {
   id?: string;
@@ -11,11 +11,11 @@ export interface IDeviceFilter {
 }
 
 export interface IDeviceRepository extends IRepository<Device> {
-  create(device: Device): Promise<Device>;
-  update(device: Device): Promise<Device>;
+  create(entity: Device): Promise<Device>;
+  update(entity: Device): Promise<Device>;
   find(filter: IDeviceFilter): Promise<Device>;
   findMany(filter: IDeviceFilter): Promise<Array<Device>>;
-  remove(device: Device): Promise<void>;
+  remove(entity: Device): Promise<void>;
 }
 
 export class DeviceRepository extends RepositoryBase<Device> implements IDeviceRepository {
@@ -33,28 +33,28 @@ export class DeviceRepository extends RepositoryBase<Device> implements IDeviceR
     return new Device(data);
   }
 
-  protected getEntityJSON(device: Device): IDevice {
+  protected getEntityJSON(entity: Device): IDevice {
     return {
-      id: device.id,
-      version: device.version,
-      created: device.created,
-      updated: device.updated,
-      events: device.events,
+      id: entity.id,
+      version: entity.version,
+      created: entity.created,
+      updated: entity.updated,
+      events: entity.events,
 
-      accountId: device.accountId,
-      name: device.name,
-      pin: device.pin,
-      publicKey: device.publicKey,
-      secret: device.secret,
+      accountId: entity.accountId,
+      name: entity.name,
+      pin: entity.pin,
+      publicKey: entity.publicKey,
+      secret: entity.secret,
     };
   }
 
-  public async create(device: Device): Promise<Device> {
-    return super.create(device);
+  public async create(entity: Device): Promise<Device> {
+    return super.create(entity);
   }
 
-  public async update(device: Device): Promise<Device> {
-    return super.update(device);
+  public async update(entity: Device): Promise<Device> {
+    return super.update(entity);
   }
 
   public async find(filter: IDeviceFilter): Promise<Device> {
@@ -65,7 +65,7 @@ export class DeviceRepository extends RepositoryBase<Device> implements IDeviceR
     return super.findMany(filter);
   }
 
-  public async remove(device: Device): Promise<void> {
-    await super.remove(device);
+  public async remove(entity: Device): Promise<void> {
+    await super.remove(entity);
   }
 }

@@ -1,43 +1,38 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Account, Client, Session } from "../../entity";
+import { Account, Session } from "../../entity";
 import { Audience, GrantType, Permission, ResponseType, Scope } from "../../enum";
 import { JWT_ACCESS_TOKEN_EXPIRY, JWT_ISSUER } from "../../config";
 import { KeyPair, Keystore } from "@lindorm-io/key-pair";
 import { MOCK_KEY_PAIR_OPTIONS } from "../mocks";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { TokenIssuer } from "@lindorm-io/jwt";
-import { accountInMemory, clientInMemory, keyPairInMemory, sessionInMemory } from "../../middleware";
-import { encryptAccountPassword, encryptClientSecret } from "../../support";
-import { getRandomValue } from "@lindorm-io/core";
+import { encryptAccountPassword } from "../../support";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import { winston } from "../../logger";
+import {
+  TEST_ACCOUNT_REPOSITORY,
+  TEST_CLIENT_ID,
+  TEST_CLIENT_SECRET,
+  TEST_KEY_PAIR_REPOSITORY,
+  TEST_SESSION_REPOSITORY,
+  loadMongoConnection,
+} from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/session", () => {
-  const clientId = uuid();
-  const clientSecret = getRandomValue(16);
-
   let account: Account;
-  let client: Client;
   let tokenIssuer: TokenIssuer;
   let accessToken: string;
 
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
 
-    client = await clientInMemory.create(
-      new Client({
-        id: clientId,
-        secret: await encryptClientSecret(clientSecret),
-        approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
-      }),
-    );
-
-    account = await accountInMemory.create(
+    account = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "test@lindorm.io",
         password: { signature: await encryptAccountPassword("password"), updated: new Date() },
@@ -45,7 +40,7 @@ describe("/session", () => {
       }),
     );
 
-    const keyPair = await keyPairInMemory.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
+    const keyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
 
     tokenIssuer = new TokenIssuer({
       issuer: JWT_ISSUER,
@@ -55,7 +50,7 @@ describe("/session", () => {
 
     ({ token: accessToken } = tokenIssuer.sign({
       audience: Audience.ACCESS,
-      clientId: client.id,
+      clientId: TEST_CLIENT_ID,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
       permission: account.permission,
       scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
@@ -64,7 +59,7 @@ describe("/session", () => {
   });
 
   test("POST /logout", async () => {
-    const session = await sessionInMemory.create(
+    const session = await TEST_SESSION_REPOSITORY.create(
       new Session({
         accountId: account.id,
         authenticated: true,
@@ -76,7 +71,7 @@ describe("/session", () => {
           redirectUri: "https://redirect.uri/",
           responseType: ResponseType.REFRESH,
         },
-        clientId: client.id,
+        clientId: TEST_CLIENT_ID,
         expires: new Date("2099-01-01"),
         grantType: GrantType.EMAIL_OTP,
         refreshId: uuid(),
@@ -85,7 +80,7 @@ describe("/session", () => {
     );
     const { token: refreshToken } = tokenIssuer.sign({
       audience: Audience.REFRESH,
-      clientId: client.id,
+      clientId: TEST_CLIENT_ID,
       expiry: session.expires,
       id: session.refreshId,
       permission: account.permission,
@@ -98,20 +93,20 @@ describe("/session", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: TEST_CLIENT_ID,
+        client_secret: TEST_CLIENT_SECRET,
 
         refresh_token: refreshToken,
       })
       .expect(202);
 
-    await expect(sessionInMemory.find({ id: session.id })).rejects.toStrictEqual(
+    await expect(TEST_SESSION_REPOSITORY.find({ id: session.id })).rejects.toStrictEqual(
       expect.any(RepositoryEntityNotFoundError),
     );
   });
 
   test("DELETE /:id", async () => {
-    const session = await sessionInMemory.create(
+    const session = await TEST_SESSION_REPOSITORY.create(
       new Session({
         accountId: account.id,
         authenticated: true,
@@ -123,7 +118,7 @@ describe("/session", () => {
           redirectUri: "https://redirect.uri/",
           responseType: ResponseType.REFRESH,
         },
-        clientId: client.id,
+        clientId: TEST_CLIENT_ID,
         expires: new Date("2099-01-01"),
         grantType: GrantType.EMAIL_OTP,
         refreshId: uuid(),
@@ -136,12 +131,12 @@ describe("/session", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: TEST_CLIENT_ID,
+        client_secret: TEST_CLIENT_SECRET,
       })
       .expect(202);
 
-    await expect(sessionInMemory.find({ id: session.id })).rejects.toStrictEqual(
+    await expect(TEST_SESSION_REPOSITORY.find({ id: session.id })).rejects.toStrictEqual(
       expect.any(RepositoryEntityNotFoundError),
     );
   });

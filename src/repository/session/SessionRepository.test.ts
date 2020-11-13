@@ -1,8 +1,8 @@
 import MockDate from "mockdate";
 import { GrantType, ResponseType, Scope } from "../../enum";
-import { MOCK_CODE_CHALLENGE, MOCK_CODE_METHOD, MOCK_UUID } from "../../test/mocks/data";
+import { MOCK_CODE_CHALLENGE, MOCK_CODE_METHOD, MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
 import { MOCK_LOGGER } from "../../test/mocks/logger";
-import { MongoInMemoryConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
+import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { Session } from "../../entity";
 import { SessionRepository } from "./SessionRepository";
 
@@ -16,16 +16,12 @@ describe("SessionRepository", () => {
   let repository: SessionRepository;
   let session: Session;
 
-  beforeEach(() => {
-    const mongo = new MongoInMemoryConnection({
-      host: "host",
-      name: "name",
-      password: "password",
-      port: 999,
-      user: "user",
-    });
+  beforeEach(async () => {
+    const mongo = new MongoConnection(MOCK_MONGO_OPTIONS);
+    await mongo.connect();
+
     repository = new SessionRepository({
-      db: mongo.db(),
+      db: mongo.getDatabase(),
       logger: MOCK_LOGGER,
     });
     session = new Session({

@@ -20,7 +20,8 @@ Object {
   "MONGO_HOST": "localhost",
   "MONGO_INITDB_ROOT_PASSWORD": "password",
   "MONGO_INITDB_ROOT_USERNAME": "root",
-  "NODE_ENVIRONMENT": "development",
+  "NODE_ENVIRONMENT": "test",
+  "REDIS_PORT": 6379,
   "SERVER_PORT": 3000,
 }
 `;

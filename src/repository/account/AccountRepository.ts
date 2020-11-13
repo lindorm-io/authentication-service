@@ -1,8 +1,8 @@
 import { IAccount, Account } from "../../entity";
 import { IRepository, IRepositoryOptions, RepositoryBase } from "@lindorm-io/mongo";
 import { MongoCollection } from "../../enum";
-import { indices } from "./AccountRepository.indices";
-import { schema } from "./AccountRepository.schema";
+import { indices } from "./indices";
+import { schema } from "./schema";
 
 export interface IAccountFilter {
   id?: string;
@@ -11,11 +11,11 @@ export interface IAccountFilter {
 }
 
 export interface IAccountRepository extends IRepository<Account> {
-  create(account: Account): Promise<Account>;
-  update(account: Account): Promise<Account>;
+  create(entity: Account): Promise<Account>;
+  update(entity: Account): Promise<Account>;
   find(filter: IAccountFilter): Promise<Account>;
   findMany(filter: IAccountFilter): Promise<Array<Account>>;
-  remove(account: Account): Promise<void>;
+  remove(entity: Account): Promise<void>;
 }
 
 export class AccountRepository extends RepositoryBase<Account> implements IAccountRepository {
@@ -33,27 +33,27 @@ export class AccountRepository extends RepositoryBase<Account> implements IAccou
     return new Account(data);
   }
 
-  protected getEntityJSON(account: Account): IAccount {
+  protected getEntityJSON(entity: Account): IAccount {
     return {
-      id: account.id,
-      version: account.version,
-      created: account.created,
-      updated: account.updated,
-      events: account.events,
+      id: entity.id,
+      version: entity.version,
+      created: entity.created,
+      updated: entity.updated,
+      events: entity.events,
 
-      email: account.email,
-      otp: account.otp,
-      permission: account.permission,
-      password: account.password,
+      email: entity.email,
+      otp: entity.otp,
+      permission: entity.permission,
+      password: entity.password,
     };
   }
 
-  public async create(account: Account): Promise<Account> {
-    return super.create(account);
+  public async create(entity: Account): Promise<Account> {
+    return super.create(entity);
   }
 
-  public async update(account: Account): Promise<Account> {
-    return super.update(account);
+  public async update(entity: Account): Promise<Account> {
+    return super.update(entity);
   }
 
   public async find(filter: IAccountFilter): Promise<Account> {
@@ -64,7 +64,7 @@ export class AccountRepository extends RepositoryBase<Account> implements IAccou
     return super.findMany(filter);
   }
 
-  public async remove(account: Account): Promise<void> {
-    await super.remove(account);
+  public async remove(entity: Account): Promise<void> {
+    await super.remove(entity);
   }
 }

@@ -1,6 +1,6 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Account, Client } from "../../entity";
+import { Account } from "../../entity";
 import { Audience, Permission, Scope } from "../../enum";
 import { CryptoAES } from "@lindorm-io/crypto";
 import { JWT_ACCESS_TOKEN_EXPIRY, JWT_ISSUER, OTP_HANDLER_OPTIONS } from "../../config";
@@ -8,13 +8,18 @@ import { KeyPair, Keystore } from "@lindorm-io/key-pair";
 import { MOCK_KEY_PAIR_OPTIONS } from "../mocks";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { TokenIssuer } from "@lindorm-io/jwt";
-import { accountInMemory, clientInMemory, keyPairInMemory } from "../../middleware";
 import { authenticator } from "otplib";
 import { baseParse } from "@lindorm-io/core";
-import { encryptAccountPassword, encryptClientSecret, generateAccountOTP } from "../../support";
+import { encryptAccountPassword, generateAccountOTP } from "../../support";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import { winston } from "../../logger";
+import {
+  TEST_ACCOUNT_REPOSITORY,
+  TEST_CLIENT_ID,
+  TEST_KEY_PAIR_REPOSITORY,
+  loadMongoConnection,
+} from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -23,17 +28,11 @@ describe("/account", () => {
   let accessToken: string;
 
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
 
-    const client = await clientInMemory.create(
-      new Client({
-        secret: await encryptClientSecret("secret"),
-        approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
-      }),
-    );
-
-    account = await accountInMemory.create(
+    account = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "test@lindorm.io",
         password: { signature: await encryptAccountPassword("password"), updated: new Date() },
@@ -41,7 +40,7 @@ describe("/account", () => {
       }),
     );
 
-    const keyPair = await keyPairInMemory.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
+    const keyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
 
     const tokenIssuer = new TokenIssuer({
       issuer: JWT_ISSUER,
@@ -51,7 +50,7 @@ describe("/account", () => {
 
     ({ token: accessToken } = tokenIssuer.sign({
       audience: Audience.ACCESS,
-      clientId: client.id,
+      clientId: TEST_CLIENT_ID,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
       permission: account.permission,
       scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
@@ -74,7 +73,7 @@ describe("/account", () => {
       account_id: expect.any(String),
     });
 
-    await expect(accountInMemory.find({ id: response.body.account_id })).resolves.toStrictEqual(
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: response.body.account_id })).resolves.toStrictEqual(
       expect.objectContaining({
         id: response.body.account_id,
       }),
@@ -101,7 +100,7 @@ describe("/account", () => {
   });
 
   test("DELETE /:id", async () => {
-    const tmp = await accountInMemory.create(
+    const tmp = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "remove@email.com",
       }),
@@ -113,11 +112,13 @@ describe("/account", () => {
       .set("X-Correlation-ID", uuid())
       .expect(204);
 
-    await expect(accountInMemory.find({ id: tmp.id })).rejects.toStrictEqual(expect.any(RepositoryEntityNotFoundError));
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).rejects.toStrictEqual(
+      expect.any(RepositoryEntityNotFoundError),
+    );
   });
 
   test("DELETE /:id/otp", async () => {
-    const tmp = await accountInMemory.create(
+    const tmp = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "otp@email.com",
         otp: generateAccountOTP(),
@@ -137,7 +138,7 @@ describe("/account", () => {
       })
       .expect(204);
 
-    await expect(accountInMemory.find({ id: tmp.id })).resolves.toStrictEqual(
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
       expect.objectContaining({
         otp: { signature: null, uri: null },
       }),
@@ -145,7 +146,7 @@ describe("/account", () => {
   });
 
   test("PATCH /:id/permission", async () => {
-    const tmp = await accountInMemory.create(
+    const tmp = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "update@email.com",
       }),
@@ -160,7 +161,7 @@ describe("/account", () => {
       })
       .expect(204);
 
-    await expect(accountInMemory.find({ id: tmp.id })).resolves.toStrictEqual(
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
       expect.objectContaining({
         permission: Permission.LOCKED,
       }),
@@ -177,7 +178,7 @@ describe("/account", () => {
       })
       .expect(204);
 
-    await expect(accountInMemory.find({ id: account.id })).resolves.toStrictEqual(
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: account.id })).resolves.toStrictEqual(
       expect.objectContaining({
         email: "new@lindorm.io",
       }),
@@ -195,7 +196,7 @@ describe("/account", () => {
       uri: expect.any(String),
     });
 
-    await expect(accountInMemory.find({ id: account.id })).resolves.toStrictEqual(
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: account.id })).resolves.toStrictEqual(
       expect.objectContaining({
         otp: {
           signature: expect.any(String),
@@ -218,7 +219,7 @@ describe("/account", () => {
       })
       .expect(204);
 
-    const result = await accountInMemory.find({ id: account.id });
+    const result = await TEST_ACCOUNT_REPOSITORY.find({ id: account.id });
 
     expect(result.password.signature).not.toBe(oldSignature);
   });

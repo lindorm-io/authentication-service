@@ -1,16 +1,21 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Account, Client } from "../../entity";
+import { Account } from "../../entity";
 import { Audience, Permission, Scope } from "../../enum";
 import { JWT_ACCESS_TOKEN_EXPIRY, JWT_ISSUER } from "../../config";
 import { KeyPair, Keystore, KeyType } from "@lindorm-io/key-pair";
 import { MOCK_EC_PRIVATE_KEY, MOCK_EC_PUBLIC_KEY, MOCK_KEY_PAIR_OPTIONS } from "../mocks";
 import { TokenIssuer } from "@lindorm-io/jwt";
-import { accountInMemory, clientInMemory, keyPairInMemory } from "../../middleware";
-import { encryptAccountPassword, encryptClientSecret } from "../../support";
+import { encryptAccountPassword } from "../../support";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import { winston } from "../../logger";
+import {
+  TEST_ACCOUNT_REPOSITORY,
+  TEST_CLIENT_ID,
+  TEST_KEY_PAIR_REPOSITORY,
+  loadMongoConnection,
+} from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -19,17 +24,11 @@ describe("/key-pair", () => {
   let accessToken: string;
 
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
 
-    const client = await clientInMemory.create(
-      new Client({
-        secret: await encryptClientSecret("secret"),
-        approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
-      }),
-    );
-
-    account = await accountInMemory.create(
+    account = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "test@lindorm.io",
         password: { signature: await encryptAccountPassword("password"), updated: new Date() },
@@ -37,7 +36,7 @@ describe("/key-pair", () => {
       }),
     );
 
-    const keyPair = await keyPairInMemory.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
+    const keyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
 
     const tokenIssuer = new TokenIssuer({
       issuer: JWT_ISSUER,
@@ -47,7 +46,7 @@ describe("/key-pair", () => {
 
     ({ token: accessToken } = tokenIssuer.sign({
       audience: Audience.ACCESS,
-      clientId: client.id,
+      clientId: TEST_CLIENT_ID,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
       permission: account.permission,
       scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
@@ -71,7 +70,7 @@ describe("/key-pair", () => {
       type: "ec",
     });
 
-    await expect(keyPairInMemory.find({ id: response.body.key_pair_id })).resolves.toStrictEqual(
+    await expect(TEST_KEY_PAIR_REPOSITORY.find({ id: response.body.key_pair_id })).resolves.toStrictEqual(
       expect.objectContaining({
         id: response.body.key_pair_id,
       }),
@@ -79,7 +78,7 @@ describe("/key-pair", () => {
   });
 
   test("PATCH /:id/expire", async () => {
-    const tmp = await keyPairInMemory.create(
+    const tmp = await TEST_KEY_PAIR_REPOSITORY.create(
       new KeyPair({
         algorithm: "ES512",
         privateKey: MOCK_EC_PRIVATE_KEY,
@@ -97,7 +96,7 @@ describe("/key-pair", () => {
       })
       .expect(204);
 
-    await expect(keyPairInMemory.find({ id: tmp.id })).resolves.toStrictEqual(
+    await expect(TEST_KEY_PAIR_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
       expect.objectContaining({
         expires: new Date("2020-01-11T07:00:00.000Z"),
       }),

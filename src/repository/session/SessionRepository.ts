@@ -1,8 +1,8 @@
 import { IRepository, IRepositoryOptions, RepositoryBase } from "@lindorm-io/mongo";
 import { ISession, Session } from "../../entity";
 import { MongoCollection } from "../../enum";
-import { indices } from "./SessionRepository.indices";
-import { schema } from "./SessionRepository.schema";
+import { indices } from "./indices";
+import { schema } from "./schema";
 
 export interface ISessionFilter {
   id?: string;
@@ -16,11 +16,11 @@ export interface ISessionFilter {
 }
 
 export interface ISessionRepository extends IRepository<Session> {
-  create(session: Session): Promise<Session>;
-  update(session: Session): Promise<Session>;
+  create(entity: Session): Promise<Session>;
+  update(entity: Session): Promise<Session>;
   find(filter: ISessionFilter): Promise<Session>;
   findMany(filter: ISessionFilter): Promise<Array<Session>>;
-  remove(session: Session): Promise<void>;
+  remove(entity: Session): Promise<void>;
 }
 
 export class SessionRepository extends RepositoryBase<Session> implements ISessionRepository {
@@ -38,29 +38,29 @@ export class SessionRepository extends RepositoryBase<Session> implements ISessi
     return new Session(data);
   }
 
-  protected getEntityJSON(session: Session): ISession {
+  protected getEntityJSON(entity: Session): ISession {
     return {
-      id: session.id,
-      version: session.version,
-      created: session.created,
-      updated: session.updated,
-      events: session.events,
+      id: entity.id,
+      version: entity.version,
+      created: entity.created,
+      updated: entity.updated,
+      events: entity.events,
 
-      accountId: session.accountId,
-      agent: session.agent,
-      authenticated: session.authenticated,
-      authorization: session.authorization,
-      clientId: session.clientId,
-      deviceId: session.deviceId,
-      expires: session.expires,
-      grantType: session.grantType,
-      refreshId: session.refreshId,
-      scope: session.scope,
+      accountId: entity.accountId,
+      agent: entity.agent,
+      authenticated: entity.authenticated,
+      authorization: entity.authorization,
+      clientId: entity.clientId,
+      deviceId: entity.deviceId,
+      expires: entity.expires,
+      grantType: entity.grantType,
+      refreshId: entity.refreshId,
+      scope: entity.scope,
     };
   }
 
-  public async create(session: Session): Promise<Session> {
-    return super.create(session);
+  public async create(entity: Session): Promise<Session> {
+    return super.create(entity);
   }
 
   public async find(filter: ISessionFilter): Promise<Session> {
@@ -71,7 +71,7 @@ export class SessionRepository extends RepositoryBase<Session> implements ISessi
     return super.findMany(filter);
   }
 
-  public async remove(session: Session): Promise<void> {
-    await super.remove(session);
+  public async remove(entity: Session): Promise<void> {
+    await super.remove(entity);
   }
 }

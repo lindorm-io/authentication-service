@@ -1,6 +1,6 @@
 import { IRepositoryOptions, mongoQuery } from "@lindorm-io/mongo";
 import { IntervalWorker } from "@lindorm-io/koa";
-import { MONGO_OPTIONS } from "../config";
+import { MONGO_MW_OPTIONS } from "../config";
 import { SessionRepository } from "../repository";
 import { stringToMilliseconds } from "@lindorm-io/core";
 import { winston } from "../logger";
@@ -15,7 +15,7 @@ const mongoCallback = async (options: IRepositoryOptions): Promise<void> => {
 const workerCallback = async (): Promise<void> => {
   return mongoQuery(
     {
-      mongoOptions: MONGO_OPTIONS,
+      mongoOptions: MONGO_MW_OPTIONS,
       logger,
     },
     mongoCallback,

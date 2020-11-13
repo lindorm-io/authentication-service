@@ -1,12 +1,13 @@
 import { HttpStatus } from "@lindorm-io/core";
 import { IAuthContext } from "../../typing";
 import { Router } from "@lindorm-io/koa";
-import { clientMiddleware, deviceMiddleware } from "../../middleware";
+import { clientMiddleware, deviceMiddleware, requestLimitMiddleware } from "../../middleware";
 import { router as authorization } from "./authorization";
 import { router as token } from "./token";
 
 export const router = new Router();
 
+router.use(requestLimitMiddleware);
 router.use(clientMiddleware);
 router.use(deviceMiddleware({ throwError: false }));
 

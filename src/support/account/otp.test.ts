@@ -1,10 +1,10 @@
-import { assertAccountOTP, generateAccountOTP } from "./otp";
 import { Account } from "../../entity";
-import { baseParse } from "@lindorm-io/core";
-import { authenticator } from "otplib";
-import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks/repository";
 import { CryptoAES } from "@lindorm-io/crypto";
+import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { OTP_HANDLER_OPTIONS } from "../../config";
+import { assertAccountOTP, generateAccountOTP } from "./otp";
+import { authenticator } from "otplib";
+import { baseParse } from "@lindorm-io/core";
 
 describe("generateAccountOTP", () => {
   test("should resolve", () => {

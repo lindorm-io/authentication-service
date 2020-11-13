@@ -1,3 +1,4 @@
+export * from "./cache";
 export * from "./data";
 export * from "./issuer";
 export * from "./keys";

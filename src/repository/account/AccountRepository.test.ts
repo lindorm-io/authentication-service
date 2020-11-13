@@ -2,8 +2,8 @@ import MockDate from "mockdate";
 import { Account } from "../../entity";
 import { AccountRepository } from "./AccountRepository";
 import { MOCK_LOGGER } from "../../test/mocks/logger";
-import { MOCK_UUID } from "../../test/mocks/data";
-import { MongoInMemoryConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
+import { MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
+import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { Permission } from "../../enum";
 import { baseHash } from "@lindorm-io/core";
 
@@ -17,16 +17,12 @@ describe("AccountRepository", () => {
   let repository: AccountRepository;
   let account: Account;
 
-  beforeEach(() => {
-    const mongo = new MongoInMemoryConnection({
-      host: "host",
-      name: "name",
-      password: "password",
-      port: 999,
-      user: "user",
-    });
+  beforeEach(async () => {
+    const mongo = new MongoConnection(MOCK_MONGO_OPTIONS);
+    await mongo.connect();
+
     repository = new AccountRepository({
-      db: mongo.db(),
+      db: mongo.getDatabase(),
       logger: MOCK_LOGGER,
     });
     account = new Account({

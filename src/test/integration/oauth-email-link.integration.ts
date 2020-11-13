@@ -1,34 +1,19 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Client } from "../../entity";
 import { GrantType, ResponseType } from "../../enum";
-import { KeyPair } from "@lindorm-io/key-pair";
-import { MOCK_CODE_VERIFIER, MOCK_KEY_PAIR_OPTIONS } from "../mocks";
-import { clientInMemory, keyPairInMemory } from "../../middleware";
-import { emailInMemory, encryptClientSecret } from "../../support";
-import { getRandomValue } from "@lindorm-io/core";
+import { MOCK_CODE_VERIFIER } from "../mocks";
+import { emailInMemory } from "../../support";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
+import { TEST_CLIENT_ID, TEST_CLIENT_SECRET, loadMongoConnection } from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth EMAIL_LINK", () => {
-  const clientId = uuid();
-  const clientSecret = getRandomValue(16);
-
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
-
-    await clientInMemory.create(
-      new Client({
-        id: clientId,
-        secret: await encryptClientSecret(clientSecret),
-        approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
-      }),
-    );
-
-    await keyPairInMemory.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
   });
 
   test("should resolve", async () => {
@@ -36,8 +21,8 @@ describe("/oauth EMAIL_LINK", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: TEST_CLIENT_ID,
+        client_secret: TEST_CLIENT_SECRET,
 
         code_challenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
         code_method: "sha256",
@@ -51,8 +36,8 @@ describe("/oauth EMAIL_LINK", () => {
       .expect(200);
 
     expect(initResponse.body).toStrictEqual({
-      expires: 1577862900,
-      expires_in: 900,
+      expires: 1577864700,
+      expires_in: 2700,
       state: "MsohJgIeKSNgpvpp",
     });
 
@@ -62,8 +47,8 @@ describe("/oauth EMAIL_LINK", () => {
       .post("/oauth/token")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: TEST_CLIENT_ID,
+        client_secret: TEST_CLIENT_SECRET,
 
         authorization_token: token,
 
@@ -75,14 +60,14 @@ describe("/oauth EMAIL_LINK", () => {
 
     expect(tokenResponse.body).toStrictEqual({
       access_token: {
-        expires: 1577862180,
-        expires_in: 180,
+        expires: 1577862120,
+        expires_in: 120,
         id: expect.any(String),
         token: expect.any(String),
       },
       refresh_token: {
-        expires: 1579071600,
-        expires_in: 1209600,
+        expires: 1577948400,
+        expires_in: 86400,
         id: expect.any(String),
         token: expect.any(String),
       },

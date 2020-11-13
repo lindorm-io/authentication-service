@@ -3,6 +3,8 @@ import { IConfiguration } from "../typing";
 import { configuration as env } from "./default-test";
 import { mergeConfiguration } from "./merge-configuration";
 import { switchConfiguration } from "./switch-configuration";
+import { MongoConnectionType } from "@lindorm-io/mongo";
+import { RedisConnectionType } from "@lindorm-io/redis";
 
 export const { NODE_ENVIRONMENT } = env;
 
@@ -25,14 +27,6 @@ export const MAIL_HANDLER_CONFIG = {
   from: config.MAILGUN_FROM,
 };
 
-export const MONGO_OPTIONS = {
-  user: config.MONGO_INITDB_ROOT_USERNAME,
-  password: config.MONGO_INITDB_ROOT_PASSWORD,
-  host: config.MONGO_HOST,
-  port: config.MONGO_EXPOSE_PORT,
-  name: config.MONGO_DB_NAME,
-};
-
 export const CRYPTO_PASSWORD_OPTIONS = {
   aesSecret: config.CRYPTO_AES_SECRET,
   shaSecret: config.CRYPTO_SHA_SECRET,
@@ -51,6 +45,24 @@ export const OTP_HANDLER_OPTIONS = {
 export const BEARER_TOKEN_MW_OPTIONS = {
   issuer: config.JWT_ISSUER,
   audience: Audience.ACCESS,
+};
+
+export const MONGO_MW_OPTIONS = {
+  type: MongoConnectionType.STORAGE,
+  auth: {
+    user: config.MONGO_INITDB_ROOT_USERNAME,
+    password: config.MONGO_INITDB_ROOT_PASSWORD,
+  },
+  url: {
+    host: config.MONGO_HOST,
+    port: config.MONGO_EXPOSE_PORT,
+  },
+  databaseName: config.MONGO_DB_NAME,
+};
+
+export const REDIS_MW_OPTIONS = {
+  type: RedisConnectionType.CACHE,
+  port: config.REDIS_PORT,
 };
 
 export const TOKEN_ISSUER_MW_OPTIONS = {

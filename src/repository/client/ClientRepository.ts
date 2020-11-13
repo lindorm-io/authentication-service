@@ -1,8 +1,8 @@
 import { Client, IClient } from "../../entity";
 import { IRepository, IRepositoryOptions, RepositoryBase } from "@lindorm-io/mongo";
 import { MongoCollection } from "../../enum";
-import { indices } from "./ClientRepository.indices";
-import { schema } from "./ClientRepository.schema";
+import { indices } from "./indices";
+import { schema } from "./schema";
 
 export interface IClientFilter {
   id?: string;
@@ -11,11 +11,11 @@ export interface IClientFilter {
 }
 
 export interface IClientRepository extends IRepository<Client> {
-  create(client: Client): Promise<Client>;
-  update(client: Client): Promise<Client>;
+  create(entity: Client): Promise<Client>;
+  update(entity: Client): Promise<Client>;
   find(filter: IClientFilter): Promise<Client>;
   findMany(filter: IClientFilter): Promise<Array<Client>>;
-  remove(client: Client): Promise<void>;
+  remove(entity: Client): Promise<void>;
 }
 
 export class ClientRepository extends RepositoryBase<Client> implements IClientRepository {
@@ -33,28 +33,28 @@ export class ClientRepository extends RepositoryBase<Client> implements IClientR
     return new Client(data);
   }
 
-  protected getEntityJSON(client: Client): IClient {
+  protected getEntityJSON(entity: Client): IClient {
     return {
-      id: client.id,
-      version: client.version,
-      created: client.created,
-      updated: client.updated,
-      events: client.events,
+      id: entity.id,
+      version: entity.version,
+      created: entity.created,
+      updated: entity.updated,
+      events: entity.events,
 
-      name: client.name,
-      description: client.description,
-      secret: client.secret,
-      approved: client.approved,
-      emailAuthorizationUri: client.emailAuthorizationUri,
+      name: entity.name,
+      description: entity.description,
+      secret: entity.secret,
+      approved: entity.approved,
+      emailAuthorizationUri: entity.emailAuthorizationUri,
     };
   }
 
-  public async create(client: Client): Promise<Client> {
-    return super.create(client);
+  public async create(entity: Client): Promise<Client> {
+    return super.create(entity);
   }
 
-  public async update(client: Client): Promise<Client> {
-    return super.update(client);
+  public async update(entity: Client): Promise<Client> {
+    return super.update(entity);
   }
 
   public async find(filter: IClientFilter): Promise<Client> {
@@ -65,7 +65,7 @@ export class ClientRepository extends RepositoryBase<Client> implements IClientR
     return super.findMany(filter);
   }
 
-  public async remove(client: Client): Promise<void> {
-    await super.remove(client);
+  public async remove(entity: Client): Promise<void> {
+    await super.remove(entity);
   }
 }

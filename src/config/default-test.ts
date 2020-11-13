@@ -2,7 +2,7 @@ import { IConfiguration } from "../typing";
 import { NodeEnvironment } from "@lindorm-io/core";
 
 export const configuration: IConfiguration = {
-  NODE_ENVIRONMENT: NodeEnvironment.DEVELOPMENT,
+  NODE_ENVIRONMENT: NodeEnvironment.TEST,
   SERVER_PORT: 3000,
   HOST: "http://localhost/",
 
@@ -21,6 +21,8 @@ export const configuration: IConfiguration = {
   MAILGUN_API_KEY: "api-key",
   MAILGUN_DOMAIN: "test.lindorm.io",
   MAILGUN_FROM: "noreply@lindorm.io",
+
+  REDIS_PORT: 6379,
 
   MONGO_INITDB_ROOT_USERNAME: "root",
   MONGO_INITDB_ROOT_PASSWORD: "password",

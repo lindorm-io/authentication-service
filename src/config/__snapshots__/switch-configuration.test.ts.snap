@@ -21,6 +21,7 @@ Object {
   "MONGO_INITDB_ROOT_PASSWORD": "password",
   "MONGO_INITDB_ROOT_USERNAME": "root",
   "NODE_ENVIRONMENT": "development",
+  "REDIS_PORT": 6379,
   "SERVER_PORT": 3000,
 }
 `;
@@ -41,11 +42,12 @@ Object {
   "MAILGUN_DOMAIN": "lindorm.io",
   "MAILGUN_FROM": "noreply@lindorm.io",
   "MONGO_DB_NAME": null,
-  "MONGO_EXPOSE_PORT": 0,
+  "MONGO_EXPOSE_PORT": null,
   "MONGO_HOST": null,
   "MONGO_INITDB_ROOT_PASSWORD": null,
   "MONGO_INITDB_ROOT_USERNAME": null,
   "NODE_ENVIRONMENT": "production",
+  "REDIS_PORT": null,
   "SERVER_PORT": 3000,
 }
 `;
@@ -66,11 +68,12 @@ Object {
   "MAILGUN_DOMAIN": "staging.lindorm.io",
   "MAILGUN_FROM": "noreply@lindorm.io",
   "MONGO_DB_NAME": null,
-  "MONGO_EXPOSE_PORT": 0,
+  "MONGO_EXPOSE_PORT": null,
   "MONGO_HOST": null,
   "MONGO_INITDB_ROOT_PASSWORD": null,
   "MONGO_INITDB_ROOT_USERNAME": null,
   "NODE_ENVIRONMENT": "staging",
+  "REDIS_PORT": null,
   "SERVER_PORT": 3000,
 }
 `;
@@ -95,7 +98,8 @@ Object {
   "MONGO_HOST": "localhost",
   "MONGO_INITDB_ROOT_PASSWORD": "password",
   "MONGO_INITDB_ROOT_USERNAME": "root",
-  "NODE_ENVIRONMENT": "development",
+  "NODE_ENVIRONMENT": "test",
+  "REDIS_PORT": 6379,
   "SERVER_PORT": 3000,
 }
 `;

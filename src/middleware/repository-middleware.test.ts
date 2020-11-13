@@ -45,8 +45,7 @@ describe("repositoryMiddleware", () => {
     getMockContext = () => ({
       logger: MOCK_LOGGER,
       mongo: {
-        db: () => "db",
-        disconnect: (): any => undefined,
+        getDatabase: () => "db",
       },
     });
 

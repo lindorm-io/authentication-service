@@ -7,12 +7,18 @@ import { KeyPair, Keystore } from "@lindorm-io/key-pair";
 import { MOCK_KEY_PAIR_OPTIONS } from "../mocks";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { TokenIssuer } from "@lindorm-io/jwt";
-import { accountInMemory, clientInMemory, keyPairInMemory } from "../../middleware";
 import { encryptAccountPassword, encryptClientSecret } from "../../support";
 import { getRandomValue } from "@lindorm-io/core";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import { winston } from "../../logger";
+import {
+  loadMongoConnection,
+  TEST_ACCOUNT_REPOSITORY,
+  TEST_CLIENT_ID,
+  TEST_CLIENT_REPOSITORY,
+  TEST_KEY_PAIR_REPOSITORY,
+} from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -21,17 +27,11 @@ describe("/client", () => {
   let accessToken: string;
 
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
 
-    const client = await clientInMemory.create(
-      new Client({
-        secret: await encryptClientSecret("secret"),
-        approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
-      }),
-    );
-
-    account = await accountInMemory.create(
+    account = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "test@lindorm.io",
         password: { signature: await encryptAccountPassword("password"), updated: new Date() },
@@ -39,7 +39,7 @@ describe("/client", () => {
       }),
     );
 
-    const keyPair = await keyPairInMemory.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
+    const keyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
 
     const tokenIssuer = new TokenIssuer({
       issuer: JWT_ISSUER,
@@ -49,7 +49,7 @@ describe("/client", () => {
 
     ({ token: accessToken } = tokenIssuer.sign({
       audience: Audience.ACCESS,
-      clientId: client.id,
+      clientId: TEST_CLIENT_ID,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
       permission: account.permission,
       scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
@@ -74,7 +74,7 @@ describe("/client", () => {
       client_id: expect.any(String),
     });
 
-    await expect(clientInMemory.find({ id: response.body.client_id })).resolves.toStrictEqual(
+    await expect(TEST_CLIENT_REPOSITORY.find({ id: response.body.client_id })).resolves.toStrictEqual(
       expect.objectContaining({
         id: response.body.client_id,
       }),
@@ -82,7 +82,7 @@ describe("/client", () => {
   });
 
   test("PATCH /:id", async () => {
-    const tmp = await clientInMemory.create(
+    const tmp = await TEST_CLIENT_REPOSITORY.create(
       new Client({
         secret: await encryptClientSecret("secret"),
         approved: true,
@@ -103,7 +103,7 @@ describe("/client", () => {
       })
       .expect(204);
 
-    await expect(clientInMemory.find({ id: tmp.id })).resolves.toStrictEqual(
+    await expect(TEST_CLIENT_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
       expect.objectContaining({
         approved: false,
         description: "new-description",
@@ -114,7 +114,7 @@ describe("/client", () => {
   });
 
   test("DELETE /:id", async () => {
-    const tmp = await clientInMemory.create(
+    const tmp = await TEST_CLIENT_REPOSITORY.create(
       new Client({
         secret: await encryptClientSecret("secret"),
         approved: true,
@@ -128,6 +128,8 @@ describe("/client", () => {
       .set("X-Correlation-ID", uuid())
       .expect(202);
 
-    await expect(clientInMemory.find({ id: tmp.id })).rejects.toStrictEqual(expect.any(RepositoryEntityNotFoundError));
+    await expect(TEST_CLIENT_REPOSITORY.find({ id: tmp.id })).rejects.toStrictEqual(
+      expect.any(RepositoryEntityNotFoundError),
+    );
   });
 });

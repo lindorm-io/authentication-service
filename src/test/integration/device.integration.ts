@@ -3,16 +3,22 @@ import request from "supertest";
 import { Account, Client, Device } from "../../entity";
 import { Audience, Permission, Scope } from "../../enum";
 import { JWT_ACCESS_TOKEN_EXPIRY, JWT_ISSUER } from "../../config";
-import { generateRSAKeys, KeyPair, Keystore } from "@lindorm-io/key-pair";
 import { MOCK_KEY_PAIR_OPTIONS } from "../mocks";
+import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { TokenIssuer } from "@lindorm-io/jwt";
-import { accountInMemory, clientInMemory, deviceInMemory, keyPairInMemory } from "../../middleware";
 import { encryptAccountPassword, encryptClientSecret, encryptDevicePIN } from "../../support";
+import { generateRSAKeys, KeyPair, Keystore } from "@lindorm-io/key-pair";
 import { getRandomValue } from "@lindorm-io/core";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import { winston } from "../../logger";
-import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
+import {
+  loadMongoConnection,
+  TEST_ACCOUNT_REPOSITORY,
+  TEST_CLIENT_REPOSITORY,
+  TEST_DEVICE_REPOSITORY,
+  TEST_KEY_PAIR_REPOSITORY,
+} from "../connection/mongo-connection";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -23,9 +29,11 @@ describe("/device", () => {
   let publicKey: string;
 
   beforeAll(async () => {
+    await loadMongoConnection();
+
     koa.load();
 
-    const client = await clientInMemory.create(
+    const client = await TEST_CLIENT_REPOSITORY.create(
       new Client({
         secret: await encryptClientSecret("secret"),
         approved: true,
@@ -33,7 +41,7 @@ describe("/device", () => {
       }),
     );
 
-    account = await accountInMemory.create(
+    account = await TEST_ACCOUNT_REPOSITORY.create(
       new Account({
         email: "test@lindorm.io",
         password: { signature: await encryptAccountPassword("password"), updated: new Date() },
@@ -43,7 +51,7 @@ describe("/device", () => {
 
     ({ publicKey } = await generateRSAKeys(""));
 
-    device = await deviceInMemory.create(
+    device = await TEST_DEVICE_REPOSITORY.create(
       new Device({
         accountId: account.id,
         pin: {
@@ -54,7 +62,7 @@ describe("/device", () => {
       }),
     );
 
-    const keyPair = await keyPairInMemory.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
+    const keyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
 
     const tokenIssuer = new TokenIssuer({
       issuer: JWT_ISSUER,
@@ -89,7 +97,7 @@ describe("/device", () => {
       device_id: expect.any(String),
     });
 
-    await expect(deviceInMemory.find({ id: response.body.device_id })).resolves.toStrictEqual(
+    await expect(TEST_DEVICE_REPOSITORY.find({ id: response.body.device_id })).resolves.toStrictEqual(
       expect.objectContaining({
         id: response.body.device_id,
       }),
@@ -97,7 +105,7 @@ describe("/device", () => {
   });
 
   test("DELETE /:id", async () => {
-    const tmp = await deviceInMemory.create(
+    const tmp = await TEST_DEVICE_REPOSITORY.create(
       new Device({
         accountId: account.id,
         pin: {
@@ -114,7 +122,9 @@ describe("/device", () => {
       .set("X-Correlation-ID", uuid())
       .expect(202);
 
-    await expect(deviceInMemory.find({ id: tmp.id })).rejects.toStrictEqual(expect.any(RepositoryEntityNotFoundError));
+    await expect(TEST_DEVICE_REPOSITORY.find({ id: tmp.id })).rejects.toStrictEqual(
+      expect.any(RepositoryEntityNotFoundError),
+    );
   });
 
   test("PATCH /:id/name", async () => {
@@ -127,7 +137,7 @@ describe("/device", () => {
       })
       .expect(204);
 
-    await expect(deviceInMemory.find({ id: device.id })).resolves.toStrictEqual(
+    await expect(TEST_DEVICE_REPOSITORY.find({ id: device.id })).resolves.toStrictEqual(
       expect.objectContaining({
         name: "new-name",
       }),
@@ -147,7 +157,7 @@ describe("/device", () => {
       })
       .expect(204);
 
-    const result = await deviceInMemory.find({ id: device.id });
+    const result = await TEST_DEVICE_REPOSITORY.find({ id: device.id });
 
     expect(result.pin.signature).not.toBe(oldSignature);
   });
@@ -165,7 +175,7 @@ describe("/device", () => {
       })
       .expect(204);
 
-    const result = await deviceInMemory.find({ id: device.id });
+    const result = await TEST_DEVICE_REPOSITORY.find({ id: device.id });
 
     expect(result.secret).not.toBe(oldSignature);
   });

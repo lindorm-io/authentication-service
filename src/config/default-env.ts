@@ -26,6 +26,8 @@ export const configuration: IConfiguration = {
   MAILGUN_DOMAIN: process.env.MAILGUN_DOMAIN,
   MAILGUN_FROM: process.env.MAILGUN_FROM,
 
+  REDIS_PORT: isString(process.env.REDIS_PORT) ? parseInt(process.env.REDIS_PORT, 10) : null,
+
   MONGO_INITDB_ROOT_USERNAME: process.env.MONGO_INITDB_ROOT_USERNAME,
   MONGO_INITDB_ROOT_PASSWORD: process.env.MONGO_INITDB_ROOT_PASSWORD,
   MONGO_HOST: process.env.MONGO_HOST,

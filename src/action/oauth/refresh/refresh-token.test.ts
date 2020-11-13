@@ -2,7 +2,7 @@ import { MOCK_ACCOUNT_OPTIONS, MOCK_SESSION_OPTIONS, getMockRepository } from ".
 import { GrantType, Permission, ResponseType } from "../../../enum";
 import { Account, IAccountOptions, Session } from "../../../entity";
 import { performRefreshToken } from "./refresh-token";
-import { InvalidPermissionError, InvalidRefreshTokenError } from "../../../error";
+import { InvalidPermissionError, InvalidRefreshTokenError, InvalidSubjectError } from "../../../error";
 
 jest.mock("../../../support", () => ({
   createTokens: jest.fn(() => () => "tokens"),
@@ -27,6 +27,7 @@ describe("performRefreshToken", () => {
       performRefreshToken(getMockContext())({
         grantType: GrantType.REFRESH_TOKEN,
         responseType: ResponseType.REFRESH,
+        subject: "email@lindorm.io",
       }),
     ).resolves.toBe("tokens");
   });
@@ -53,6 +54,7 @@ describe("performRefreshToken", () => {
       performRefreshToken(ctx)({
         grantType: GrantType.REFRESH_TOKEN,
         responseType: ResponseType.REFRESH,
+        subject: "email@lindorm.io",
       }),
     ).rejects.toStrictEqual(expect.any(InvalidPermissionError));
   });
@@ -74,7 +76,18 @@ describe("performRefreshToken", () => {
       performRefreshToken(ctx)({
         grantType: GrantType.REFRESH_TOKEN,
         responseType: ResponseType.REFRESH,
+        subject: "email@lindorm.io",
       }),
     ).rejects.toStrictEqual(expect.any(InvalidRefreshTokenError));
+  });
+
+  test("should throw error when email is mismatched", async () => {
+    await expect(
+      performRefreshToken(getMockContext())({
+        grantType: GrantType.REFRESH_TOKEN,
+        responseType: ResponseType.REFRESH,
+        subject: "wrong@lindorm.io",
+      }),
+    ).rejects.toStrictEqual(expect.any(InvalidSubjectError));
   });
 });

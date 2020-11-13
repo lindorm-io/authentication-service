@@ -22,6 +22,8 @@ export const configuration: IConfiguration = {
   MAILGUN_DOMAIN: "dev.lindorm.io",
   MAILGUN_FROM: "noreply@lindorm.io",
 
+  REDIS_PORT: 6379,
+
   MONGO_INITDB_ROOT_USERNAME: "root",
   MONGO_INITDB_ROOT_PASSWORD: "password",
   MONGO_HOST: "localhost",
