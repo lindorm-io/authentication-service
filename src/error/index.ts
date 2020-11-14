@@ -16,3 +16,4 @@ export * from "./InvalidRefreshTokenError";
 export * from "./InvalidSubjectError";
 export * from "./LockedAccountError";
 export * from "./RejectedClientError";
+export * from "./RequestLimitBackOffError";

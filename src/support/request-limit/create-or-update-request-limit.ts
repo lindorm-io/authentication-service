@@ -11,11 +11,11 @@ export interface ICreateOrUpdateOptions {
 export const createOrUpdateRequestLimit = (ctx: IAuthContext) => async (
   options: ICreateOrUpdateOptions,
 ): Promise<void> => {
-  const { cache, requestLimit } = ctx;
+  const { cache } = ctx;
   const { grantType, subject } = options;
 
-  if (!requestLimit) {
-    await cache.requestLimit.create(
+  if (!ctx.requestLimit) {
+    ctx.requestLimit = await cache.requestLimit.create(
       new RequestLimit({
         subject,
         grantType,
@@ -25,6 +25,6 @@ export const createOrUpdateRequestLimit = (ctx: IAuthContext) => async (
     return;
   }
 
-  ctx.requestLimit.failedTries = requestLimit.failedTries + 1;
-  ctx.requestLimit.backOffUntil = getBackOffDate(requestLimit);
+  ctx.requestLimit.failedTries += 1;
+  ctx.requestLimit.backOffUntil = getBackOffDate(ctx.requestLimit);
 };

@@ -113,10 +113,15 @@ describe("/oauth DEVICE_PIN", () => {
         state: state,
         subject: TEST_ACCOUNT.email,
       })
-      .expect(500);
+      .expect(403);
 
     expect(result.body).toStrictEqual({
       error: {
+        code: null,
+        data: {
+          back_off_until: null,
+          failed_tries: 1,
+        },
         details: [
           {
             context: {
@@ -128,7 +133,9 @@ describe("/oauth DEVICE_PIN", () => {
             type: "any.required",
           },
         ],
-        message: '"clientId" is required',
+        message: "This request failed and has been rate-limited",
+        name: "RequestLimitFailedTryError",
+        title: null,
       },
     });
   });
@@ -152,12 +159,18 @@ describe("/oauth DEVICE_PIN", () => {
         state: state,
         subject: TEST_ACCOUNT.email,
       })
-      .expect(400);
+      .expect(403);
 
     expect(result.body).toStrictEqual({
       error: {
-        details: null,
-        message: "Device not found",
+        code: null,
+        data: {
+          back_off_until: null,
+          failed_tries: 2,
+        },
+        details: "Device not found",
+        message: "This request failed and has been rate-limited",
+        name: "RequestLimitFailedTryError",
         title: null,
       },
     });

@@ -5,6 +5,7 @@ import { RequestLimitCache } from "../infrastructure";
 import { TPromise } from "@lindorm-io/core";
 import { createOrUpdateRequestLimit, validateRequestLimitBackOff } from "../support";
 import { CacheEntityNotFoundError } from "@lindorm-io/redis/dist/error";
+import { RequestLimitFailedTryError } from "../error/RequestLimitFailedTryError";
 
 const schema = Joi.object({
   grantType: JOI_GRANT_TYPE,
@@ -45,6 +46,6 @@ export const requestLimitMiddleware = async (ctx: IAuthContext, next: TPromise<v
   } catch (err) {
     await createOrUpdateRequestLimit(ctx)({ grantType, subject });
 
-    throw err;
+    throw new RequestLimitFailedTryError(ctx.requestLimit, err);
   }
 };
