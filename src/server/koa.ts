@@ -1,7 +1,9 @@
 import { KoaApp } from "@lindorm-io/koa";
-import { MONGO_MW_OPTIONS, REDIS_MW_OPTIONS, SERVER_PORT, TOKEN_ISSUER_MW_OPTIONS } from "../config";
+import { MONGO_CONNECTION_OPTIONS, REDIS_CONNECTION_OPTIONS, SERVER_PORT, TOKEN_ISSUER_MW_OPTIONS } from "../config";
+import { NODE_ENVIRONMENT } from "../config";
+import { NodeEnvironment } from "@lindorm-io/core";
 import { appRoot, account, client, device, keyPair, mfa, oauth, session, userInfo, wellKnown } from "../route";
-import { sessionCleanupWorker } from "../worker/session-cleanup";
+import { clientCacheWorker, keyPairCacheWorker, sessionCleanupWorker } from "../worker";
 import { tokenIssuerMiddleware } from "@lindorm-io/koa-jwt";
 import { winston } from "../logger";
 import {
@@ -17,9 +19,9 @@ export const koa = new KoaApp({
   port: SERVER_PORT,
 });
 
-koa.addMiddleware(getMongoMiddleware(MONGO_MW_OPTIONS));
+koa.addMiddleware(getMongoMiddleware(MONGO_CONNECTION_OPTIONS));
 koa.addMiddleware(repositoryMiddleware);
-koa.addMiddleware(getRedisMiddleware(REDIS_MW_OPTIONS));
+koa.addMiddleware(getRedisMiddleware(REDIS_CONNECTION_OPTIONS));
 koa.addMiddleware(cacheMiddleware);
 koa.addMiddleware(keystoreMiddleware);
 koa.addMiddleware(tokenIssuerMiddleware(TOKEN_ISSUER_MW_OPTIONS));
@@ -35,4 +37,8 @@ koa.addRoute("/session", session);
 koa.addRoute("/userinfo", userInfo);
 koa.addRoute("/.well-known", wellKnown);
 
-koa.addWorker(sessionCleanupWorker);
+if (NODE_ENVIRONMENT !== NodeEnvironment.TEST) {
+  koa.addWorker(clientCacheWorker);
+  koa.addWorker(keyPairCacheWorker);
+  koa.addWorker(sessionCleanupWorker);
+}

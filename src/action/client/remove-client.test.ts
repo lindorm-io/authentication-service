@@ -1,6 +1,5 @@
 import { Account } from "../../entity";
-import { MOCK_LOGGER, MOCK_UUID } from "../../test/mocks";
-import { getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
+import { getMockCache, MOCK_LOGGER, MOCK_UUID, getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { removeClient } from "./remove-client";
 
 jest.mock("uuid", () => ({
@@ -16,6 +15,7 @@ describe("removeClient", () => {
   beforeEach(() => {
     getMockContext = () => ({
       account: new Account(MOCK_ACCOUNT_OPTIONS),
+      cache: getMockCache(),
       logger: MOCK_LOGGER,
       repository: getMockRepository(),
     });
@@ -27,5 +27,6 @@ describe("removeClient", () => {
     await expect(removeClient(ctx)({ clientId: MOCK_UUID })).resolves.toBe(undefined);
 
     expect(ctx.repository.client.remove).toHaveBeenCalled();
+    expect(ctx.cache.client.remove).toHaveBeenCalled();
   });
 });

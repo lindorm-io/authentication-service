@@ -3,58 +3,39 @@ import request from "supertest";
 import { Account } from "../../entity";
 import { Audience, Permission, Scope } from "../../enum";
 import { CryptoAES } from "@lindorm-io/crypto";
-import { JWT_ACCESS_TOKEN_EXPIRY, JWT_ISSUER, OTP_HANDLER_OPTIONS } from "../../config";
-import { KeyPair, Keystore } from "@lindorm-io/key-pair";
-import { MOCK_KEY_PAIR_OPTIONS } from "../mocks";
+import { JWT_ACCESS_TOKEN_EXPIRY, OTP_HANDLER_OPTIONS } from "../../config";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
-import { TokenIssuer } from "@lindorm-io/jwt";
 import { authenticator } from "otplib";
 import { baseParse } from "@lindorm-io/core";
-import { encryptAccountPassword, generateAccountOTP } from "../../support";
+import { generateAccountOTP } from "../../support/account";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
-import { winston } from "../../logger";
 import {
+  TEST_ACCOUNT,
   TEST_ACCOUNT_REPOSITORY,
-  TEST_CLIENT_ID,
-  TEST_KEY_PAIR_REPOSITORY,
+  TEST_CLIENT,
+  TEST_TOKEN_ISSUER,
   loadMongoConnection,
-} from "../connection/mongo-connection";
+  loadRedisConnection,
+} from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/account", () => {
-  let account: Account;
   let accessToken: string;
 
   beforeAll(async () => {
     await loadMongoConnection();
-
+    await loadRedisConnection();
     koa.load();
 
-    account = await TEST_ACCOUNT_REPOSITORY.create(
-      new Account({
-        email: "test@lindorm.io",
-        password: { signature: await encryptAccountPassword("password"), updated: new Date() },
-        permission: Permission.ADMIN,
-      }),
-    );
-
-    const keyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
-
-    const tokenIssuer = new TokenIssuer({
-      issuer: JWT_ISSUER,
-      logger: winston,
-      keystore: new Keystore({ keys: [keyPair] }),
-    });
-
-    ({ token: accessToken } = tokenIssuer.sign({
+    ({ token: accessToken } = TEST_TOKEN_ISSUER.sign({
       audience: Audience.ACCESS,
-      clientId: TEST_CLIENT_ID,
+      clientId: TEST_CLIENT.id,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
-      permission: account.permission,
+      permission: TEST_ACCOUNT.permission,
       scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
-      subject: account.id,
+      subject: TEST_ACCOUNT.id,
     }));
   });
 
@@ -82,7 +63,7 @@ describe("/account", () => {
 
   test("GET /:id", async () => {
     const response = await request(koa.callback())
-      .get(`/account/${account.id}`)
+      .get(`/account/${TEST_ACCOUNT.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Correlation-ID", uuid())
       .expect(200);
@@ -90,9 +71,9 @@ describe("/account", () => {
     expect(response.body).toStrictEqual({
       created: "2020-01-01T07:00:00.000Z",
       devices: [],
-      email: "test@lindorm.io",
+      email: TEST_ACCOUNT.email,
       has_otp: false,
-      has_password: true,
+      has_password: false,
       permission: Permission.ADMIN,
       sessions: [],
       updated: "2020-01-01T07:00:00.000Z",
@@ -127,6 +108,7 @@ describe("/account", () => {
     const aes = new CryptoAES({
       secret: OTP_HANDLER_OPTIONS.secret,
     });
+
     const bindingCode = authenticator.generate(aes.decrypt(baseParse(tmp.otp.signature)));
 
     await request(koa.callback())
@@ -178,7 +160,7 @@ describe("/account", () => {
       })
       .expect(204);
 
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: account.id })).resolves.toStrictEqual(
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: TEST_ACCOUNT.id })).resolves.toStrictEqual(
       expect.objectContaining({
         email: "new@lindorm.io",
       }),
@@ -196,7 +178,7 @@ describe("/account", () => {
       uri: expect.any(String),
     });
 
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: account.id })).resolves.toStrictEqual(
+    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: TEST_ACCOUNT.id })).resolves.toStrictEqual(
       expect.objectContaining({
         otp: {
           signature: expect.any(String),
@@ -207,7 +189,7 @@ describe("/account", () => {
   });
 
   test("PUT /password", async () => {
-    const oldSignature = account.password.signature;
+    const oldSignature = TEST_ACCOUNT.account.password.signature;
 
     await request(koa.callback())
       .put("/account/password")
@@ -219,7 +201,7 @@ describe("/account", () => {
       })
       .expect(204);
 
-    const result = await TEST_ACCOUNT_REPOSITORY.find({ id: account.id });
+    const result = await TEST_ACCOUNT_REPOSITORY.find({ id: TEST_ACCOUNT.id });
 
     expect(result.password.signature).not.toBe(oldSignature);
   });

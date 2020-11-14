@@ -1,6 +1,6 @@
 import { IAuthContext } from "../typing";
 import { TPromise } from "@lindorm-io/core";
-import { RequestLimitCache } from "../cache";
+import { ClientCache, KeyPairCache, RequestLimitCache } from "../cache";
 
 export const cacheMiddleware = async (ctx: IAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();
@@ -9,6 +9,8 @@ export const cacheMiddleware = async (ctx: IAuthContext, next: TPromise<void>): 
   const client = await redis.getClient();
 
   ctx.cache = {
+    client: new ClientCache({ client, logger }),
+    keyPair: new KeyPairCache({ client, logger }),
     requestLimit: new RequestLimitCache({ client, logger }),
   };
 

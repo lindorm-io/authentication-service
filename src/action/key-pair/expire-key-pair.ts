@@ -18,7 +18,7 @@ const schema = Joi.object({
 export const expireKeyPair = (ctx: IAuthContext) => async (options: IExpireKeyPairOptions): Promise<void> => {
   await schema.validateAsync(options);
 
-  const { logger, repository } = ctx;
+  const { cache, logger, repository } = ctx;
   const { expires, keyPairId } = options;
 
   await assertAccountAdmin(ctx)();
@@ -31,7 +31,8 @@ export const expireKeyPair = (ctx: IAuthContext) => async (options: IExpireKeyPa
 
   keyPair.expires = add(new Date(), stringToDurationObject(expires));
 
-  await repository.keyPair.update(keyPair);
+  const updated = await repository.keyPair.update(keyPair);
+  await cache.keyPair.update(updated);
 
   logger.debug("key pair updated", {
     id: keyPair.id,

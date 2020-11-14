@@ -1,6 +1,6 @@
 import MockDate from "mockdate";
 import { InvalidExpiryString } from "../../error";
-import { MOCK_UUID, MOCK_LOGGER, getMockRepository } from "../../test/mocks";
+import { MOCK_UUID, MOCK_LOGGER, getMockRepository, getMockCache } from "../../test/mocks";
 import { expireKeyPair } from "./expire-key-pair";
 
 jest.mock("uuid", () => ({
@@ -19,6 +19,7 @@ describe("createKeyPair", () => {
 
   beforeEach(() => {
     getMockContext = () => ({
+      cache: getMockCache(),
       logger: MOCK_LOGGER,
       repository: getMockRepository(),
     });
@@ -55,6 +56,7 @@ describe("createKeyPair", () => {
       _updated: date,
       _version: 0,
     });
+    expect(ctx.cache.keyPair.update).toHaveBeenCalled();
   });
 
   test("should throw error if expires is wrong", async () => {

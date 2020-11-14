@@ -1,7 +1,6 @@
 import MockDate from "mockdate";
 import { Account } from "../../entity";
-import { MOCK_LOGGER } from "../../test/mocks";
-import { getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
+import { getMockCache, MOCK_LOGGER, getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { createClient } from "./create-client";
 import { getRandomValue } from "@lindorm-io/core";
 
@@ -22,6 +21,7 @@ describe("createClient", () => {
   beforeEach(() => {
     getMockContext = () => ({
       account: new Account(MOCK_ACCOUNT_OPTIONS),
+      cache: getMockCache(),
       logger: MOCK_LOGGER,
       repository: getMockRepository(),
     });
@@ -74,5 +74,6 @@ describe("createClient", () => {
       _updated: date,
       _version: 0,
     });
+    expect(ctx.cache.client.create).toHaveBeenCalled();
   });
 });

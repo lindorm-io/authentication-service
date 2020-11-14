@@ -44,7 +44,7 @@
     "@lindorm-io/koa-mongo": "^0.2.3",
     "@lindorm-io/koa-redis": "0.0.2",
     "@lindorm-io/mongo": "^0.2.3",
-    "@lindorm-io/redis": "^0.0.7",
+    "@lindorm-io/redis": "^0.0.9",
     "@lindorm-io/winston": "^0.1.0",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",

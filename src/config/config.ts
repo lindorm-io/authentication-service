@@ -42,12 +42,7 @@ export const OTP_HANDLER_OPTIONS = {
   secret: config.CRYPTO_AES_SECRET,
 };
 
-export const BEARER_TOKEN_MW_OPTIONS = {
-  issuer: config.JWT_ISSUER,
-  audience: Audience.ACCESS,
-};
-
-export const MONGO_MW_OPTIONS = {
+export const MONGO_CONNECTION_OPTIONS = {
   type: MongoConnectionType.STORAGE,
   auth: {
     user: config.MONGO_INITDB_ROOT_USERNAME,
@@ -60,9 +55,14 @@ export const MONGO_MW_OPTIONS = {
   databaseName: config.MONGO_DB_NAME,
 };
 
-export const REDIS_MW_OPTIONS = {
+export const REDIS_CONNECTION_OPTIONS = {
   type: RedisConnectionType.CACHE,
   port: config.REDIS_PORT,
+};
+
+export const BEARER_TOKEN_MW_OPTIONS = {
+  issuer: config.JWT_ISSUER,
+  audience: Audience.ACCESS,
 };
 
 export const TOKEN_ISSUER_MW_OPTIONS = {

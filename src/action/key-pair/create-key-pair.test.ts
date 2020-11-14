@@ -1,8 +1,7 @@
 import MockDate from "mockdate";
 import { KeyPair, KeyType } from "@lindorm-io/key-pair";
-import { MOCK_KEY_PAIR_OPTIONS, MOCK_LOGGER } from "../../test/mocks";
+import { MOCK_KEY_PAIR_OPTIONS, MOCK_LOGGER, getMockCache, getMockRepository } from "../../test/mocks";
 import { createKeyPair } from "./create-key-pair";
-import { getMockRepository } from "../../test/mocks";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -20,6 +19,7 @@ describe("createKeyPair", () => {
 
   beforeEach(() => {
     getMockContext = () => ({
+      cache: getMockCache(),
       logger: MOCK_LOGGER,
       repository: getMockRepository(),
     });
@@ -47,5 +47,6 @@ describe("createKeyPair", () => {
       _updated: date,
       _version: 0,
     });
+    expect(ctx.cache.keyPair.create).toHaveBeenCalled();
   });
 });

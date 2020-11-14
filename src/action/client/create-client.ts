@@ -26,7 +26,7 @@ export const createClient = (ctx: IAuthContext) => async (
 ): Promise<ICreateClientData> => {
   await schema.validateAsync(options);
 
-  const { account, logger, repository } = ctx;
+  const { account, cache, logger, repository } = ctx;
   const { description, emailAuthorizationUri, name, secret } = options;
 
   await assertAccountAdmin(ctx)();
@@ -43,6 +43,7 @@ export const createClient = (ctx: IAuthContext) => async (
   }
 
   await repository.client.create(client);
+  await cache.client.create(client);
 
   logger.debug("client created", {
     accountId: account.id,

@@ -1,48 +1,26 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Account, Device } from "../../entity";
-import { GrantType, ResponseType } from "../../enum";
-import { MOCK_CODE_VERIFIER } from "../mocks";
-import { encryptDevicePIN } from "../../support";
-import { generateRSAKeys, KeyPairHandler } from "@lindorm-io/key-pair";
+import { GrantType, ResponseType, Scope } from "../../enum";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT_REPOSITORY,
-  TEST_CLIENT_ID,
-  TEST_CLIENT_SECRET,
-  TEST_DEVICE_REPOSITORY,
+  TEST_ACCOUNT,
+  TEST_CLIENT,
+  TEST_DEVICE,
+  generateTestOauthData,
   loadMongoConnection,
-} from "../connection/mongo-connection";
+  loadRedisConnection,
+} from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth DEVICE_PIN", () => {
-  let handler: KeyPairHandler;
-  let device: Device;
+  const { codeMethod, codeVerifier, codeChallenge, state } = generateTestOauthData();
 
   beforeAll(async () => {
     await loadMongoConnection();
-
+    await loadRedisConnection();
     koa.load();
-
-    const { algorithm, privateKey, publicKey } = await generateRSAKeys("");
-
-    handler = new KeyPairHandler({
-      algorithm,
-      privateKey,
-      publicKey,
-    });
-
-    const account = await TEST_ACCOUNT_REPOSITORY.create(new Account({ email: "test@lindorm.io" }));
-
-    device = await TEST_DEVICE_REPOSITORY.create(
-      new Device({
-        accountId: account.id,
-        pin: { signature: await encryptDevicePIN("123456"), updated: new Date() },
-        publicKey,
-      }),
-    );
   });
 
   test("should resolve", async () => {
@@ -50,19 +28,19 @@ describe("/oauth DEVICE_PIN", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: TEST_CLIENT_ID,
-        client_secret: TEST_CLIENT_SECRET,
+        client_id: TEST_CLIENT.id,
+        client_secret: TEST_CLIENT.secret,
 
-        device_id: device.id,
+        device_id: TEST_DEVICE.id,
 
-        code_challenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        code_method: "sha256",
+        code_challenge: codeChallenge,
+        code_method: codeMethod,
         grant_type: GrantType.DEVICE_PIN,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: "default",
-        state: "MsohJgIeKSNgpvpp",
-        subject: "test@lindorm.io",
+        scope: Scope.DEFAULT,
+        state: state,
+        subject: TEST_ACCOUNT.email,
       })
       .expect(200);
 
@@ -71,7 +49,7 @@ describe("/oauth DEVICE_PIN", () => {
       expires: 1577864700,
       expires_in: 2700,
       redirect_uri: "https://redirect.uri/",
-      state: "MsohJgIeKSNgpvpp",
+      state: state,
       token: expect.any(String),
     });
 
@@ -79,24 +57,24 @@ describe("/oauth DEVICE_PIN", () => {
       body: { device_challenge: deviceChallenge, token },
     } = initResponse;
 
-    const deviceVerifier = handler.sign(deviceChallenge);
+    const deviceVerifier = TEST_DEVICE.handler.sign(deviceChallenge);
 
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: TEST_CLIENT_ID,
-        client_secret: TEST_CLIENT_SECRET,
+        client_id: TEST_CLIENT.id,
+        client_secret: TEST_CLIENT.secret,
 
         authorization_token: token,
 
-        device_id: device.id,
+        device_id: TEST_DEVICE.id,
 
-        code_verifier: MOCK_CODE_VERIFIER,
+        code_verifier: codeVerifier,
         device_verifier: deviceVerifier,
         grant_type: GrantType.DEVICE_PIN,
-        pin: "123456",
-        subject: "test@lindorm.io",
+        pin: TEST_DEVICE.pin,
+        subject: TEST_ACCOUNT.email,
       })
       .expect(200);
 
@@ -121,19 +99,19 @@ describe("/oauth DEVICE_PIN", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        // client_id: TEST_CLIENT_ID,
-        // client_secret: TEST_CLIENT_SECRET,
+        // client_id: TEST_CLIENT.id,
+        // client_secret: TEST_CLIENT.secret,
 
-        device_id: device.id,
+        device_id: TEST_DEVICE.id,
 
-        code_challenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        code_method: "sha256",
+        code_challenge: codeChallenge,
+        code_method: codeMethod,
         grant_type: GrantType.DEVICE_PIN,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: "default",
-        state: "MsohJgIeKSNgpvpp",
-        subject: "test@lindorm.io",
+        scope: Scope.DEFAULT,
+        state: state,
+        subject: TEST_ACCOUNT.email,
       })
       .expect(500);
 
@@ -160,19 +138,19 @@ describe("/oauth DEVICE_PIN", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: TEST_CLIENT_ID,
-        client_secret: TEST_CLIENT_SECRET,
+        client_id: TEST_CLIENT.id,
+        client_secret: TEST_CLIENT.secret,
 
-        // device_id: device.id,
+        // device_id: TEST_DEVICE.id,
 
-        code_challenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        code_method: "sha256",
+        code_challenge: codeChallenge,
+        code_method: codeMethod,
         grant_type: GrantType.DEVICE_PIN,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: "default",
-        state: "MsohJgIeKSNgpvpp",
-        subject: "test@lindorm.io",
+        scope: Scope.DEFAULT,
+        state: state,
+        subject: TEST_ACCOUNT.email,
       })
       .expect(400);
 

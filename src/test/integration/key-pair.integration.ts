@@ -1,56 +1,36 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Account } from "../../entity";
-import { Audience, Permission, Scope } from "../../enum";
-import { JWT_ACCESS_TOKEN_EXPIRY, JWT_ISSUER } from "../../config";
-import { KeyPair, Keystore, KeyType } from "@lindorm-io/key-pair";
-import { MOCK_EC_PRIVATE_KEY, MOCK_EC_PUBLIC_KEY, MOCK_KEY_PAIR_OPTIONS } from "../mocks";
-import { TokenIssuer } from "@lindorm-io/jwt";
-import { encryptAccountPassword } from "../../support";
+import { Audience, Scope } from "../../enum";
+import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
+import { generateECCKeys, KeyPair, KeyType } from "@lindorm-io/key-pair";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
-import { winston } from "../../logger";
 import {
-  TEST_ACCOUNT_REPOSITORY,
-  TEST_CLIENT_ID,
+  TEST_ACCOUNT,
+  TEST_CLIENT,
   TEST_KEY_PAIR_REPOSITORY,
+  TEST_TOKEN_ISSUER,
   loadMongoConnection,
-} from "../connection/mongo-connection";
+  loadRedisConnection,
+} from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/key-pair", () => {
-  let account: Account;
   let accessToken: string;
 
   beforeAll(async () => {
     await loadMongoConnection();
-
+    await loadRedisConnection();
     koa.load();
 
-    account = await TEST_ACCOUNT_REPOSITORY.create(
-      new Account({
-        email: "test@lindorm.io",
-        password: { signature: await encryptAccountPassword("password"), updated: new Date() },
-        permission: Permission.ADMIN,
-      }),
-    );
-
-    const keyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
-
-    const tokenIssuer = new TokenIssuer({
-      issuer: JWT_ISSUER,
-      logger: winston,
-      keystore: new Keystore({ keys: [keyPair] }),
-    });
-
-    ({ token: accessToken } = tokenIssuer.sign({
+    ({ token: accessToken } = TEST_TOKEN_ISSUER.sign({
       audience: Audience.ACCESS,
-      clientId: TEST_CLIENT_ID,
+      clientId: TEST_CLIENT.id,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
-      permission: account.permission,
+      permission: TEST_ACCOUNT.permission,
       scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
-      subject: account.id,
+      subject: TEST_ACCOUNT.id,
     }));
   });
 
@@ -78,14 +58,7 @@ describe("/key-pair", () => {
   });
 
   test("PATCH /:id/expire", async () => {
-    const tmp = await TEST_KEY_PAIR_REPOSITORY.create(
-      new KeyPair({
-        algorithm: "ES512",
-        privateKey: MOCK_EC_PRIVATE_KEY,
-        publicKey: MOCK_EC_PUBLIC_KEY,
-        type: "ec",
-      }),
-    );
+    const tmp = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(await generateECCKeys()));
 
     await request(koa.callback())
       .patch(`/key-pair/${tmp.id}/expire`)

@@ -1,45 +1,25 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Account } from "../../entity";
-import { CryptoAES } from "@lindorm-io/crypto";
-import { GrantType, MultiFactorChallengeType, ResponseType } from "../../enum";
-import { MOCK_CODE_VERIFIER } from "../mocks";
-import { OTP_HANDLER_OPTIONS } from "../../config";
-import { authenticator } from "otplib";
-import { baseParse } from "@lindorm-io/core";
-import { encryptAccountPassword, generateAccountOTP } from "../../support";
+import { GrantType, MultiFactorChallengeType, ResponseType, Scope } from "../../enum";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT_REPOSITORY,
-  TEST_CLIENT_ID,
-  TEST_CLIENT_SECRET,
+  TEST_ACCOUNT_OTP,
+  TEST_CLIENT,
+  generateTestOauthData,
   loadMongoConnection,
-} from "../connection/mongo-connection";
+  loadRedisConnection,
+} from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth PASSWORD_OTP", () => {
-  let otpSecret: string;
+  const { codeMethod, codeVerifier, codeChallenge, state } = generateTestOauthData();
 
   beforeAll(async () => {
     await loadMongoConnection();
-
+    await loadRedisConnection();
     koa.load();
-
-    const account = await TEST_ACCOUNT_REPOSITORY.create(
-      new Account({
-        email: "test@lindorm.io",
-        password: { signature: await encryptAccountPassword("password"), updated: new Date() },
-        otp: generateAccountOTP(),
-      }),
-    );
-
-    const aes = new CryptoAES({
-      secret: OTP_HANDLER_OPTIONS.secret,
-    });
-
-    otpSecret = aes.decrypt(baseParse(account.otp.signature));
   });
 
   test("should resolve", async () => {
@@ -47,17 +27,17 @@ describe("/oauth PASSWORD_OTP", () => {
       .post("/oauth/authorization")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: TEST_CLIENT_ID,
-        client_secret: TEST_CLIENT_SECRET,
+        client_id: TEST_CLIENT.id,
+        client_secret: TEST_CLIENT.secret,
 
-        code_challenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        code_method: "sha256",
+        code_challenge: codeChallenge,
+        code_method: codeMethod,
         grant_type: GrantType.PASSWORD,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: "default",
-        state: "MsohJgIeKSNgpvpp",
-        subject: "test@lindorm.io",
+        scope: Scope.DEFAULT,
+        state: state,
+        subject: TEST_ACCOUNT_OTP.email,
       })
       .expect(200);
 
@@ -65,7 +45,7 @@ describe("/oauth PASSWORD_OTP", () => {
       expires: 1577864700,
       expires_in: 2700,
       redirect_uri: "https://redirect.uri/",
-      state: "MsohJgIeKSNgpvpp",
+      state: state,
       token: expect.any(String),
     });
 
@@ -77,15 +57,15 @@ describe("/oauth PASSWORD_OTP", () => {
       .post("/oauth/token")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: TEST_CLIENT_ID,
-        client_secret: TEST_CLIENT_SECRET,
+        client_id: TEST_CLIENT.id,
+        client_secret: TEST_CLIENT.secret,
 
         authorization_token: authorizationToken,
 
-        code_verifier: MOCK_CODE_VERIFIER,
+        code_verifier: codeVerifier,
         grant_type: GrantType.PASSWORD,
-        password: "password",
-        subject: "test@lindorm.io",
+        password: TEST_ACCOUNT_OTP.password,
+        subject: TEST_ACCOUNT_OTP.email,
       })
       .expect(200);
 
@@ -108,14 +88,14 @@ describe("/oauth PASSWORD_OTP", () => {
       .post("/mfa/challenge")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: TEST_CLIENT_ID,
-        client_secret: TEST_CLIENT_SECRET,
+        client_id: TEST_CLIENT.id,
+        client_secret: TEST_CLIENT.secret,
 
         multi_factor_token: multiFactorToken,
 
         challenge_type: MultiFactorChallengeType.OTP,
         grant_type: GrantType.PASSWORD,
-        subject: "test@lindorm.io",
+        subject: TEST_ACCOUNT_OTP.email,
       })
       .expect(200);
 
@@ -124,20 +104,18 @@ describe("/oauth PASSWORD_OTP", () => {
       challenge_type: "otp",
     });
 
-    const bindingCode = authenticator.generate(otpSecret);
-
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
       .set("X-Correlation-ID", uuid())
       .send({
-        client_id: TEST_CLIENT_ID,
-        client_secret: TEST_CLIENT_SECRET,
+        client_id: TEST_CLIENT.id,
+        client_secret: TEST_CLIENT.secret,
 
         multi_factor_token: multiFactorToken,
 
-        binding_code: bindingCode,
+        binding_code: TEST_ACCOUNT_OTP.bindingCode,
         grant_type: GrantType.MULTI_FACTOR_OTP,
-        subject: "test@lindorm.io",
+        subject: TEST_ACCOUNT_OTP.email,
       })
       .expect(200);
 

@@ -3,7 +3,7 @@ import request from "supertest";
 import { generateECCKeys, generateRSAKeys, KeyPair } from "@lindorm-io/key-pair";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
-import { TEST_KEY_PAIR_REPOSITORY, loadMongoConnection } from "../connection/mongo-connection";
+import { TEST_KEY_PAIR_REPOSITORY, loadMongoConnection, loadRedisConnection } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -13,7 +13,7 @@ describe("/.well-known", () => {
 
   beforeAll(async () => {
     await loadMongoConnection();
-
+    await loadRedisConnection();
     koa.load();
 
     rsaKeyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(await generateRSAKeys()));

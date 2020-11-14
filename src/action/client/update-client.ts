@@ -24,7 +24,7 @@ const schema = Joi.object({
 export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClientOptions): Promise<void> => {
   await schema.validateAsync(options);
 
-  const { account, logger, repository } = ctx;
+  const { account, cache, logger, repository } = ctx;
   const { approved, clientId, description, emailAuthorizationUri, name, secret } = options;
 
   await assertAccountAdmin(ctx)();
@@ -47,7 +47,8 @@ export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClient
     client.secret = encryptClientSecret(secret);
   }
 
-  await repository.client.update(client);
+  const updated = await repository.client.update(client);
+  await cache.client.update(updated);
 
   logger.debug("client updated", {
     accountId: account.id,
