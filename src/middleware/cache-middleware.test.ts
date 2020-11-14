@@ -1,8 +1,8 @@
 import { MOCK_LOGGER } from "../test/mocks";
-import { RequestLimitCache } from "../cache/request-limit";
+import { RequestLimitCache } from "../infrastructure/request-limit";
 import { cacheMiddleware } from "./cache-middleware";
-import { ClientCache } from "../cache/client";
-import { KeyPairCache } from "../cache/key-pair";
+import { ClientCache } from "../infrastructure/client";
+import { KeyPairCache } from "../infrastructure/key-pair";
 
 describe("cacheMiddleware", () => {
   let ctx: any;

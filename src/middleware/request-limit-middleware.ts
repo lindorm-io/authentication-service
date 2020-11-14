@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../constant";
-import { RequestLimitCache } from "../cache";
+import { RequestLimitCache } from "../infrastructure";
 import { TPromise } from "@lindorm-io/core";
 import { createOrUpdateRequestLimit, validateRequestLimitBackOff } from "../support";
 import { CacheEntityNotFoundError } from "@lindorm-io/redis/dist/error";

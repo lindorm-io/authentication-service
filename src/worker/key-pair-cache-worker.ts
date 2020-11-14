@@ -1,6 +1,6 @@
 import { IntervalWorker } from "@lindorm-io/koa";
-import { KeyPairCache } from "../cache";
-import { KeyPairRepository } from "../repository";
+import { KeyPairCache } from "../infrastructure";
+import { KeyPairRepository } from "../infrastructure";
 import { MONGO_CONNECTION_OPTIONS, REDIS_CONNECTION_OPTIONS } from "../config";
 import { MongoConnection } from "@lindorm-io/mongo";
 import { RedisConnection } from "@lindorm-io/redis";

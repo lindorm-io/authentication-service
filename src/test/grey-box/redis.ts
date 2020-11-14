@@ -1,4 +1,4 @@
-import { ClientCache, KeyPairCache, RequestLimitCache } from "../../cache";
+import { ClientCache, KeyPairCache, RequestLimitCache } from "../../infrastructure";
 import { REDIS_CONNECTION_OPTIONS } from "../../config";
 import { RedisConnection, RedisConnectionType } from "@lindorm-io/redis";
 import { inMemoryCache } from "../../middleware";

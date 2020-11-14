@@ -6,7 +6,7 @@ import {
   DeviceRepository,
   KeyPairRepository,
   SessionRepository,
-} from "../repository";
+} from "../infrastructure";
 
 export const repositoryMiddleware = async (ctx: IAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();

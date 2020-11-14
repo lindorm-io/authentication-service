@@ -14,7 +14,7 @@ import {
   DeviceRepository,
   KeyPairRepository,
   SessionRepository,
-} from "../../repository";
+} from "../../infrastructure";
 
 const logger = winston.createChildLogger(["grey-box", "mongo"]);
 

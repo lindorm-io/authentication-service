@@ -4,7 +4,7 @@ import { repositoryMiddleware } from "./repository-middleware";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
-jest.mock("../repository", () => ({
+jest.mock("../infrastructure", () => ({
   AccountRepository: class Repository {
     public mock: boolean;
     constructor() {

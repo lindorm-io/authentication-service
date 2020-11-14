@@ -1,7 +1,7 @@
 import { IntervalWorker } from "@lindorm-io/koa";
 import { MONGO_CONNECTION_OPTIONS } from "../config";
 import { MongoConnection } from "@lindorm-io/mongo";
-import { SessionRepository } from "../repository";
+import { SessionRepository } from "../infrastructure";
 import { stringToMilliseconds } from "@lindorm-io/core";
 import { winston } from "../logger";
 

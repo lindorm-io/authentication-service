@@ -1,6 +1,6 @@
 import { CacheBase, ICache, ICacheOptions } from "@lindorm-io/redis";
 import { IClient, Client } from "../../entity";
-import { schema } from "../../repository/client/schema";
+import { schema } from "./schema";
 
 export interface IClientCache extends ICache<Client> {
   create(entity: Client): Promise<Client>;

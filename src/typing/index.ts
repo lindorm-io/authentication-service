@@ -1,5 +1,5 @@
 import { Account, Client, Device, RequestLimit } from "../entity";
-import { ClientCache, KeyPairCache, RequestLimitCache } from "../cache";
+import { ClientCache, KeyPairCache, RequestLimitCache } from "../infrastructure";
 import { IKoaAppContext } from "@lindorm-io/koa";
 import { ITokenIssuerSignData, ITokenIssuerVerifyData, TokenIssuer } from "@lindorm-io/jwt";
 import { Keystore } from "@lindorm-io/key-pair";
@@ -12,7 +12,7 @@ import {
   DeviceRepository,
   KeyPairRepository,
   SessionRepository,
-} from "../repository";
+} from "../infrastructure";
 
 export interface IAuthCache {
   client: ClientCache;

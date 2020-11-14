@@ -1,6 +1,6 @@
 import { IAuthContext } from "../typing";
 import { TPromise } from "@lindorm-io/core";
-import { ClientCache, KeyPairCache, RequestLimitCache } from "../cache";
+import { ClientCache, KeyPairCache, RequestLimitCache } from "../infrastructure";
 
 export const cacheMiddleware = async (ctx: IAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();

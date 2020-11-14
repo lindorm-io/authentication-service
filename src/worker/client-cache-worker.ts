@@ -1,5 +1,5 @@
-import { ClientCache } from "../cache";
-import { ClientRepository } from "../repository";
+import { ClientCache } from "../infrastructure";
+import { ClientRepository } from "../infrastructure";
 import { IntervalWorker } from "@lindorm-io/koa";
 import { MONGO_CONNECTION_OPTIONS, REDIS_CONNECTION_OPTIONS } from "../config";
 import { MongoConnection } from "@lindorm-io/mongo";

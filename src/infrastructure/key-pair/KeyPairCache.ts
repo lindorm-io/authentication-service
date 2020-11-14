@@ -1,4 +1,4 @@
-import { schema } from "../../repository/key-pair/schema";
+import { schema } from "./schema";
 import { CacheBase, ICache, ICacheOptions } from "@lindorm-io/redis";
 import { IKeyPair, KeyPair } from "@lindorm-io/key-pair";
 
