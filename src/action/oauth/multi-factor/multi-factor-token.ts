@@ -2,7 +2,7 @@ import Joi from "@hapi/joi";
 import { IAuthContext, ICreateTokensData } from "../../../typing";
 import { InvalidClientError, InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { Permission } from "../../../enum";
+import { isLocked } from "@lindorm-io/jwt";
 import { assertAccountOTP, assertSessionIsNotExpired, authenticateSession, createTokens } from "../../../support";
 
 export interface IPerformMultiFactorTokenOptions {
@@ -42,7 +42,7 @@ export const performMultiFactorToken = (ctx: IAuthContext) => async (
 
   const account = await repository.account.find({ email: subject });
 
-  if (account.permission === Permission.LOCKED) {
+  if (isLocked(account.permission)) {
     throw new InvalidPermissionError();
   }
 

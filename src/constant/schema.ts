@@ -1,5 +1,6 @@
 import Joi from "@hapi/joi";
-import { GrantType, MultiFactorChallengeType, Permission } from "../enum";
+import { GrantType, MultiFactorChallengeType } from "../enum";
+import { Permission } from "@lindorm-io/jwt";
 
 export const JOI_CHALLENGE_TYPE = Joi.string()
   .case("lower")

@@ -1,6 +1,7 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Audience, GrantType, ResponseType, Scope } from "../../enum";
+import { Audience, GrantType, ResponseType } from "../../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { Session } from "../../entity";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";

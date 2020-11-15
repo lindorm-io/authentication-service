@@ -1,7 +1,6 @@
 import { IAuthContext } from "../../typing";
-import { Scope } from "../../enum";
-import { TokenIssuer } from "@lindorm-io/jwt";
-import { includes } from "lodash";
+import { Scope, TokenIssuer, isScope } from "@lindorm-io/jwt";
+import { InvalidScopeError } from "../../error";
 
 export interface IGetOpenIdInformation {
   email: string;
@@ -18,14 +17,12 @@ export const getOpenIdInformation = (ctx: IAuthContext) => async (): Promise<IGe
 
   logger.info("requesting openid account information", { id: account.id });
 
-  const scopes = scope.split(" ");
-
-  if (!includes(scopes, Scope.DEFAULT)) {
-    throw new Error("invalid scope");
+  if (!isScope(scope, Scope.DEFAULT)) {
+    throw new InvalidScopeError(scope, Scope.DEFAULT);
   }
 
-  if (!includes(scopes, Scope.OPENID)) {
-    throw new Error("invalid scope");
+  if (!isScope(scope, Scope.OPENID)) {
+    throw new InvalidScopeError(scope, Scope.OPENID);
   }
 
   return {

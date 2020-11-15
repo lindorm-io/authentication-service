@@ -1,4 +1,5 @@
-import { GrantType, ResponseType, Scope } from "../enum";
+import { GrantType, ResponseType } from "../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { HOST, JWT_ISSUER } from "../config";
 import { HttpStatus } from "@lindorm-io/core";
 import { IAuthContext } from "../typing";
@@ -16,7 +17,7 @@ router.get(
       token_endpoint: new URL("/oauth/token", HOST).toString(),
       userinfo_endpoint: new URL("/userinfo", HOST).toString(),
       jwks_uri: new URL("/.well-known/jwks", HOST).toString(),
-      scopes_supported: [Scope.DEFAULT],
+      scopes_supported: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
       response_types_supported: Object.values(ResponseType),
       token_endpoint_auth_methods_supported: ["biometrics", "email", "pin", "pwd", "token"],
       token_endpoint_auth_signing_alg_values_supported: ["ES512", "RS512"],

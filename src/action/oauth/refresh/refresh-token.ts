@@ -2,7 +2,7 @@ import Joi from "@hapi/joi";
 import { IAuthContext, ICreateTokensData } from "../../../typing";
 import { InvalidPermissionError, InvalidRefreshTokenError, InvalidSubjectError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { Permission } from "../../../enum";
+import { isLocked } from "@lindorm-io/jwt";
 import { createTokens, extendSession } from "../../../support";
 
 export interface IPerformRefreshTokenOptions {
@@ -31,7 +31,7 @@ export const performRefreshToken = (ctx: IAuthContext) => async (
   const session = await extendSession(ctx)();
   const account = await repository.account.find({ id: session.accountId });
 
-  if (account.permission === Permission.LOCKED) {
+  if (isLocked(account.permission)) {
     throw new InvalidPermissionError();
   }
 

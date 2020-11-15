@@ -1,5 +1,6 @@
 import { Account, Client, IAccountOptions, ISessionOptions, Session } from "../../../entity";
-import { GrantType, MultiFactorChallengeType, Permission } from "../../../enum";
+import { GrantType, MultiFactorChallengeType } from "../../../enum";
+import { Permission } from "@lindorm-io/jwt";
 import { InvalidClientError, InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { performMultiFactorChallenge } from "./multi-factor-challenge";
 import {

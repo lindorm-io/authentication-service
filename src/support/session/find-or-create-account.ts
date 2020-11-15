@@ -1,7 +1,7 @@
 import { Account } from "../../entity";
 import { IAuthContext } from "../../typing";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
-import { Permission } from "../../enum";
+import { isLocked } from "@lindorm-io/jwt";
 import { InvalidPermissionError } from "../../error";
 
 export const findOrCreateAccount = (ctx: IAuthContext) => async (email: string): Promise<Account> => {
@@ -10,7 +10,7 @@ export const findOrCreateAccount = (ctx: IAuthContext) => async (email: string):
   try {
     const account = await repository.account.find({ email });
 
-    if (account.permission === Permission.LOCKED) {
+    if (isLocked(account.permission)) {
       throw new InvalidPermissionError();
     }
 

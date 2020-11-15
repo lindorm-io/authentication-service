@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
 import { JOI_PERMISSION } from "../../constant";
-import { Permission } from "../../enum";
+import { Permission } from "@lindorm-io/jwt";
 import { assertAccountAdmin } from "../../support";
 
 export interface IUpdateAccountPermission {

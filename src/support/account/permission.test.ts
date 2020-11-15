@@ -2,7 +2,7 @@ import MockDate from "mockdate";
 import { Account } from "../../entity";
 import { AccountNotFoundError, InvalidPermissionError } from "../../error";
 import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
-import { Permission } from "../../enum";
+import { Permission } from "@lindorm-io/jwt";
 import { assertAccountAdmin, assertAccountPermission } from "./permission";
 
 jest.mock("uuid", () => ({

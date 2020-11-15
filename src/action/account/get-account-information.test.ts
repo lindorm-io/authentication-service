@@ -25,8 +25,8 @@ describe("getAccountInformation", () => {
     });
   });
 
-  test("should return openid information", () => {
-    expect(
+  test("should return openid information", async () => {
+    await expect(
       getAccountInformation(getMockContext())({
         accountId: MOCK_UUID,
       }),

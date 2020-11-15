@@ -1,7 +1,8 @@
 import MockDate from "mockdate";
 import request from "supertest";
 import { Account } from "../../entity";
-import { Audience, Permission, Scope } from "../../enum";
+import { Audience } from "../../enum";
+import { Permission, Scope } from "@lindorm-io/jwt";
 import { CryptoAES } from "@lindorm-io/crypto";
 import { JWT_ACCESS_TOKEN_EXPIRY, OTP_HANDLER_OPTIONS } from "../../config";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";

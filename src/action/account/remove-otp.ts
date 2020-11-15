@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
 import { assertAccountOTP, getAccount } from "../../support";
-import { Permission } from "../../enum";
+import { isAdmin } from "@lindorm-io/jwt";
 
 export interface IRemoveAccountOTPOptions {
   accountId: string;
@@ -21,7 +21,7 @@ export const removeAccountOTP = (ctx: IAuthContext) => async (options: IRemoveAc
 
   const account = await getAccount(ctx)(accountId);
 
-  if (requesterAccount.permission !== Permission.ADMIN) {
+  if (!isAdmin(requesterAccount.permission)) {
     assertAccountOTP(account, bindingCode);
   }
 

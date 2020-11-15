@@ -1,5 +1,6 @@
 import MockDate from "mockdate";
-import { GrantType, ResponseType, Scope } from "../../enum";
+import { GrantType, ResponseType } from "../../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { MOCK_CODE_CHALLENGE, MOCK_CODE_METHOD, MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
 import { MOCK_LOGGER } from "../../test/mocks/logger";
 import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";

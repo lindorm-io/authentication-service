@@ -13,6 +13,7 @@ export * from "./InvalidExpiryString";
 export * from "./InvalidGrantTypeError";
 export * from "./InvalidPermissionError";
 export * from "./InvalidRefreshTokenError";
+export * from "./InvalidScopeError";
 export * from "./InvalidSubjectError";
 export * from "./LockedAccountError";
 export * from "./RejectedClientError";

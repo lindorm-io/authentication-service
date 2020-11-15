@@ -3,7 +3,8 @@ import { APIError, HttpStatus } from "@lindorm-io/core";
 import { IAuthContext } from "../../../typing";
 import { InvalidClientError, InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { JOI_CHALLENGE_TYPE, JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { MultiFactorChallengeType, Permission } from "../../../enum";
+import { MultiFactorChallengeType } from "../../../enum";
+import { isLocked } from "@lindorm-io/jwt";
 import { assertSessionIsNotExpired } from "../../../support";
 
 export interface IPerformMultiFactorChallengeOptions {
@@ -51,7 +52,7 @@ export const performMultiFactorChallenge = (ctx: IAuthContext) => async (
 
   const account = await repository.account.find({ email: subject });
 
-  if (account.permission === Permission.LOCKED) {
+  if (isLocked(account.permission)) {
     throw new InvalidPermissionError();
   }
 

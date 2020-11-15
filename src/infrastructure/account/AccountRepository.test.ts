@@ -4,7 +4,7 @@ import { AccountRepository } from "./AccountRepository";
 import { MOCK_LOGGER } from "../../test/mocks/logger";
 import { MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
 import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
-import { Permission } from "../../enum";
+import { Permission } from "@lindorm-io/jwt";
 import { baseHash } from "@lindorm-io/core";
 
 jest.mock("uuid", () => ({

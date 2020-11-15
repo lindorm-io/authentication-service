@@ -1,6 +1,7 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { GrantType, MultiFactorChallengeType, ResponseType, Scope } from "../../enum";
+import { GrantType, MultiFactorChallengeType, ResponseType } from "../../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {

@@ -1,6 +1,6 @@
 import { AccountNotFoundError, InvalidPermissionError } from "../../error";
 import { IAuthContext } from "../../typing";
-import { Permission } from "../../enum";
+import { isAdmin } from "@lindorm-io/jwt";
 
 export const assertAccountPermission = (ctx: IAuthContext) => (accountId: string): Promise<void> => {
   const { account } = ctx;
@@ -9,7 +9,7 @@ export const assertAccountPermission = (ctx: IAuthContext) => (accountId: string
     throw new AccountNotFoundError(accountId);
   }
 
-  if (account.permission === Permission.ADMIN) {
+  if (isAdmin(account.permission)) {
     return;
   }
 
@@ -27,7 +27,7 @@ export const assertAccountAdmin = (ctx: IAuthContext) => (): Promise<void> => {
     throw new AccountNotFoundError();
   }
 
-  if (account.permission === Permission.ADMIN) {
+  if (isAdmin(account.permission)) {
     return;
   }
 

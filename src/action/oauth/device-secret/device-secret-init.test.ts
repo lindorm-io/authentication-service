@@ -1,4 +1,5 @@
-import { GrantType, ResponseType, Scope } from "../../../enum";
+import { GrantType, ResponseType } from "../../../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { performDeviceSecretInit } from "./device-secret-init";
 
 jest.mock("../../../util", () => ({

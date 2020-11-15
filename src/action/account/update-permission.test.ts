@@ -1,8 +1,8 @@
+import MockDate from "mockdate";
 import { Account } from "../../entity";
-import { Permission } from "../../enum";
+import { Permission } from "@lindorm-io/jwt";
 import { getMockRepository, MOCK_ACCOUNT_OPTIONS, MOCK_LOGGER, MOCK_UUID } from "../../test/mocks";
 import { updateAccountPermission } from "./update-permission";
-import MockDate from "mockdate";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),

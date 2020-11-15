@@ -1,5 +1,6 @@
 import { EntityBase, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
-import { AccountEvent, Permission } from "../enum";
+import { AccountEvent } from "../enum";
+import { Permission } from "@lindorm-io/jwt";
 
 export interface IAccountOTP {
   signature: string;

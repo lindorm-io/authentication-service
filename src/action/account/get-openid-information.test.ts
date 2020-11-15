@@ -2,7 +2,7 @@ import MockDate from "mockdate";
 import { Account } from "../../entity";
 import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { MOCK_LOGGER } from "../../test/mocks";
-import { Scope } from "../../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { getOpenIdInformation } from "./get-openid-information";
 
 jest.mock("uuid", () => ({
@@ -22,8 +22,8 @@ describe("getOpenIdInformation", () => {
     });
   });
 
-  test("should return openid information", () => {
-    expect(getOpenIdInformation(getMockContext())()).resolves.toStrictEqual({
+  test("should return openid information", async () => {
+    await expect(getOpenIdInformation(getMockContext())()).resolves.toStrictEqual({
       email: "email@lindorm.io",
       emailVerified: true,
       sub: "be3a62d1-24a0-401c-96dd-3aff95356811",

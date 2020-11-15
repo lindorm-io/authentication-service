@@ -1,8 +1,7 @@
 import { IAuthContext } from "../typing";
-import { InvalidPermissionError, LockedAccountError } from "../error";
-import { Permission, Scope } from "../enum";
+import { InvalidPermissionError, InvalidScopeError, LockedAccountError } from "../error";
+import { Scope, isLocked, isScope } from "@lindorm-io/jwt";
 import { TPromise } from "@lindorm-io/core";
-import { includes } from "lodash";
 
 export const accountMiddleware = async (ctx: IAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();
@@ -12,7 +11,7 @@ export const accountMiddleware = async (ctx: IAuthContext, next: TPromise<void>)
 
   const account = await repository.account.find({ id: subject });
 
-  if (account.permission === Permission.LOCKED) {
+  if (isLocked(account.permission)) {
     throw new LockedAccountError(account.id);
   }
 
@@ -20,10 +19,8 @@ export const accountMiddleware = async (ctx: IAuthContext, next: TPromise<void>)
     throw new InvalidPermissionError();
   }
 
-  const scopes = scope.split(" ");
-
-  if (!includes(scopes, Scope.DEFAULT)) {
-    throw new Error("invalid scope");
+  if (!isScope(scope, Scope.DEFAULT)) {
+    throw new InvalidScopeError(scope, Scope.DEFAULT);
   }
 
   logger.debug("account found", { id: account.id });

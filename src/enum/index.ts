@@ -5,7 +5,5 @@ export * from "./device-event";
 export * from "./grant-type";
 export * from "./mongo-collection";
 export * from "./multi-factor-challenge-type";
-export * from "./permission";
 export * from "./response-type";
 export * from "./session-event";
-export * from "./scope";

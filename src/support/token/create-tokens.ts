@@ -1,12 +1,12 @@
 import { Account, Client, Device, Session } from "../../entity";
 import { IAuthContext, ICreateTokensData } from "../../typing";
-import { ResponseType, Scope } from "../../enum";
+import { ResponseType } from "../../enum";
 import { TObject } from "@lindorm-io/core";
 import { assertResponseType, isResponseType } from "../../util";
 import { getAccessToken } from "./access";
 import { getIdentityToken } from "./identity";
 import { getRefreshToken } from "./refresh";
-import { includes } from "lodash";
+import { isScope, Scope } from "@lindorm-io/jwt";
 
 export interface ICreateTokensOptions {
   account: Account;
@@ -21,8 +21,6 @@ export interface ICreateTokensOptions {
 export const createTokens = (ctx: IAuthContext) => (options: ICreateTokensOptions): ICreateTokensData => {
   const { account, authMethodsReference, client, device, payload, responseType, session } = options;
   const { scope } = session;
-
-  const scopes = scope ? scope?.split(" ") : [];
 
   assertResponseType(responseType);
 
@@ -49,7 +47,7 @@ export const createTokens = (ctx: IAuthContext) => (options: ICreateTokensOption
     });
   }
 
-  if (isResponseType(responseType, ResponseType.IDENTITY) && includes(scopes, Scope.OPENID)) {
+  if (isResponseType(responseType, ResponseType.IDENTITY) && isScope(scope, Scope.OPENID)) {
     result.identityToken = getIdentityToken(ctx)({
       account,
       client,

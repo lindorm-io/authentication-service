@@ -1,6 +1,6 @@
 import { Account } from "../../entity";
 import { MOCK_LOGGER } from "../../test/mocks";
-import { Permission } from "../../enum";
+import { Permission } from "@lindorm-io/jwt";
 import { createAccount } from "./create-account";
 import { getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import MockDate from "mockdate";

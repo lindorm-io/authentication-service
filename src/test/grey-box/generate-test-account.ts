@@ -4,7 +4,7 @@ import { OTP_HANDLER_OPTIONS } from "../../config";
 import { authenticator } from "otplib";
 import { baseParse, getRandomValue } from "@lindorm-io/core";
 import { encryptAccountPassword, generateAccountOTP } from "../../support";
-import { Permission } from "../../enum";
+import { Permission } from "@lindorm-io/jwt";
 
 const aes = new CryptoAES(OTP_HANDLER_OPTIONS);
 

@@ -1,6 +1,7 @@
 import MockDate from "mockdate";
 import { Account, Client, Device, Session } from "../../entity";
-import { ResponseType, Scope } from "../../enum";
+import { ResponseType } from "../../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { createTokens } from "./create-tokens";
 import {
   MOCK_ACCOUNT_OPTIONS,

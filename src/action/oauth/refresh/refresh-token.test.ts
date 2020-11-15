@@ -1,5 +1,6 @@
 import { MOCK_ACCOUNT_OPTIONS, MOCK_SESSION_OPTIONS, getMockRepository } from "../../../test/mocks";
-import { GrantType, Permission, ResponseType } from "../../../enum";
+import { GrantType, ResponseType } from "../../../enum";
+import { Permission } from "@lindorm-io/jwt";
 import { Account, IAccountOptions, Session } from "../../../entity";
 import { performRefreshToken } from "./refresh-token";
 import { InvalidPermissionError, InvalidRefreshTokenError, InvalidSubjectError } from "../../../error";

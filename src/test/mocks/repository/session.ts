@@ -1,5 +1,6 @@
-import { Session, ISessionOptions } from "../../../entity";
 import { MOCK_CODE_CHALLENGE, MOCK_CODE_METHOD } from "../data";
+import { Scope } from "@lindorm-io/jwt";
+import { Session, ISessionOptions } from "../../../entity";
 
 export const MOCK_SESSION_OPTIONS: ISessionOptions = {
   authorization: {
@@ -13,7 +14,7 @@ export const MOCK_SESSION_OPTIONS: ISessionOptions = {
   clientId: "clientId",
   expires: new Date("2999-12-12 12:12:12.000"),
   grantType: "grantType",
-  scope: "scope",
+  scope: Scope.DEFAULT,
 };
 
 export const mockRepositorySession = {
