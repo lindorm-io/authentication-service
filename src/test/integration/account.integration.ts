@@ -35,7 +35,7 @@ describe("/account", () => {
       clientId: TEST_CLIENT.id,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
       permission: TEST_ACCOUNT.permission,
-      scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
+      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
       subject: TEST_ACCOUNT.id,
     }));
   });

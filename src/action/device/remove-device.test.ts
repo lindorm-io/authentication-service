@@ -4,6 +4,7 @@ import { getMockRepository, MOCK_DEVICE_OPTIONS, MOCK_UUID, MOCK_LOGGER, MOCK_AC
 
 jest.mock("../../support", () => ({
   assertAccountPermission: jest.fn(() => () => undefined),
+  assertBearerTokenScope: jest.fn(() => () => undefined),
 }));
 
 describe("removeDevice", () => {

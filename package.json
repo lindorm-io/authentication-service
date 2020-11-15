@@ -25,6 +25,7 @@
     "start:dev": "nodemon",
     "start:docker": "cd docker && docker-compose up",
     "test": "jest --config jest.config.js --forceExit --",
+    "test:all": "npm run test && npm run test:integration",
     "test:clear": "jest --clearCache",
     "test:integration": "jest --config jest.integration.config.js --forceExit --",
     "test:integration:watch": "jest --config jest.integration.config.js --watch --",

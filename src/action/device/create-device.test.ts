@@ -9,6 +9,7 @@ jest.mock("uuid", () => ({
 }));
 jest.mock("../../support", () => ({
   assertAccountPermission: jest.fn(() => () => undefined),
+  assertBearerTokenScope: jest.fn(() => () => undefined),
   encryptDevicePIN: jest.fn(() => "encryptDevicePIN"),
   encryptDeviceSecret: jest.fn(() => "encryptDeviceSecret"),
 }));

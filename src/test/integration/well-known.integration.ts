@@ -1,23 +1,16 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { generateECCKeys, generateRSAKeys, KeyPair } from "@lindorm-io/key-pair";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
-import { TEST_KEY_PAIR_REPOSITORY, loadMongoConnection, loadRedisConnection } from "../grey-box";
+import { loadMongoConnection, loadRedisConnection, TEST_KEY_PAIR_REPOSITORY } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/.well-known", () => {
-  let rsaKeyPair: KeyPair;
-  let ecKeyPair: KeyPair;
-
   beforeAll(async () => {
     await loadMongoConnection();
     await loadRedisConnection();
     koa.load();
-
-    rsaKeyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(await generateRSAKeys()));
-    ecKeyPair = await TEST_KEY_PAIR_REPOSITORY.create(new KeyPair(await generateECCKeys()));
   });
 
   test("GET /openid-configuration", async () => {
@@ -32,6 +25,8 @@ describe("/.well-known", () => {
   test("GET /jwks", async () => {
     const response = await request(koa.callback()).get(`/.well-known/jwks`).set("X-Correlation-ID", uuid()).expect(200);
 
+    const [keyPair] = await TEST_KEY_PAIR_REPOSITORY.findMany({});
+
     expect(response.body).toStrictEqual({
       keys: [
         {
@@ -39,29 +34,9 @@ describe("/.well-known", () => {
           c: 1577862000,
           e: "AQAB",
           exp: null,
-          kid: expect.any(String),
+          kid: keyPair.id,
           kty: "ec",
-          n: expect.any(String),
-          use: "sig",
-        },
-        {
-          alg: rsaKeyPair.algorithm,
-          c: 1577862000,
-          e: "AQAB",
-          exp: null,
-          kid: rsaKeyPair.id,
-          kty: rsaKeyPair.type,
-          n: rsaKeyPair.publicKey,
-          use: "sig",
-        },
-        {
-          alg: ecKeyPair.algorithm,
-          c: 1577862000,
-          e: "AQAB",
-          exp: null,
-          kid: ecKeyPair.id,
-          kty: ecKeyPair.type,
-          n: ecKeyPair.publicKey,
+          n: keyPair.publicKey,
           use: "sig",
         },
       ],

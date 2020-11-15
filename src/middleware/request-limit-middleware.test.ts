@@ -73,7 +73,7 @@ describe("requestLimitMiddleware", () => {
     expect(spyValidateRequestLimitBackOff).not.toHaveBeenCalled();
   });
 
-  test.only("should create or update request limit", async () => {
+  test("should create or update request limit", async () => {
     ctx.requestLimit = new RequestLimit({
       grantType: GrantType.DEVICE_PIN,
       subject: "test@lindorm.io",

@@ -1,6 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
-import { assertAccountPermission } from "../../support";
+import { assertAccountPermission, assertBearerTokenScope } from "../../support";
+import { Scope } from "@lindorm-io/jwt";
 
 export interface IUpdateDeviceName {
   deviceId: string;
@@ -20,6 +21,7 @@ export const updateDeviceName = (ctx: IAuthContext) => async (options: IUpdateDe
 
   const device = await repository.device.find({ id: deviceId });
 
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.OPENID]);
   await assertAccountPermission(ctx)(device.accountId);
 
   device.name = name;

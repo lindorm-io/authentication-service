@@ -8,6 +8,7 @@ jest.mock("uuid", () => ({
 }));
 jest.mock("../../support", () => ({
   assertAccountPermission: jest.fn(() => () => undefined),
+  assertBearerTokenScope: jest.fn(() => () => undefined),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");

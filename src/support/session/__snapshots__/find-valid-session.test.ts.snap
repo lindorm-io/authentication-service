@@ -30,7 +30,7 @@ Session {
   "_grantType": "grantType",
   "_id": "sessionId",
   "_refreshId": "refreshId",
-  "_scope": "default",
+  "_scope": "default edit openid",
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }

@@ -1,6 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
-import { assertAccountPassword, encryptAccountPassword } from "../../support";
+import { Scope } from "@lindorm-io/jwt";
+import { assertAccountPassword, assertBearerTokenScope, encryptAccountPassword } from "../../support";
 
 export interface IUpdateAccountPasswordOptions {
   password: string;
@@ -19,6 +20,8 @@ export const updateAccountPassword = (ctx: IAuthContext) => async (
 
   const { account, logger, repository } = ctx;
   const { password, updatedPassword } = options;
+
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.EDIT]);
 
   if (account.password.signature) {
     await assertAccountPassword(account, password);

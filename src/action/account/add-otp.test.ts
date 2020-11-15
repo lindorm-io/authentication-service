@@ -8,6 +8,7 @@ jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../support", () => ({
+  assertBearerTokenScope: jest.fn(() => () => undefined),
   generateAccountOTP: jest.fn(() => ({ signature: "signature", uri: "uri" })),
 }));
 

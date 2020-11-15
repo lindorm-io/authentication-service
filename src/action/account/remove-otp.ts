@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
-import { assertAccountOTP, getAccount } from "../../support";
-import { isAdmin } from "@lindorm-io/jwt";
+import { assertAccountOTP, assertBearerTokenScope, getAccount } from "../../support";
+import { isAdmin, Scope } from "@lindorm-io/jwt";
 
 export interface IRemoveAccountOTPOptions {
   accountId: string;
@@ -18,6 +18,8 @@ export const removeAccountOTP = (ctx: IAuthContext) => async (options: IRemoveAc
 
   const { account: requesterAccount, logger, repository } = ctx;
   const { accountId, bindingCode } = options;
+
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.EDIT]);
 
   const account = await getAccount(ctx)(accountId);
 

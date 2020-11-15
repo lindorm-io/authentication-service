@@ -1,6 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
-import { assertAccountPermission, assertDevicePIN, encryptDevicePIN } from "../../support";
+import { assertAccountPermission, assertBearerTokenScope, assertDevicePIN, encryptDevicePIN } from "../../support";
+import { Scope } from "@lindorm-io/jwt";
 
 export interface IUpdateDevicePinOptions {
   deviceId: string;
@@ -22,6 +23,7 @@ export const updateDevicePIN = (ctx: IAuthContext) => async (options: IUpdateDev
 
   const device = await repository.device.find({ id: deviceId });
 
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.OPENID]);
   await assertAccountPermission(ctx)(device.accountId);
   await assertDevicePIN(device, pin);
 

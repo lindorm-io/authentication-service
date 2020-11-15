@@ -59,7 +59,7 @@ Session {
   "_grantType": "grantType",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-  "_scope": "default",
+  "_scope": "default edit openid",
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }

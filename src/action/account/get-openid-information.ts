@@ -1,6 +1,6 @@
 import { IAuthContext } from "../../typing";
-import { Scope, TokenIssuer, isScope } from "@lindorm-io/jwt";
-import { InvalidScopeError } from "../../error";
+import { Scope, TokenIssuer } from "@lindorm-io/jwt";
+import { assertBearerTokenScope } from "../../support";
 
 export interface IGetOpenIdInformation {
   email: string;
@@ -10,20 +10,11 @@ export interface IGetOpenIdInformation {
 }
 
 export const getOpenIdInformation = (ctx: IAuthContext) => async (): Promise<IGetOpenIdInformation> => {
-  const { account, logger, token } = ctx;
-  const {
-    bearer: { scope },
-  } = token;
+  const { account, logger } = ctx;
 
   logger.info("requesting openid account information", { id: account.id });
 
-  if (!isScope(scope, Scope.DEFAULT)) {
-    throw new InvalidScopeError(scope, Scope.DEFAULT);
-  }
-
-  if (!isScope(scope, Scope.OPENID)) {
-    throw new InvalidScopeError(scope, Scope.OPENID);
-  }
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.OPENID]);
 
   return {
     email: account.email,

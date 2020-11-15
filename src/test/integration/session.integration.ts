@@ -34,7 +34,7 @@ describe("/session", () => {
       clientId: TEST_CLIENT.id,
       expiry: JWT_ACCESS_TOKEN_EXPIRY,
       permission: TEST_ACCOUNT.permission,
-      scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
+      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
       subject: TEST_ACCOUNT.id,
     }));
   });
@@ -56,7 +56,7 @@ describe("/session", () => {
         expires: new Date("2099-01-01"),
         grantType: GrantType.EMAIL_OTP,
         refreshId: uuid(),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
       }),
     );
     const { token: refreshToken } = TEST_TOKEN_ISSUER.sign({
@@ -65,7 +65,7 @@ describe("/session", () => {
       expiry: session.expires,
       id: session.refreshId,
       permission: TEST_ACCOUNT.permission,
-      scope: Scope.DEFAULT,
+      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
       subject: session.id,
     });
 
@@ -103,7 +103,7 @@ describe("/session", () => {
         expires: new Date("2099-01-01"),
         grantType: GrantType.EMAIL_OTP,
         refreshId: uuid(),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
       }),
     );
 

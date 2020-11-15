@@ -1,28 +1,28 @@
-import { assertResponseType, isResponseType } from "./response-type";
+import { assertValidResponseTypeInput, isResponseType } from "./response-type";
 import { ResponseType } from "../enum";
 import { APIError } from "@lindorm-io/core";
 
 describe("assertResponseType", () => {
   test("should succeed on ACCESS", () => {
-    expect(assertResponseType(ResponseType.ACCESS)).toBe(undefined);
+    expect(assertValidResponseTypeInput(ResponseType.ACCESS)).toBe(undefined);
   });
 
   test("should succeed on IDENTITY", () => {
-    expect(assertResponseType(ResponseType.IDENTITY)).toBe(undefined);
+    expect(assertValidResponseTypeInput(ResponseType.IDENTITY)).toBe(undefined);
   });
 
   test("should succeed on REFRESH", () => {
-    expect(assertResponseType(ResponseType.REFRESH)).toBe(undefined);
+    expect(assertValidResponseTypeInput(ResponseType.REFRESH)).toBe(undefined);
   });
 
   test("should succeed on all response types", () => {
-    expect(assertResponseType(`${ResponseType.ACCESS} ${ResponseType.IDENTITY} ${ResponseType.REFRESH}`)).toBe(
-      undefined,
-    );
+    expect(
+      assertValidResponseTypeInput(`${ResponseType.ACCESS} ${ResponseType.IDENTITY} ${ResponseType.REFRESH}`),
+    ).toBe(undefined);
   });
 
   test("should throw an error when an invalid type is provided", () => {
-    expect(() => assertResponseType("wrong")).toThrow(expect.any(APIError));
+    expect(() => assertValidResponseTypeInput("wrong")).toThrow(expect.any(APIError));
   });
 });
 

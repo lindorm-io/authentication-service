@@ -14,7 +14,7 @@ export const MOCK_SESSION_OPTIONS: ISessionOptions = {
   clientId: "clientId",
   expires: new Date("2999-12-12 12:12:12.000"),
   grantType: "grantType",
-  scope: Scope.DEFAULT,
+  scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
 };
 
 export const mockRepositorySession = {

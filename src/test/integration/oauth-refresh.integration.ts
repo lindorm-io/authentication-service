@@ -43,7 +43,7 @@ describe("/oauth REFRESH_TOKEN", () => {
         expires: new Date("2099-01-01"),
         grantType: GrantType.EMAIL_OTP,
         refreshId: uuid(),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
       }),
     );
 
@@ -54,7 +54,7 @@ describe("/oauth REFRESH_TOKEN", () => {
       expiry: session.expires,
       id: session.refreshId,
       permission: TEST_ACCOUNT.permission,
-      scope: Scope.DEFAULT,
+      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
       subject: session.id,
     }));
   });

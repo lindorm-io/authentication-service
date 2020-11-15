@@ -39,7 +39,7 @@ describe("/oauth DEVICE_PIN", () => {
         grant_type: GrantType.DEVICE_PIN,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
         subject: TEST_ACCOUNT.email,
       })
@@ -110,7 +110,7 @@ describe("/oauth DEVICE_PIN", () => {
         grant_type: GrantType.DEVICE_PIN,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
         subject: TEST_ACCOUNT.email,
       })
@@ -156,7 +156,7 @@ describe("/oauth DEVICE_PIN", () => {
         grant_type: GrantType.DEVICE_PIN,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
         subject: TEST_ACCOUNT.email,
       })

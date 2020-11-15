@@ -1,6 +1,7 @@
 import { IAuthContext } from "../../typing";
-import { assertAccountPermission } from "../../support";
+import { assertAccountPermission, assertBearerTokenScope } from "../../support";
 import Joi from "@hapi/joi";
+import { Scope } from "@lindorm-io/jwt";
 
 export interface IRemoveDeviceOptions {
   deviceId: string;
@@ -18,6 +19,7 @@ export const removeDevice = (ctx: IAuthContext) => async (options: IRemoveDevice
 
   const device = await repository.device.find({ id: deviceId });
 
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.OPENID]);
   await assertAccountPermission(ctx)(device.accountId);
 
   await repository.device.remove(device);

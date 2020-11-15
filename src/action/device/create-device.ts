@@ -1,7 +1,8 @@
 import Joi from "@hapi/joi";
 import { Device } from "../../entity";
 import { IAuthContext } from "../../typing";
-import { assertAccountPermission, encryptDevicePIN, encryptDeviceSecret } from "../../support";
+import { assertAccountPermission, assertBearerTokenScope, encryptDevicePIN, encryptDeviceSecret } from "../../support";
+import { Scope } from "@lindorm-io/jwt";
 
 export interface ICreateDeviceOptions {
   name: string;
@@ -29,6 +30,7 @@ export const createDevice = (ctx: IAuthContext) => async (
   const { account, logger, repository } = ctx;
   const { name, pin, publicKey, secret } = options;
 
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.OPENID]);
   await assertAccountPermission(ctx)(account.id);
 
   const device = new Device({

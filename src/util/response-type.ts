@@ -2,7 +2,7 @@ import { includes } from "lodash";
 import { APIError, HttpStatus } from "@lindorm-io/core";
 import { ResponseType } from "../enum";
 
-export const assertResponseType = (responseType: string): void => {
+export const assertValidResponseTypeInput = (responseType: string): void => {
   const splitTypes = responseType.trim().split(" ");
 
   for (const type of splitTypes) {

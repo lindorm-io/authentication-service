@@ -36,7 +36,7 @@ describe("/oauth PASSWORD", () => {
         grant_type: GrantType.PASSWORD,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
         subject: TEST_ACCOUNT_PWD.email,
       })

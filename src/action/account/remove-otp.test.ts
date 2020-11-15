@@ -9,6 +9,7 @@ jest.mock("uuid", () => ({
 }));
 jest.mock("../../support", () => ({
   assertAccountOTP: jest.fn(() => undefined),
+  assertBearerTokenScope: jest.fn(() => () => undefined),
   getAccount: jest.fn(() => () => new Account(MOCK_ACCOUNT_OPTIONS)),
 }));
 

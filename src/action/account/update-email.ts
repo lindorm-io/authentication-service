@@ -1,6 +1,8 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
 import { JOI_EMAIL } from "../../constant";
+import { Scope } from "@lindorm-io/jwt";
+import { assertBearerTokenScope } from "../../support";
 
 export interface IUpdateAccountEmailOptions {
   updatedEmail: string;
@@ -15,6 +17,8 @@ export const updateAccountEmail = (ctx: IAuthContext) => async (options: IUpdate
 
   const { account, logger, repository } = ctx;
   const { updatedEmail } = options;
+
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.EDIT]);
 
   account.email = updatedEmail;
 

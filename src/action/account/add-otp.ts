@@ -1,5 +1,6 @@
 import { IAuthContext } from "../../typing";
-import { generateAccountOTP } from "../../support";
+import { Scope } from "@lindorm-io/jwt";
+import { assertBearerTokenScope, generateAccountOTP } from "../../support";
 
 export interface IAddAccountOTPData {
   uri: string;
@@ -7,6 +8,8 @@ export interface IAddAccountOTPData {
 
 export const addAccountOTP = (ctx: IAuthContext) => async (): Promise<IAddAccountOTPData> => {
   const { account, logger, repository } = ctx;
+
+  assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.EDIT]);
 
   if (account.otp.signature) {
     throw new Error("previous needs to be removed before generating a new");

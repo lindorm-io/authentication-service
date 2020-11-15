@@ -2,7 +2,7 @@ import { Account, Client, Device, Session } from "../../entity";
 import { IAuthContext, ICreateTokensData } from "../../typing";
 import { ResponseType } from "../../enum";
 import { TObject } from "@lindorm-io/core";
-import { assertResponseType, isResponseType } from "../../util";
+import { assertValidResponseTypeInput, isResponseType } from "../../util";
 import { getAccessToken } from "./access";
 import { getIdentityToken } from "./identity";
 import { getRefreshToken } from "./refresh";
@@ -22,7 +22,7 @@ export const createTokens = (ctx: IAuthContext) => (options: ICreateTokensOption
   const { account, authMethodsReference, client, device, payload, responseType, session } = options;
   const { scope } = session;
 
-  assertResponseType(responseType);
+  assertValidResponseTypeInput(responseType);
 
   const result: ICreateTokensData = {};
 

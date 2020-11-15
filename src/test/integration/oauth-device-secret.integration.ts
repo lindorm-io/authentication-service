@@ -39,7 +39,7 @@ describe("/oauth DEVICE_SECRET", () => {
         grant_type: GrantType.DEVICE_SECRET,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
         subject: TEST_ACCOUNT.email,
       })

@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../../typing";
 import { JOI_CODE_CHALLENGE, JOI_CODE_METHOD, JOI_EMAIL, JOI_GRANT_TYPE, JOI_STATE } from "../../../constant";
-import { assertResponseType } from "../../../util";
+import { assertValidScopeInput, assertValidResponseTypeInput } from "../../../util";
 import { createSession, getAuthorizationToken } from "../../../support";
 import { getRandomValue } from "@lindorm-io/core";
 import { DeviceNotFoundError } from "../../../error";
@@ -49,7 +49,8 @@ export const performDevicePINInit = (ctx: IAuthContext) => async (
     throw new DeviceNotFoundError();
   }
 
-  assertResponseType(responseType);
+  assertValidResponseTypeInput(responseType);
+  assertValidScopeInput(scope);
 
   const deviceChallenge = getRandomValue(32);
 

@@ -3,7 +3,8 @@ import { Scope } from "@lindorm-io/jwt";
 import { performDevicePINInit } from "./device-pin-init";
 
 jest.mock("../../../util", () => ({
-  assertResponseType: jest.fn(() => undefined),
+  assertValidResponseTypeInput: jest.fn(() => undefined),
+  assertValidScopeInput: jest.fn(() => undefined),
 }));
 jest.mock("../../../support", () => ({
   createSession: jest.fn(() => () => "session"),

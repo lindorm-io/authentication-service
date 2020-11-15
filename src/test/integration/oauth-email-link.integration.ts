@@ -37,7 +37,7 @@ describe("/oauth EMAIL_LINK", () => {
         grant_type: GrantType.EMAIL_LINK,
         redirect_uri: "https://redirect.uri/",
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
         subject: TEST_ACCOUNT.email,
       })

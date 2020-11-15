@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../../typing";
 import { JOI_CODE_CHALLENGE, JOI_CODE_METHOD, JOI_EMAIL, JOI_GRANT_TYPE, JOI_STATE } from "../../../constant";
-import { assertResponseType } from "../../../util";
+import { assertValidScopeInput, assertValidResponseTypeInput } from "../../../util";
 import { createSession, getAuthorizationToken, sendEmailLink } from "../../../support";
 
 export interface IPerformEmailLinkInitOptions {
@@ -40,7 +40,8 @@ export const performEmailLinkInit = (ctx: IAuthContext) => async (
   const { client } = ctx;
   const { codeChallenge, codeMethod, grantType, redirectUri, responseType, scope, state, subject } = options;
 
-  assertResponseType(responseType);
+  assertValidResponseTypeInput(responseType);
+  assertValidScopeInput(scope);
 
   const session = await createSession(ctx)({
     codeChallenge,
