@@ -29,6 +29,7 @@ describe("AccountRepository", () => {
       id: MOCK_UUID,
 
       email: "email@lindorm.io",
+      identityId: "1148b4d6-214b-4bc3-9611-feecc065bf3c",
       otp: {
         signature: baseHash("signature"),
         uri: "https://lindorm.io/",

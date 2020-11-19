@@ -41,7 +41,7 @@ describe("updateDeviceName", () => {
       _created: date,
       _events: [
         {
-          created: date,
+          date: date,
           name: "device_name_changed",
           payload: {
             name: "name",

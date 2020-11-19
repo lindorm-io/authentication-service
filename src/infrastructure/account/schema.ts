@@ -9,6 +9,7 @@ export const schema = Joi.object({
   events: JOI_EVENTS,
 
   email: JOI_EMAIL,
+  identityId: Joi.string().guid().allow(null).required(),
   otp: Joi.object({
     signature: Joi.string().allow(null).required(),
     uri: Joi.string().allow(null).required(),

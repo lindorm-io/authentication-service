@@ -4,20 +4,7 @@ exports[`generateKeyPair should generate EC key pair 1`] = `
 KeyPair {
   "_algorithm": "ec-algorithm",
   "_created": 2020-01-01T07:00:00.000Z,
-  "_events": Array [
-    Object {
-      "created": 2020-01-01T07:00:00.000Z,
-      "name": "key_pair_created",
-      "payload": Object {
-        "algorithm": "ec-algorithm",
-        "expires": null,
-        "passphrase": null,
-        "privateKey": "ec-privateKey",
-        "publicKey": "ec-publicKey",
-        "type": "ec-type",
-      },
-    },
-  ],
+  "_events": Array [],
   "_expires": null,
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_passphrase": null,
@@ -33,20 +20,7 @@ exports[`generateKeyPair should generate RSA key pair 1`] = `
 KeyPair {
   "_algorithm": "rsa-algorithm",
   "_created": 2020-01-01T07:00:00.000Z,
-  "_events": Array [
-    Object {
-      "created": 2020-01-01T07:00:00.000Z,
-      "name": "key_pair_created",
-      "payload": Object {
-        "algorithm": "rsa-algorithm",
-        "expires": null,
-        "passphrase": "rsa-passphrase",
-        "privateKey": "rsa-privateKey",
-        "publicKey": "rsa-publicKey",
-        "type": "rsa-type",
-      },
-    },
-  ],
+  "_events": Array [],
   "_expires": null,
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_passphrase": "rsa-passphrase",

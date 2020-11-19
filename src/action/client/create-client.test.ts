@@ -46,28 +46,7 @@ describe("createClient", () => {
       _created: date,
       _description: "description",
       _emailAuthorizationUri: "https://lindorm.io/",
-      _events: [
-        {
-          created: date,
-          name: "client_created",
-          payload: {
-            approved: false,
-            created: date,
-            description: "description",
-            emailAuthorizationUri: "https://lindorm.io/",
-            name: "name",
-            secret: null,
-            updated: date,
-          },
-        },
-        {
-          created: date,
-          name: "client_secret_changed",
-          payload: {
-            secret: "encryptClientSecret",
-          },
-        },
-      ],
+      _events: [],
       _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
       _name: "name",
       _secret: "encryptClientSecret",

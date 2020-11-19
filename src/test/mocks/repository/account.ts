@@ -9,5 +9,6 @@ export const mockRepositoryAccount = {
   update: jest.fn((entity: Account) => entity),
   find: jest.fn((filter: IAccountOptions) => new Account({ ...MOCK_ACCOUNT_OPTIONS, ...filter })),
   findMany: jest.fn((filter: IAccountOptions) => [new Account({ ...MOCK_ACCOUNT_OPTIONS, ...filter })]),
+  findOrCreate: jest.fn((filter: IAccountOptions) => new Account({ ...MOCK_ACCOUNT_OPTIONS, ...filter })),
   remove: jest.fn((): any => undefined),
 };

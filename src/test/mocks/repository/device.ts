@@ -11,5 +11,6 @@ export const mockRepositoryDevice = {
   update: jest.fn((entity: Device) => entity),
   find: jest.fn((filter: IDeviceOptions) => new Device({ ...MOCK_DEVICE_OPTIONS, ...filter })),
   findMany: jest.fn((filter: IDeviceOptions) => [new Device({ ...MOCK_DEVICE_OPTIONS, ...filter })]),
+  findOrCreate: jest.fn((filter: IDeviceOptions) => new Device({ ...MOCK_DEVICE_OPTIONS, ...filter })),
   remove: jest.fn((): any => undefined),
 };

@@ -1,4 +1,4 @@
-import { EntityBase, IEntity, IEntityBaseOptions, TObject } from "@lindorm-io/core";
+import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions, TObject } from "@lindorm-io/core";
 import { SessionEvent } from "../enum";
 
 export interface ISessionAgent {
@@ -165,7 +165,7 @@ export class Session extends EntityBase implements ISession {
   public create(): void {
     for (const evt of this._events) {
       if (evt.name !== SessionEvent.CREATED) continue;
-      throw new Error("Session has already been created");
+      throw new EntityCreationError("Session");
     }
 
     this.addEvent(SessionEvent.CREATED, {

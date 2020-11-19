@@ -1,5 +1,5 @@
-import { EntityBase, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
 import { ClientEvent } from "../enum";
+import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
 
 export interface IClient extends IEntity {
   approved: boolean;
@@ -76,7 +76,7 @@ export class Client extends EntityBase implements IClient {
   public create(): void {
     for (const evt of this._events) {
       if (evt.name !== ClientEvent.CREATED) continue;
-      throw new Error("Client has already been created");
+      throw new EntityCreationError("Client");
     }
     this.addEvent(ClientEvent.CREATED, {
       name: this._name,

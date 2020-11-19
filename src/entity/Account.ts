@@ -1,5 +1,5 @@
-import { EntityBase, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
 import { AccountEvent } from "../enum";
+import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
 import { Permission } from "@lindorm-io/jwt";
 
 export interface IAccountOTP {
@@ -14,6 +14,7 @@ export interface IAccountPassword {
 
 export interface IAccount extends IEntity {
   email: string;
+  identityId: string;
   otp: IAccountOTP;
   password: IAccountPassword;
   permission: string;
@@ -21,6 +22,7 @@ export interface IAccount extends IEntity {
 
 export interface IAccountOptions extends IEntityBaseOptions {
   email: string;
+  identityId?: string;
   otp?: IAccountOTP;
   password?: IAccountPassword;
   permission?: string;
@@ -28,6 +30,7 @@ export interface IAccountOptions extends IEntityBaseOptions {
 
 export class Account extends EntityBase implements IAccount {
   private _email: string;
+  private _identityId: string;
   private _otp: IAccountOTP;
   private _password: IAccountPassword;
   private _permission: string;
@@ -35,6 +38,7 @@ export class Account extends EntityBase implements IAccount {
   constructor(options: IAccountOptions) {
     super(options);
     this._email = options.email;
+    this._identityId = options.identityId || null;
     this._otp = {
       signature: options.otp?.signature || null,
       uri: options.otp?.uri || null,
@@ -52,6 +56,14 @@ export class Account extends EntityBase implements IAccount {
   public set email(email: string) {
     this._email = email;
     this.addEvent(AccountEvent.EMAIL_CHANGED, { email: this._email });
+  }
+
+  public get identityId(): string {
+    return this._identityId;
+  }
+  public set identityId(identityId: string) {
+    this._identityId = identityId;
+    this.addEvent(AccountEvent.EMAIL_CHANGED, { identityId: this._identityId });
   }
 
   public get otp(): IAccountOTP {
@@ -81,7 +93,7 @@ export class Account extends EntityBase implements IAccount {
   public create(): void {
     for (const evt of this._events) {
       if (evt.name !== AccountEvent.CREATED) continue;
-      throw new Error("Account has already been created");
+      throw new EntityCreationError("Account");
     }
     this.addEvent(AccountEvent.CREATED, {
       email: this._email,

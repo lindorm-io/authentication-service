@@ -39,7 +39,7 @@ describe("updateAccountEmail", () => {
       _email: "email@lindorm.io",
       _events: [
         {
-          created: date,
+          date: date,
           name: "account_email_changed",
           payload: {
             email: "email@lindorm.io",
@@ -47,6 +47,7 @@ describe("updateAccountEmail", () => {
         },
       ],
       _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
+      _identityId: null,
       _otp: {
         signature: null,
         uri: null,

@@ -14,6 +14,7 @@ describe("Account.ts", () => {
   beforeEach(() => {
     account = new Account({
       email: "email@lindorm.io",
+      identityId: "1148b4d6-214b-4bc3-9611-feecc065bf3c",
       otp: { signature: "signature", uri: "uri" },
       password: { signature: "password", updated: date },
       permission: "permission",
@@ -43,6 +44,15 @@ describe("Account.ts", () => {
     account.email = "new-email";
 
     expect(account.email).toBe("new-email");
+    expect(account.events).toMatchSnapshot();
+  });
+
+  test("should get/set identityId", () => {
+    expect(account.identityId).toBe("1148b4d6-214b-4bc3-9611-feecc065bf3c");
+
+    account.identityId = "ca02be54-0b11-4d45-b918-f637c3162517";
+
+    expect(account.identityId).toBe("ca02be54-0b11-4d45-b918-f637c3162517");
     expect(account.events).toMatchSnapshot();
   });
 

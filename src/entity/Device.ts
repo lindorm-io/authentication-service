@@ -1,5 +1,5 @@
-import { EntityBase, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
 import { DeviceEvent } from "../enum";
+import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
 
 export interface IDevicePIN {
   signature: string;
@@ -76,7 +76,7 @@ export class Device extends EntityBase implements IDevice {
   public create(): void {
     for (const evt of this._events) {
       if (evt.name !== DeviceEvent.CREATED) continue;
-      throw new Error("Device has already been created");
+      throw new EntityCreationError("Device");
     }
     this.addEvent(DeviceEvent.CREATED, {
       accountId: this._accountId,

@@ -35,12 +35,8 @@ export const createClient = (ctx: IAuthContext) => async (
     description,
     emailAuthorizationUri,
     name,
+    secret: secret && encryptClientSecret(secret),
   });
-  client.create();
-
-  if (secret) {
-    client.secret = encryptClientSecret(secret);
-  }
 
   await repository.client.create(client);
   await cache.client.create(client);

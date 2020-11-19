@@ -15,6 +15,7 @@ export interface IClientRepository extends IRepository<Client> {
   update(entity: Client): Promise<Client>;
   find(filter: IClientFilter): Promise<Client>;
   findMany(filter: IClientFilter): Promise<Array<Client>>;
+  findOrCreate(filter: IClientFilter): Promise<Client>;
   remove(entity: Client): Promise<void>;
 }
 

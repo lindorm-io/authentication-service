@@ -15,6 +15,7 @@ export interface IDeviceRepository extends IRepository<Device> {
   update(entity: Device): Promise<Device>;
   find(filter: IDeviceFilter): Promise<Device>;
   findMany(filter: IDeviceFilter): Promise<Array<Device>>;
+  findOrCreate(filter: IDeviceFilter): Promise<Device>;
   remove(entity: Device): Promise<void>;
 }
 

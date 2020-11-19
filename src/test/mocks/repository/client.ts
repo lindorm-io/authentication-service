@@ -10,5 +10,6 @@ export const mockRepositoryClient = {
   update: jest.fn((entity: Client) => entity),
   find: jest.fn((filter: IClientOptions) => new Client({ ...MOCK_CLIENT_OPTIONS, ...filter })),
   findMany: jest.fn((filter: IClientOptions) => [new Client({ ...MOCK_CLIENT_OPTIONS, ...filter })]),
+  findOrCreate: jest.fn((filter: IClientOptions) => new Client({ ...MOCK_CLIENT_OPTIONS, ...filter })),
   remove: jest.fn((): any => undefined),
 };

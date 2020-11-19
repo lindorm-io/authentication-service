@@ -40,7 +40,7 @@ describe("updateAccountPermission", () => {
       _email: "email@lindorm.io",
       _events: [
         {
-          created: date,
+          date: date,
           name: "account_permission_changed",
           payload: {
             permission: Permission.LOCKED,
@@ -48,6 +48,7 @@ describe("updateAccountPermission", () => {
         },
       ],
       _id: MOCK_UUID,
+      _identityId: null,
       _otp: {
         signature: null,
         uri: null,

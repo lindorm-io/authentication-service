@@ -32,25 +32,24 @@ export const createSession = (ctx: IAuthContext) => async (options: ICreateSessi
     subject,
   } = options;
 
-  const session = new Session({
-    agent: userAgent,
-    authorization: {
-      codeChallenge,
-      codeMethod,
-      deviceChallenge,
-      email: subject,
-      id: uuid(),
-      otpCode: otpCode ? encryptSessionOTP(otpCode) : null,
-      redirectUri,
-      responseType,
-    },
-    clientId: client.id,
-    deviceId: device?.id,
-    expires: getSessionExpires(JWT_AUTHORIZATION_TOKEN_EXPIRY),
-    grantType,
-    scope,
-  });
-  session.create();
-
-  return await repository.session.create(session);
+  return await repository.session.create(
+    new Session({
+      agent: userAgent,
+      authorization: {
+        codeChallenge,
+        codeMethod,
+        deviceChallenge,
+        email: subject,
+        id: uuid(),
+        otpCode: otpCode ? encryptSessionOTP(otpCode) : null,
+        redirectUri,
+        responseType,
+      },
+      clientId: client.id,
+      deviceId: device?.id,
+      expires: getSessionExpires(JWT_AUTHORIZATION_TOKEN_EXPIRY),
+      grantType,
+      scope,
+    }),
+  );
 };

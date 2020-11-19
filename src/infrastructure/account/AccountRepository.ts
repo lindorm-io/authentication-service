@@ -7,6 +7,7 @@ import { schema } from "./schema";
 export interface IAccountFilter {
   id?: string;
   email?: string;
+  identityId?: string;
   permission?: string;
 }
 
@@ -15,6 +16,7 @@ export interface IAccountRepository extends IRepository<Account> {
   update(entity: Account): Promise<Account>;
   find(filter: IAccountFilter): Promise<Account>;
   findMany(filter: IAccountFilter): Promise<Array<Account>>;
+  findOrCreate(filter: IAccountFilter): Promise<Account>;
   remove(entity: Account): Promise<void>;
 }
 
@@ -42,6 +44,7 @@ export class AccountRepository extends RepositoryBase<Account> implements IAccou
       events: entity.events,
 
       email: entity.email,
+      identityId: entity.identityId,
       otp: entity.otp,
       permission: entity.permission,
       password: entity.password,
@@ -62,6 +65,10 @@ export class AccountRepository extends RepositoryBase<Account> implements IAccou
 
   public async findMany(filter: IAccountFilter): Promise<Array<Account>> {
     return super.findMany(filter);
+  }
+
+  public async findOrCreate(filter: IAccountFilter): Promise<Account> {
+    return super.findOrCreate(filter);
   }
 
   public async remove(entity: Account): Promise<void> {

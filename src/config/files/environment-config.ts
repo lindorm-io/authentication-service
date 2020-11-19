@@ -1,11 +1,11 @@
+import { IConfigurationData } from "../../class";
+import { NodeEnvironment } from "@lindorm-io/core";
 import { config } from "dotenv";
 import { isString } from "lodash";
-import { IConfiguration } from "../typing";
-import { NodeEnvironment } from "@lindorm-io/core";
 
 config();
 
-export const configuration: IConfiguration = {
+export const environmentConfig: IConfigurationData = {
   NODE_ENVIRONMENT: process.env.NODE_ENV || NodeEnvironment.DEVELOPMENT,
   SERVER_PORT: isString(process.env.SERVER_PORT) ? parseInt(process.env.SERVER_PORT, 10) : null,
   HOST: process.env.HOST,

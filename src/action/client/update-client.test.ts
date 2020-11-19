@@ -48,35 +48,35 @@ describe("updateClient", () => {
       _emailAuthorizationUri: "https://lindorm.io/",
       _events: [
         {
-          created: date,
+          date: date,
           name: "client_approved_changed",
           payload: {
             approved: true,
           },
         },
         {
-          created: date,
+          date: date,
           name: "client_description_changed",
           payload: {
             description: "description",
           },
         },
         {
-          created: date,
+          date: date,
           name: "client_email_authorization_uri_changed",
           payload: {
             uri: "https://lindorm.io/",
           },
         },
         {
-          created: date,
+          date: date,
           name: "client_name_changed",
           payload: {
             name: "name",
           },
         },
         {
-          created: date,
+          date: date,
           name: "client_secret_changed",
           payload: {
             secret: "encryptClientSecret",

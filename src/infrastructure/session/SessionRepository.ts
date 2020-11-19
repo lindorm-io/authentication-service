@@ -20,6 +20,7 @@ export interface ISessionRepository extends IRepository<Session> {
   update(entity: Session): Promise<Session>;
   find(filter: ISessionFilter): Promise<Session>;
   findMany(filter: ISessionFilter): Promise<Array<Session>>;
+  findOrCreate(filter: ISessionFilter): Promise<Session>;
   remove(entity: Session): Promise<void>;
 }
 

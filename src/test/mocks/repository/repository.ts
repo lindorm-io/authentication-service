@@ -4,7 +4,7 @@ import { mockRepositoryDevice } from "./device";
 import { mockRepositoryKeyPair } from "./key-pair";
 import { mockRepositorySession } from "./session";
 
-export const getMockRepository = () => ({
+export const getMockRepository = (): any => ({
   account: { ...mockRepositoryAccount },
   client: { ...mockRepositoryClient },
   device: { ...mockRepositoryDevice },

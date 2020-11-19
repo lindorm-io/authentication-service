@@ -45,35 +45,7 @@ describe("createDevice", () => {
     expect(ctx.repository.device.create).toHaveBeenCalledWith({
       _accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
       _created: date,
-      _events: [
-        {
-          created: date,
-          name: "device_created",
-          payload: {
-            accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
-            created: date,
-            name: null,
-            pin: { signature: "encryptDevicePIN", updated: date },
-            publicKey: "publicKey",
-            secret: null,
-            updated: date,
-          },
-        },
-        {
-          created: date,
-          name: "device_name_changed",
-          payload: {
-            name: "name",
-          },
-        },
-        {
-          created: date,
-          name: "device_secret_changed",
-          payload: {
-            secret: "encryptDeviceSecret",
-          },
-        },
-      ],
+      _events: [],
       _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
       _name: "name",
       _pin: { signature: "encryptDevicePIN", updated: date },

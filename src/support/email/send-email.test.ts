@@ -5,6 +5,7 @@ import { sendEmailLink, sendEmailOTP } from "./send-email";
 
 const mockSend = jest.fn();
 jest.mock("../../class", () => ({
+  ...jest.requireActual("../../class"),
   MailHandler: class MailHandler {
     constructor() {}
     send(...args: any) {

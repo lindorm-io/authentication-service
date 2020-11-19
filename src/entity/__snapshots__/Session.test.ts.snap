@@ -3,7 +3,7 @@
 exports[`Session.ts should create 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "session_created",
     "payload": Object {
       "accountId": "accountId",
@@ -68,7 +68,7 @@ Object {
 exports[`Session.ts should get/set accountId 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "session_account_id_changed",
     "payload": Object {
       "accountId": "new-accountId",
@@ -80,7 +80,7 @@ Array [
 exports[`Session.ts should get/set authenticated 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "session_authenticated_changed",
     "payload": Object {
       "authenticated": false,
@@ -92,7 +92,7 @@ Array [
 exports[`Session.ts should get/set expires 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "session_expires_changed",
     "payload": Object {
       "expires": 2020-12-31T23:00:01.000Z,
@@ -104,7 +104,7 @@ Array [
 exports[`Session.ts should get/set refreshId 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "session_refresh_id_changed",
     "payload": Object {
       "refreshId": "new-refreshId",

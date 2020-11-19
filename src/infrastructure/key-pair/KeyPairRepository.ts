@@ -15,6 +15,7 @@ export interface IKeyPairRepository extends IRepository<KeyPair> {
   update(entity: KeyPair): Promise<KeyPair>;
   find(entity: IKeyPairFilter): Promise<KeyPair>;
   findMany(filter: IKeyPairFilter): Promise<Array<KeyPair>>;
+  findOrCreate(entity: IKeyPairFilter): Promise<KeyPair>;
   remove(entity: KeyPair): Promise<void>;
 }
 

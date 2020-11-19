@@ -21,9 +21,5 @@ export const generateKeys = async (type: KeyType): Promise<IGenerateECCKeysData 
 };
 
 export const generateKeyPair = async (type: KeyType): Promise<KeyPair> => {
-  const keyData = await generateKeys(type);
-  const keyPair = new KeyPair(keyData);
-  keyPair.create();
-
-  return keyPair;
+  return new KeyPair(await generateKeys(type));
 };

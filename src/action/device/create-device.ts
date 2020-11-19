@@ -35,21 +35,11 @@ export const createDevice = (ctx: IAuthContext) => async (
 
   const device = new Device({
     accountId: account.id,
-    pin: {
-      signature: await encryptDevicePIN(pin),
-      updated: new Date(),
-    },
+    name,
+    pin: { signature: await encryptDevicePIN(pin), updated: new Date() },
     publicKey,
+    secret: secret && (await encryptDeviceSecret(secret)),
   });
-
-  device.create();
-
-  if (name) {
-    device.name = name;
-  }
-  if (secret) {
-    device.secret = await encryptDeviceSecret(secret);
-  }
 
   await repository.device.create(device);
 

@@ -43,7 +43,7 @@ describe("updateDeviceSecret", () => {
       _created: date,
       _events: [
         {
-          created: date,
+          date: date,
           name: "device_secret_changed",
           payload: {
             secret: "encryptDeviceSecret",

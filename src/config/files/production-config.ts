@@ -1,7 +1,7 @@
-import { IConfiguration } from "../typing";
+import { IConfigurationData } from "../../class";
 import { NodeEnvironment } from "@lindorm-io/core";
 
-export const configuration: IConfiguration = {
+export const productionConfig: IConfigurationData = {
   NODE_ENVIRONMENT: NodeEnvironment.PRODUCTION,
   SERVER_PORT: 3000,
   HOST: "https://lindorm.io/",

@@ -13,5 +13,6 @@ export const mockRepositoryKeyPair = {
   update: jest.fn((entity: KeyPair) => entity),
   find: jest.fn((filter: IKeyPairOptions) => new KeyPair({ ...MOCK_KEY_PAIR_OPTIONS, ...filter })),
   findMany: jest.fn((filter: IKeyPairOptions) => [new KeyPair({ ...MOCK_KEY_PAIR_OPTIONS, ...filter })]),
+  findOrCreate: jest.fn((filter: IKeyPairOptions) => new KeyPair({ ...MOCK_KEY_PAIR_OPTIONS, ...filter })),
   remove: jest.fn((): any => undefined),
 };

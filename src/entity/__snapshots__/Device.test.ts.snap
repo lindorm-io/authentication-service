@@ -3,7 +3,7 @@
 exports[`Device.ts should create 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "device_created",
     "payload": Object {
       "accountId": "accountId",
@@ -24,7 +24,7 @@ Array [
 exports[`Device.ts should get/set name 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "device_name_changed",
     "payload": Object {
       "name": "new-name",
@@ -36,7 +36,7 @@ Array [
 exports[`Device.ts should get/set pin 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "device_pin_changed",
     "payload": Object {
       "pin": Object {
@@ -51,7 +51,7 @@ Array [
 exports[`Device.ts should get/set secret 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "device_secret_changed",
     "payload": Object {
       "secret": "new-secret",

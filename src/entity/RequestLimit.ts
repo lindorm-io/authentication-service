@@ -52,4 +52,8 @@ export class RequestLimit extends EntityBase implements IRequestLimit {
   public get subject(): string {
     return this._subject;
   }
+
+  public create(): void {
+    /* intentionally left empty */
+  }
 }

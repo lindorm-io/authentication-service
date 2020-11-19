@@ -4,8 +4,28 @@ exports[`AccountRepository should create 1`] = `
 Account {
   "_created": 2020-01-01T07:00:00.000Z,
   "_email": "email@lindorm.io",
-  "_events": Array [],
+  "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "account_created",
+      "payload": Object {
+        "created": 2020-01-01T07:00:00.000Z,
+        "email": "email@lindorm.io",
+        "otp": Object {
+          "signature": "c2lnbmF0dXJl",
+          "uri": "https://lindorm.io/",
+        },
+        "password": Object {
+          "signature": "c2lnbmF0dXJl",
+          "updated": 2020-01-01T07:00:00.000Z,
+        },
+        "permission": "locked",
+        "updated": 2020-01-01T07:00:00.000Z,
+      },
+    },
+  ],
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_identityId": "1148b4d6-214b-4bc3-9611-feecc065bf3c",
   "_otp": Object {
     "signature": "c2lnbmF0dXJl",
     "uri": "https://lindorm.io/",
@@ -24,8 +44,28 @@ exports[`AccountRepository should find 1`] = `
 Account {
   "_created": 2020-01-01T07:00:00.000Z,
   "_email": "email@lindorm.io",
-  "_events": Array [],
+  "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "account_created",
+      "payload": Object {
+        "created": 2020-01-01T07:00:00.000Z,
+        "email": "email@lindorm.io",
+        "otp": Object {
+          "signature": "c2lnbmF0dXJl",
+          "uri": "https://lindorm.io/",
+        },
+        "password": Object {
+          "signature": "c2lnbmF0dXJl",
+          "updated": 2020-01-01T07:00:00.000Z,
+        },
+        "permission": "locked",
+        "updated": 2020-01-01T07:00:00.000Z,
+      },
+    },
+  ],
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_identityId": "1148b4d6-214b-4bc3-9611-feecc065bf3c",
   "_otp": Object {
     "signature": "c2lnbmF0dXJl",
     "uri": "https://lindorm.io/",
@@ -45,8 +85,28 @@ Array [
   Account {
     "_created": 2020-01-01T07:00:00.000Z,
     "_email": "email@lindorm.io",
-    "_events": Array [],
+    "_events": Array [
+      Object {
+        "date": 2020-01-01T07:00:00.000Z,
+        "name": "account_created",
+        "payload": Object {
+          "created": 2020-01-01T07:00:00.000Z,
+          "email": "email@lindorm.io",
+          "otp": Object {
+            "signature": "c2lnbmF0dXJl",
+            "uri": "https://lindorm.io/",
+          },
+          "password": Object {
+            "signature": "c2lnbmF0dXJl",
+            "updated": 2020-01-01T07:00:00.000Z,
+          },
+          "permission": "locked",
+          "updated": 2020-01-01T07:00:00.000Z,
+        },
+      },
+    ],
     "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_identityId": "1148b4d6-214b-4bc3-9611-feecc065bf3c",
     "_otp": Object {
       "signature": "c2lnbmF0dXJl",
       "uri": "https://lindorm.io/",
@@ -62,8 +122,28 @@ Array [
   Account {
     "_created": 2020-01-01T07:00:00.000Z,
     "_email": "other@lindorm.io",
-    "_events": Array [],
+    "_events": Array [
+      Object {
+        "date": 2020-01-01T07:00:00.000Z,
+        "name": "account_created",
+        "payload": Object {
+          "created": 2020-01-01T07:00:00.000Z,
+          "email": "other@lindorm.io",
+          "otp": Object {
+            "signature": null,
+            "uri": null,
+          },
+          "password": Object {
+            "signature": null,
+            "updated": null,
+          },
+          "permission": "locked",
+          "updated": 2020-01-01T07:00:00.000Z,
+        },
+      },
+    ],
     "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_identityId": null,
     "_otp": Object {
       "signature": null,
       "uri": null,
@@ -83,8 +163,28 @@ exports[`AccountRepository should update 1`] = `
 Account {
   "_created": 2020-01-01T07:00:00.000Z,
   "_email": "email@lindorm.io",
-  "_events": Array [],
+  "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "account_created",
+      "payload": Object {
+        "created": 2020-01-01T07:00:00.000Z,
+        "email": "email@lindorm.io",
+        "otp": Object {
+          "signature": "c2lnbmF0dXJl",
+          "uri": "https://lindorm.io/",
+        },
+        "password": Object {
+          "signature": "c2lnbmF0dXJl",
+          "updated": 2020-01-01T07:00:00.000Z,
+        },
+        "permission": "locked",
+        "updated": 2020-01-01T07:00:00.000Z,
+      },
+    },
+  ],
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_identityId": "1148b4d6-214b-4bc3-9611-feecc065bf3c",
   "_otp": Object {
     "signature": "c2lnbmF0dXJl",
     "uri": "https://lindorm.io/",

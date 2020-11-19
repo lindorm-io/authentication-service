@@ -1,14 +1,19 @@
 import { Audience } from "../enum";
-import { IConfiguration } from "../typing";
-import { configuration as env } from "./default-test";
-import { mergeConfiguration } from "./merge-configuration";
-import { switchConfiguration } from "./switch-configuration";
 import { MongoConnectionType } from "@lindorm-io/mongo";
 import { RedisConnectionType } from "@lindorm-io/redis";
+import { developmentConfig, environmentConfig, productionConfig, stagingConfig, testConfig } from "./files";
+import { Config } from "../class";
 
-export const { NODE_ENVIRONMENT } = env;
+const handler = new Config({
+  productionConfig,
+  stagingConfig,
+  developmentConfig,
+  environmentConfig,
+  testConfig,
+});
 
-const config: IConfiguration = mergeConfiguration(env, switchConfiguration(NODE_ENVIRONMENT));
+export const { NODE_ENVIRONMENT } = environmentConfig;
+const config = handler.get(NODE_ENVIRONMENT);
 
 export const SERVER_PORT = config.SERVER_PORT;
 export const HOST = config.HOST;

@@ -3,7 +3,7 @@
 exports[`Client.ts should create 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "client_created",
     "payload": Object {
       "approved": true,
@@ -21,7 +21,7 @@ Array [
 exports[`Client.ts should get/set approved 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "client_approved_changed",
     "payload": Object {
       "approved": false,
@@ -33,7 +33,7 @@ Array [
 exports[`Client.ts should get/set description 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "client_description_changed",
     "payload": Object {
       "description": "new-description",
@@ -45,7 +45,7 @@ Array [
 exports[`Client.ts should get/set emailAuthorizationUri 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "client_email_authorization_uri_changed",
     "payload": Object {
       "uri": "https://lindorm.io/new",
@@ -57,7 +57,7 @@ Array [
 exports[`Client.ts should get/set name 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "client_name_changed",
     "payload": Object {
       "name": "new-name",
@@ -69,7 +69,7 @@ Array [
 exports[`Client.ts should get/set secret 1`] = `
 Array [
   Object {
-    "created": 2020-01-01T07:00:00.000Z,
+    "date": 2020-01-01T07:00:00.000Z,
     "name": "client_secret_changed",
     "payload": Object {
       "secret": "new-secret",

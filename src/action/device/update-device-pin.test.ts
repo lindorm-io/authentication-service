@@ -43,7 +43,7 @@ describe("updateDevicePIN", () => {
       _created: date,
       _events: [
         {
-          created: date,
+          date: date,
           name: "device_pin_changed",
           payload: {
             pin: {

@@ -22,5 +22,6 @@ export const mockRepositorySession = {
   update: jest.fn((entity: Session) => entity),
   find: jest.fn((filter: ISessionOptions) => new Session({ ...MOCK_SESSION_OPTIONS, ...filter })),
   findMany: jest.fn((filter: ISessionOptions) => [new Session({ ...MOCK_SESSION_OPTIONS, ...filter })]),
+  findOrCreate: jest.fn((filter: ISessionOptions) => new Session({ ...MOCK_SESSION_OPTIONS, ...filter })),
   remove: jest.fn((): any => undefined),
 };

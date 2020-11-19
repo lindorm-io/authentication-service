@@ -40,7 +40,7 @@ describe("createKeyPair", () => {
       _created: date,
       _events: [
         {
-          created: date,
+          date: date,
           name: "key_pair_expires_changed",
           payload: {
             expires: tomorrow,
