@@ -1,11 +1,12 @@
 import Joi from "@hapi/joi";
 import { APIError, HttpStatus } from "@lindorm-io/core";
 import { IAuthContext } from "../../../typing";
-import { InvalidClientError, InvalidPermissionError, InvalidSubjectError } from "../../../error";
+import { InvalidClientError } from "@lindorm-io/koa-client";
+import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { JOI_CHALLENGE_TYPE, JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import { MultiFactorChallengeType } from "../../../enum";
-import { isLocked } from "@lindorm-io/jwt";
 import { assertSessionIsNotExpired } from "../../../support";
+import { isLocked } from "@lindorm-io/jwt";
 
 export interface IPerformMultiFactorChallengeOptions {
   authenticatorId?: string;

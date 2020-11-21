@@ -1,5 +1,6 @@
 import { IAuthContext } from "../../typing";
-import { InvalidClientError, InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
+import { InvalidClientError } from "@lindorm-io/koa-client";
+import { InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
 import { JWT_REFRESH_TOKEN_EXPIRY } from "../../config";
 import { Session } from "../../entity";
 import { assertSessionIsNotExpired, getSessionExpires } from "./expires";

@@ -38,7 +38,7 @@ export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClient
     client.description = description;
   }
   if (isString(emailAuthorizationUri)) {
-    client.emailAuthorizationUri = emailAuthorizationUri;
+    client.extra = { emailAuthorizationUri };
   }
   if (isString(name)) {
     client.name = name;

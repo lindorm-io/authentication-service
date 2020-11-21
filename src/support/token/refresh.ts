@@ -1,7 +1,8 @@
-import { Account, Client, Device, Session } from "../../entity";
+import { Account, Device, Session } from "../../entity";
+import { Audience } from "../../enum";
+import { Client } from "@lindorm-io/koa-client";
 import { IAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
-import { Audience } from "../../enum";
 
 export interface IGetRefreshTokenOptions {
   account: Account;

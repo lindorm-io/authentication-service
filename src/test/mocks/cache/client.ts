@@ -1,4 +1,4 @@
-import { Client } from "../../../entity";
+import { Client } from "@lindorm-io/koa-client";
 import { MOCK_CLIENT_OPTIONS } from "../repository";
 
 export const mockCacheClient = {

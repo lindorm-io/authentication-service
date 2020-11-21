@@ -31,6 +31,7 @@ describe("/user-info", () => {
     const response = await request(koa.callback())
       .get(`/userinfo`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(200);
 

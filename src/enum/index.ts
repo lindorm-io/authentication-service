@@ -1,6 +1,5 @@
 export * from "./account-event";
 export * from "./audience";
-export * from "./client-event";
 export * from "./device-event";
 export * from "./grant-type";
 export * from "./mongo-collection";

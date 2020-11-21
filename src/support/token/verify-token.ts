@@ -1,4 +1,5 @@
-import { Client, Device } from "../../entity";
+import { Client } from "@lindorm-io/koa-client";
+import { Device } from "../../entity";
 import { IAuthContext } from "../../typing";
 import { ITokenIssuerVerifyData } from "@lindorm-io/jwt";
 import { JWT_ISSUER } from "../../config";

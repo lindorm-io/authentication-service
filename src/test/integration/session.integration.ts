@@ -72,6 +72,7 @@ describe("/session", () => {
     await request(koa.callback())
       .post("/session/logout/")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
@@ -110,6 +111,7 @@ describe("/session", () => {
     await request(koa.callback())
       .delete(`/session/${session.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,

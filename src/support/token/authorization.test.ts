@@ -1,6 +1,6 @@
 import MockDate from "mockdate";
 import { getAuthorizationToken } from "./authorization";
-import { Client, Device, Session } from "../../entity";
+import { Device, Session } from "../../entity";
 import {
   MOCK_CLIENT_OPTIONS,
   MOCK_DEVICE_OPTIONS,
@@ -8,6 +8,7 @@ import {
   MOCK_EC_TOKEN_ISSUER,
   MOCK_LOGGER,
 } from "../../test/mocks";
+import { Client } from "@lindorm-io/koa-client";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),

@@ -1,8 +1,9 @@
 import { Audience } from "../enum";
+import { Config } from "../class";
 import { MongoConnectionType } from "@lindorm-io/mongo";
 import { RedisConnectionType } from "@lindorm-io/redis";
 import { developmentConfig, environmentConfig, productionConfig, stagingConfig, testConfig } from "./files";
-import { Config } from "../class";
+import { stringToMilliseconds } from "@lindorm-io/core";
 
 const handler = new Config({
   productionConfig,
@@ -72,4 +73,10 @@ export const BEARER_TOKEN_MW_OPTIONS = {
 
 export const TOKEN_ISSUER_MW_OPTIONS = {
   issuer: config.JWT_ISSUER,
+};
+
+export const CLIENT_CACHE_WORKER_OPTIONS = {
+  mongoConnectionOptions: MONGO_CONNECTION_OPTIONS,
+  redisConnectionOptions: REDIS_CONNECTION_OPTIONS,
+  workerIntervalInMilliseconds: stringToMilliseconds("10 minutes"),
 };

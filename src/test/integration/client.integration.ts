@@ -2,7 +2,6 @@ import MockDate from "mockdate";
 import request from "supertest";
 import { Audience } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
-import { Client } from "../../entity";
 import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { encryptClientSecret } from "../../support/client";
@@ -17,6 +16,7 @@ import {
   loadMongoConnection,
   loadRedisConnection,
 } from "../grey-box";
+import { Client } from "@lindorm-io/koa-client";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -42,6 +42,7 @@ describe("/client", () => {
     const response = await request(koa.callback())
       .post("/client/")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         description: "description",
@@ -67,13 +68,14 @@ describe("/client", () => {
       new Client({
         secret: await encryptClientSecret("secret"),
         approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
+        extra: { emailAuthorizationUri: "https://lindorm.io/" },
       }),
     );
 
     await request(koa.callback())
       .patch(`/client/${tmp.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         approved: false,
@@ -88,7 +90,7 @@ describe("/client", () => {
       expect.objectContaining({
         approved: false,
         description: "new-description",
-        emailAuthorizationUri: "https://lindorm.io/new",
+        extra: { emailAuthorizationUri: "https://lindorm.io/new" },
         name: "new-name",
       }),
     );
@@ -99,13 +101,14 @@ describe("/client", () => {
       new Client({
         secret: await encryptClientSecret("secret"),
         approved: true,
-        emailAuthorizationUri: "https://lindorm.io/",
+        extra: { emailAuthorizationUri: "https://lindorm.io/" },
       }),
     );
 
     await request(koa.callback())
       .delete(`/client/${tmp.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(202);
 

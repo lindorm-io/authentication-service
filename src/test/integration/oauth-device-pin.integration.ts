@@ -27,6 +27,7 @@ describe("/oauth DEVICE_PIN", () => {
   test("should resolve", async () => {
     const initResponse = await request(koa.callback())
       .post("/oauth/authorization")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
@@ -62,6 +63,7 @@ describe("/oauth DEVICE_PIN", () => {
 
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
@@ -98,6 +100,7 @@ describe("/oauth DEVICE_PIN", () => {
   test("should throw error when client is missing", async () => {
     const result = await request(koa.callback())
       .post("/oauth/authorization")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         // client_id: TEST_CLIENT.id,
@@ -144,6 +147,7 @@ describe("/oauth DEVICE_PIN", () => {
   test("should throw error when device is missing", async () => {
     const result = await request(koa.callback())
       .post("/oauth/authorization")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,

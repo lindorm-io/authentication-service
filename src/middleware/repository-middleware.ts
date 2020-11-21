@@ -1,12 +1,7 @@
+import { AccountRepository, DeviceRepository, KeyPairRepository, SessionRepository } from "../infrastructure";
+import { ClientRepository } from "@lindorm-io/koa-client";
 import { IAuthContext } from "../typing";
 import { TPromise } from "@lindorm-io/core";
-import {
-  AccountRepository,
-  ClientRepository,
-  DeviceRepository,
-  KeyPairRepository,
-  SessionRepository,
-} from "../infrastructure";
 
 export const repositoryMiddleware = async (ctx: IAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();

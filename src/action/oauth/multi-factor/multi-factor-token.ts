@@ -1,9 +1,10 @@
 import Joi from "@hapi/joi";
 import { IAuthContext, ICreateTokensData } from "../../../typing";
-import { InvalidClientError, InvalidPermissionError, InvalidSubjectError } from "../../../error";
+import { InvalidClientError } from "@lindorm-io/koa-client";
+import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { isLocked } from "@lindorm-io/jwt";
 import { assertAccountOTP, assertSessionIsNotExpired, authenticateSession, createTokens } from "../../../support";
+import { isLocked } from "@lindorm-io/jwt";
 
 export interface IPerformMultiFactorTokenOptions {
   bindingCode: string;

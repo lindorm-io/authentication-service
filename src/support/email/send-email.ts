@@ -24,7 +24,7 @@ export const sendEmailLink = (ctx: IAuthContext) => async (options: ISendEmailLi
   const { client, logger } = ctx;
   const { grantType, redirectUri, state, subject, token } = options;
 
-  const url = new URL(client.emailAuthorizationUri);
+  const url = new URL(client.extra.emailAuthorizationUri);
 
   url.searchParams.append("grant_type", encodeURI(grantType));
   url.searchParams.append("redirect_uri", encodeURI(redirectUri));
@@ -33,7 +33,7 @@ export const sendEmailLink = (ctx: IAuthContext) => async (options: ISendEmailLi
 
   if (NODE_ENVIRONMENT === NodeEnvironment.TEST) {
     emailInMemory.push({
-      emailAuthorizationUri: client.emailAuthorizationUri,
+      emailAuthorizationUri: client.extra.emailAuthorizationUri,
       grantType,
       redirectUri,
       state,

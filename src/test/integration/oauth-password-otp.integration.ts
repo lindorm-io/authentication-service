@@ -26,6 +26,7 @@ describe("/oauth PASSWORD_OTP", () => {
   test("should resolve", async () => {
     const initResponse = await request(koa.callback())
       .post("/oauth/authorization")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
@@ -56,6 +57,7 @@ describe("/oauth PASSWORD_OTP", () => {
 
     const tokenMfaResponse = await request(koa.callback())
       .post("/oauth/token")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
@@ -87,6 +89,7 @@ describe("/oauth PASSWORD_OTP", () => {
 
     const mfaChallengeResponse = await request(koa.callback())
       .post("/mfa/challenge")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
@@ -107,6 +110,7 @@ describe("/oauth PASSWORD_OTP", () => {
 
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,

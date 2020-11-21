@@ -27,6 +27,7 @@ describe("/oauth EMAIL_LINK", () => {
   test("should resolve", async () => {
     const initResponse = await request(koa.callback())
       .post("/oauth/authorization")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
@@ -53,6 +54,7 @@ describe("/oauth EMAIL_LINK", () => {
 
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,

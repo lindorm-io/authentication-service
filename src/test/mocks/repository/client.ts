@@ -1,4 +1,4 @@
-import { Client, IClientOptions } from "../../../entity";
+import { Client, IClientOptions } from "@lindorm-io/koa-client";
 
 export const MOCK_CLIENT_OPTIONS: IClientOptions = {
   approved: true,

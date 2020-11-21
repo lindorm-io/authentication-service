@@ -44,6 +44,7 @@ describe("/account", () => {
     const response = await request(koa.callback())
       .post("/account/")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         email: "create@lindorm.io",
@@ -66,6 +67,7 @@ describe("/account", () => {
     const response = await request(koa.callback())
       .get(`/account/${TEST_ACCOUNT.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(200);
 
@@ -91,6 +93,7 @@ describe("/account", () => {
     await request(koa.callback())
       .delete(`/account/${tmp.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(204);
 
@@ -115,6 +118,7 @@ describe("/account", () => {
     await request(koa.callback())
       .delete(`/account/${tmp.id}/otp`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         binding_code: bindingCode,
@@ -138,6 +142,7 @@ describe("/account", () => {
     await request(koa.callback())
       .patch(`/account/${tmp.id}/permission`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         permission: Permission.LOCKED,
@@ -155,6 +160,7 @@ describe("/account", () => {
     await request(koa.callback())
       .patch("/account/email")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         updatedEmail: "new@lindorm.io",
@@ -172,6 +178,7 @@ describe("/account", () => {
     const response = await request(koa.callback())
       .post("/account/otp")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(200);
 
@@ -195,6 +202,7 @@ describe("/account", () => {
     await request(koa.callback())
       .put("/account/password")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         password: "password",

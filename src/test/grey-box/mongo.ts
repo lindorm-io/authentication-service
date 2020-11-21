@@ -1,27 +1,20 @@
+import { AccountRepository, DeviceRepository, KeyPairRepository, SessionRepository } from "../../infrastructure";
+import { ClientRepository } from "@lindorm-io/koa-client";
 import { MONGO_CONNECTION_OPTIONS } from "../../config";
 import { MongoConnection, MongoConnectionType } from "@lindorm-io/mongo";
 import { TokenIssuer } from "@lindorm-io/jwt";
 import { generateTestAccount, IGenerateTestAccountData } from "./generate-test-account";
-import { generateTestClient, IGenerateTestClientData } from "./generate-test-client";
 import { generateTestDevice, IGenerateTestDeviceData } from "./generate-test-device";
 import { generateTestKeyPair } from "./generate-test-key-pair";
 import { generateTestTokenIssuer } from "./generate-test-token-issuer";
 import { inMemoryStore } from "../../middleware";
 import { winston } from "../../logger";
-import {
-  AccountRepository,
-  ClientRepository,
-  DeviceRepository,
-  KeyPairRepository,
-  SessionRepository,
-} from "../../infrastructure";
 
 const logger = winston.createChildLogger(["grey-box", "mongo"]);
 
 export let TEST_ACCOUNT: IGenerateTestAccountData;
 export let TEST_ACCOUNT_PWD: IGenerateTestAccountData;
 export let TEST_ACCOUNT_OTP: IGenerateTestAccountData;
-export let TEST_CLIENT: IGenerateTestClientData;
 export let TEST_DEVICE: IGenerateTestDeviceData;
 
 export let TEST_TOKEN_ISSUER: TokenIssuer;
@@ -60,7 +53,6 @@ export const loadMongoConnection = async (): Promise<void> => {
     hasPassword: true,
     hasOtp: true,
   });
-  TEST_CLIENT = await generateTestClient();
   TEST_DEVICE = await generateTestDevice(TEST_ACCOUNT_OTP.account);
 
   const keyPair = await generateTestKeyPair();
@@ -69,7 +61,6 @@ export const loadMongoConnection = async (): Promise<void> => {
   await TEST_ACCOUNT_REPOSITORY.create(TEST_ACCOUNT.account);
   await TEST_ACCOUNT_REPOSITORY.create(TEST_ACCOUNT_PWD.account);
   await TEST_ACCOUNT_REPOSITORY.create(TEST_ACCOUNT_OTP.account);
-  await TEST_CLIENT_REPOSITORY.create(TEST_CLIENT.client);
   await TEST_DEVICE_REPOSITORY.create(TEST_DEVICE.device);
   await TEST_KEY_PAIR_REPOSITORY.create(keyPair);
 };

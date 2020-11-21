@@ -45,7 +45,6 @@ describe("updateClient", () => {
       _approved: true,
       _created: date,
       _description: "description",
-      _emailAuthorizationUri: "https://lindorm.io/",
       _events: [
         {
           date: date,
@@ -63,9 +62,11 @@ describe("updateClient", () => {
         },
         {
           date: date,
-          name: "client_email_authorization_uri_changed",
+          name: "client_extra_changed",
           payload: {
-            uri: "https://lindorm.io/",
+            extra: {
+              emailAuthorizationUri: "https://lindorm.io/",
+            },
           },
         },
         {
@@ -83,7 +84,10 @@ describe("updateClient", () => {
           },
         },
       ],
-      _id: MOCK_UUID,
+      _extra: {
+        emailAuthorizationUri: "https://lindorm.io/",
+      },
+      _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
       _name: "name",
       _secret: "encryptClientSecret",
       _updated: date,

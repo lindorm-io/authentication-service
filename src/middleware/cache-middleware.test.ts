@@ -1,8 +1,8 @@
+import { ClientCache } from "@lindorm-io/koa-client";
+import { KeyPairCache } from "../infrastructure/key-pair";
 import { MOCK_LOGGER } from "../test/mocks";
 import { RequestLimitCache } from "../infrastructure/request-limit";
 import { cacheMiddleware } from "./cache-middleware";
-import { ClientCache } from "../infrastructure/client";
-import { KeyPairCache } from "../infrastructure/key-pair";
 
 describe("cacheMiddleware", () => {
   let ctx: any;

@@ -1,8 +1,9 @@
-import { Account, Client, Device } from "../../entity";
-import { IAuthContext } from "../../typing";
+import { Account, Device } from "../../entity";
 import { Audience } from "../../enum";
-import { JWT_IDENTITY_TOKEN_EXPIRY } from "../../config";
+import { Client } from "@lindorm-io/koa-client";
+import { IAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
+import { JWT_IDENTITY_TOKEN_EXPIRY } from "../../config";
 import { TObject } from "@lindorm-io/core";
 
 export interface IGetIdentityTokenOptions {

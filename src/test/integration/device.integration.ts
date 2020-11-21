@@ -43,6 +43,7 @@ describe("/device", () => {
     const response = await request(koa.callback())
       .post("/device/")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         name: "name",
@@ -78,6 +79,7 @@ describe("/device", () => {
     await request(koa.callback())
       .delete(`/device/${tmp.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(202);
 
@@ -90,6 +92,7 @@ describe("/device", () => {
     await request(koa.callback())
       .patch(`/device/${TEST_DEVICE.id}/name`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         name: "new-name",
@@ -109,6 +112,7 @@ describe("/device", () => {
     await request(koa.callback())
       .patch(`/device/${TEST_DEVICE.id}/pin`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         pin: TEST_DEVICE.pin,
@@ -127,6 +131,7 @@ describe("/device", () => {
     await request(koa.callback())
       .patch(`/device/${TEST_DEVICE.id}/secret`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         pin: TEST_DEVICE.pin,

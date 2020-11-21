@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
-import { Client } from "../../entity";
 import { IAuthContext } from "../../typing";
 import { assertAccountAdmin, encryptClientSecret } from "../../support";
+import { Client } from "@lindorm-io/koa-client";
 
 export interface ICreateClientOptions {
   description: string;
@@ -33,7 +33,11 @@ export const createClient = (ctx: IAuthContext) => async (
 
   const client = new Client({
     description,
-    emailAuthorizationUri,
+    extra: emailAuthorizationUri
+      ? {
+          emailAuthorizationUri,
+        }
+      : {},
     name,
     secret: secret && encryptClientSecret(secret),
   });

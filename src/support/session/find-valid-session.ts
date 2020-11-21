@@ -1,5 +1,6 @@
 import { IAuthContext } from "../../typing";
-import { InvalidAuthorizationError, InvalidClientError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
+import { InvalidAuthorizationError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
+import { InvalidClientError } from "@lindorm-io/koa-client";
 import { Session } from "../../entity";
 import { assertCodeChallenge } from "./challenge";
 import { assertSessionIsNotExpired } from "./expires";

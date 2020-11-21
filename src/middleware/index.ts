@@ -1,6 +1,5 @@
 export * from "./account-middleware";
 export * from "./cache-middleware";
-export * from "./client-middleware";
 export * from "./device-middleware";
 export * from "./keystore-middleware";
 export * from "./mongo-middleware";

@@ -1,5 +1,6 @@
-import { Account, Client, Device } from "../../entity";
+import { Account, Device } from "../../entity";
 import { Audience } from "../../enum";
+import { Client } from "@lindorm-io/koa-client";
 import { IAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";

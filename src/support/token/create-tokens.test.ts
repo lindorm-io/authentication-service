@@ -1,5 +1,5 @@
 import MockDate from "mockdate";
-import { Account, Client, Device, Session } from "../../entity";
+import { Account, Device, Session } from "../../entity";
 import { ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
 import { createTokens } from "./create-tokens";
@@ -12,6 +12,7 @@ import {
   MOCK_LOGGER,
   getMockRepository,
 } from "../../test/mocks";
+import { Client } from "@lindorm-io/koa-client";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),

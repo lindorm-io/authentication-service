@@ -1,4 +1,4 @@
-import { Client } from "../../entity";
+import { Client } from "@lindorm-io/koa-client";
 import { encryptClientSecret } from "../../support";
 import { getRandomValue } from "@lindorm-io/core";
 
@@ -13,7 +13,7 @@ export const generateTestClient = async (): Promise<IGenerateTestClientData> => 
 
   const client = new Client({
     approved: true,
-    emailAuthorizationUri: "http://lindorm.io/",
+    extra: { emailAuthorizationUri: "http://lindorm.io/" },
     secret: encryptClientSecret(secret),
   });
 

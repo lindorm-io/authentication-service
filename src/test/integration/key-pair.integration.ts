@@ -39,6 +39,7 @@ describe("/key-pair", () => {
     const response = await request(koa.callback())
       .post("/key-pair/")
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         type: KeyType.EC,
@@ -64,6 +65,7 @@ describe("/key-pair", () => {
     await request(koa.callback())
       .patch(`/key-pair/${tmp.id}/expire`)
       .set("Authorization", `Bearer ${accessToken}`)
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         expires: "10 days",

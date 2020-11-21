@@ -1,8 +1,9 @@
 import MockDate from "mockdate";
 import { MOCK_CODE_VERIFIER, MOCK_SESSION_OPTIONS, getMockRepository } from "../../test/mocks";
-import { Client, ISessionOptions, Session } from "../../entity";
-import { InvalidAuthorizationError, InvalidClientError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
+import { ISessionOptions, Session } from "../../entity";
+import { InvalidAuthorizationError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
 import { findValidSession } from "./find-valid-session";
+import { Client, InvalidClientError } from "@lindorm-io/koa-client";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),

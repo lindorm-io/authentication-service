@@ -62,6 +62,7 @@ describe("/oauth REFRESH_TOKEN", () => {
   test("should resolve", async () => {
     const response = await request(koa.callback())
       .post("/oauth/token")
+      .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,

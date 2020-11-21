@@ -1,8 +1,9 @@
 import MockDate from "mockdate";
-import { Client, Device, ISessionOptions, Session } from "../../entity";
+import { Device, ISessionOptions, Session } from "../../entity";
 import { MOCK_DEVICE_OPTIONS, MOCK_SESSION_OPTIONS, getMockRepository } from "../../test/mocks";
 import { extendSession } from "./extend-session";
-import { InvalidClientError, InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
+import { InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
+import { Client, InvalidClientError } from "@lindorm-io/koa-client";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),

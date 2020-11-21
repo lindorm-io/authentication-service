@@ -1,4 +1,5 @@
-import { Account, Client, Device, Session } from "../../entity";
+import { Account, Device, Session } from "../../entity";
+import { Client } from "@lindorm-io/koa-client";
 import { IAuthContext, ICreateTokensData } from "../../typing";
 import { ResponseType } from "../../enum";
 import { TObject } from "@lindorm-io/core";
