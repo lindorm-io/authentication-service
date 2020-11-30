@@ -37,7 +37,7 @@ export class Account extends EntityBase implements IAccount {
 
   constructor(options: IAccountOptions) {
     super(options);
-    this._email = options.email;
+    this._email = options.email.toLowerCase();
     this._identityId = options.identityId || null;
     this._otp = {
       signature: options.otp?.signature || null,
@@ -54,7 +54,7 @@ export class Account extends EntityBase implements IAccount {
     return this._email;
   }
   public set email(email: string) {
-    this._email = email;
+    this._email = email.toLowerCase();
     this.addEvent(AccountEvent.EMAIL_CHANGED, { email: this._email });
   }
 

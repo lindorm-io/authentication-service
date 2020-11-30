@@ -38,12 +38,19 @@ describe("Account.ts", () => {
     expect(account.events).toMatchSnapshot();
   });
 
-  test("should get/set email", () => {
+  test("should always cast email as lowercase", () => {
+    account = new Account({
+      email: "EMAIL@LINDORM.IO",
+    });
+    expect(account).toMatchSnapshot();
+  });
+
+  test("should get/set email as lowercase", () => {
     expect(account.email).toBe("email@lindorm.io");
 
-    account.email = "new-email";
+    account.email = "NEW-email@lindorm.io";
 
-    expect(account.email).toBe("new-email");
+    expect(account.email).toBe("new-email@lindorm.io");
     expect(account.events).toMatchSnapshot();
   });
 
