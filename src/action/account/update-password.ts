@@ -34,7 +34,7 @@ export const updateAccountPassword = (ctx: IAuthContext) => async (
 
   await repository.account.update(account);
 
-  logger.debug("device password updated", {
+  logger.debug("account password updated", {
     accountId: account.id,
   });
 };

@@ -30,7 +30,7 @@ export const updateAccountPermission = (ctx: IAuthContext) => async (
 
   await repository.account.update(account);
 
-  logger.debug("account updated", {
+  logger.debug("account permission updated", {
     adminId: admin.id,
     accountId: account.id,
   });

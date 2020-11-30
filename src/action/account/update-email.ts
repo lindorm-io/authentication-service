@@ -24,7 +24,7 @@ export const updateAccountEmail = (ctx: IAuthContext) => async (options: IUpdate
 
   await repository.account.update(account);
 
-  logger.debug("device email updated", {
+  logger.debug("account email updated", {
     accountId: account.id,
     email: updatedEmail,
   });
