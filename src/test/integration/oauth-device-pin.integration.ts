@@ -1,27 +1,37 @@
 import MockDate from "mockdate";
 import request from "supertest";
+import { Account, Device } from "../../entity";
 import { GrantType, ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
-  TEST_DEVICE,
+  TEST_DEVICE_REPOSITORY,
+  TEST_KEY_PAIR_HANDLER,
   generateTestOauthData,
-  loadMongoConnection,
-  loadRedisConnection,
+  getGreyBoxAccount,
+  getGreyBoxDevice,
+  setupIntegration,
 } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth DEVICE_PIN", () => {
+  let account: Account;
+  let device: Device;
+
   const { codeMethod, codeVerifier, codeChallenge, state } = generateTestOauthData();
 
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
+
+  beforeEach(async () => {
+    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
+    device = await TEST_DEVICE_REPOSITORY.create(await getGreyBoxDevice(account));
   });
 
   test("should resolve", async () => {
@@ -33,7 +43,7 @@ describe("/oauth DEVICE_PIN", () => {
         client_id: TEST_CLIENT.id,
         client_secret: TEST_CLIENT.secret,
 
-        device_id: TEST_DEVICE.id,
+        device_id: device.id,
 
         code_challenge: codeChallenge,
         code_method: codeMethod,
@@ -42,7 +52,7 @@ describe("/oauth DEVICE_PIN", () => {
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
         scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
-        subject: TEST_ACCOUNT.email,
+        subject: account.email,
       })
       .expect(200);
 
@@ -59,7 +69,7 @@ describe("/oauth DEVICE_PIN", () => {
       body: { device_challenge: deviceChallenge, token },
     } = initResponse;
 
-    const deviceVerifier = TEST_DEVICE.handler.sign(deviceChallenge);
+    const deviceVerifier = TEST_KEY_PAIR_HANDLER.sign(deviceChallenge);
 
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
@@ -71,13 +81,13 @@ describe("/oauth DEVICE_PIN", () => {
 
         authorization_token: token,
 
-        device_id: TEST_DEVICE.id,
+        device_id: device.id,
 
         code_verifier: codeVerifier,
         device_verifier: deviceVerifier,
         grant_type: GrantType.DEVICE_PIN,
-        pin: TEST_DEVICE.pin,
-        subject: TEST_ACCOUNT.email,
+        pin: "123456",
+        subject: account.email,
       })
       .expect(200);
 
@@ -93,90 +103,6 @@ describe("/oauth DEVICE_PIN", () => {
         expires_in: 86400,
         id: expect.any(String),
         token: expect.any(String),
-      },
-    });
-  });
-
-  test("should throw error when client is missing", async () => {
-    const result = await request(koa.callback())
-      .post("/oauth/authorization")
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .send({
-        // client_id: TEST_CLIENT.id,
-        // client_secret: TEST_CLIENT.secret,
-
-        device_id: TEST_DEVICE.id,
-
-        code_challenge: codeChallenge,
-        code_method: codeMethod,
-        grant_type: GrantType.DEVICE_PIN,
-        redirect_uri: "https://redirect.uri/",
-        response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-        state: state,
-        subject: TEST_ACCOUNT.email,
-      })
-      .expect(403);
-
-    expect(result.body).toStrictEqual({
-      error: {
-        code: null,
-        data: {
-          back_off_until: null,
-          failed_tries: 1,
-        },
-        details: [
-          {
-            context: {
-              key: "clientId",
-              label: "clientId",
-            },
-            message: '"clientId" is required',
-            path: ["clientId"],
-            type: "any.required",
-          },
-        ],
-        message: "This request failed and has been rate-limited",
-        name: "RequestLimitFailedTryError",
-        title: null,
-      },
-    });
-  });
-
-  test("should throw error when device is missing", async () => {
-    const result = await request(koa.callback())
-      .post("/oauth/authorization")
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .send({
-        client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
-
-        // device_id: TEST_DEVICE.id,
-
-        code_challenge: codeChallenge,
-        code_method: codeMethod,
-        grant_type: GrantType.DEVICE_PIN,
-        redirect_uri: "https://redirect.uri/",
-        response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
-        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-        state: state,
-        subject: TEST_ACCOUNT.email,
-      })
-      .expect(403);
-
-    expect(result.body).toStrictEqual({
-      error: {
-        code: null,
-        data: {
-          back_off_until: null,
-          failed_tries: 2,
-        },
-        details: "Device not found",
-        message: "This request failed and has been rate-limited",
-        name: "RequestLimitFailedTryError",
-        title: null,
       },
     });
   });

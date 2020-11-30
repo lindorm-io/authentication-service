@@ -1,38 +1,32 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Audience } from "../../enum";
-import { Scope } from "@lindorm-io/jwt";
-import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
+import { Account } from "../../entity";
 import { generateECCKeys, KeyPair, KeyType } from "@lindorm-io/key-pair";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   TEST_KEY_PAIR_REPOSITORY,
-  TEST_TOKEN_ISSUER,
-  loadMongoConnection,
-  loadRedisConnection,
+  getGreyBoxAccessToken,
+  getGreyBoxAccountAdmin,
+  setupIntegration,
 } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/key-pair", () => {
+  let account: Account;
   let accessToken: string;
 
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
 
-    ({ token: accessToken } = TEST_TOKEN_ISSUER.sign({
-      audience: Audience.ACCESS,
-      clientId: TEST_CLIENT.id,
-      expiry: JWT_ACCESS_TOKEN_EXPIRY,
-      permission: TEST_ACCOUNT.permission,
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-      subject: TEST_ACCOUNT.id,
-    }));
+  beforeEach(async () => {
+    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccountAdmin("admin@lindorm.io"));
+    accessToken = getGreyBoxAccessToken(account);
   });
 
   test("POST /", async () => {

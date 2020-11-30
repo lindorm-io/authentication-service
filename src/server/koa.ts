@@ -1,3 +1,4 @@
+import { CLIENT_CACHE_WORKER_OPTIONS, SERVER_PORT, TOKEN_ISSUER_MW_OPTIONS } from "../config";
 import { KoaApp } from "@lindorm-io/koa";
 import { NODE_ENVIRONMENT } from "../config";
 import { NodeEnvironment } from "@lindorm-io/core";
@@ -6,13 +7,6 @@ import { clientCacheWorker, clientMiddleware } from "@lindorm-io/koa-client";
 import { keyPairCacheWorker, sessionCleanupWorker } from "../worker";
 import { tokenIssuerMiddleware } from "@lindorm-io/koa-jwt";
 import { winston } from "../logger";
-import {
-  CLIENT_CACHE_WORKER_OPTIONS,
-  MONGO_CONNECTION_OPTIONS,
-  REDIS_CONNECTION_OPTIONS,
-  SERVER_PORT,
-  TOKEN_ISSUER_MW_OPTIONS,
-} from "../config";
 import {
   cacheMiddleware,
   getMongoMiddleware,
@@ -26,9 +20,9 @@ export const koa = new KoaApp({
   port: SERVER_PORT,
 });
 
-koa.addMiddleware(getMongoMiddleware(MONGO_CONNECTION_OPTIONS));
+koa.addMiddleware(getMongoMiddleware());
 koa.addMiddleware(repositoryMiddleware);
-koa.addMiddleware(getRedisMiddleware(REDIS_CONNECTION_OPTIONS));
+koa.addMiddleware(getRedisMiddleware());
 koa.addMiddleware(cacheMiddleware);
 koa.addMiddleware(clientMiddleware);
 koa.addMiddleware(keystoreMiddleware);

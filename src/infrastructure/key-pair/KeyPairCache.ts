@@ -14,7 +14,7 @@ export class KeyPairCache extends CacheBase<KeyPair> implements IKeyPairCache {
   constructor(options: ICacheOptions) {
     super({
       client: options.client,
-      entityName: KeyPair.constructor.name,
+      entityName: "KeyPair",
       expiresInSeconds: options.expiresInSeconds,
       logger: options.logger,
       schema,

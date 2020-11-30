@@ -16,3 +16,4 @@ export * from "./InvalidScopeInputError";
 export * from "./InvalidSubjectError";
 export * from "./LockedAccountError";
 export * from "./RequestLimitBackOffError";
+export * from "./RequestLimitFailedTryError";

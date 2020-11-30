@@ -11,11 +11,7 @@ export interface IGenerateTestOauthData {
 export const generateTestOauthData = (): IGenerateTestOauthData => {
   const codeMethod = "sha256";
   const codeVerifier = getRandomValue(32);
-
-  const method = createHash(codeMethod);
-  method.update(codeVerifier, "utf8");
-
-  const codeChallenge = method.digest("base64");
+  const codeChallenge = createHash(codeMethod).update(codeVerifier, "utf8").digest("base64");
   const state = getRandomValue(16);
 
   return {

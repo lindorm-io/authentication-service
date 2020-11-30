@@ -1,41 +1,35 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Audience } from "../../enum";
-import { Scope } from "@lindorm-io/jwt";
-import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
+import { Account } from "../../entity";
+import { Client } from "@lindorm-io/koa-client";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { encryptClientSecret } from "../../support/client";
 import { getRandomValue } from "@lindorm-io/core";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   TEST_CLIENT_REPOSITORY,
-  TEST_TOKEN_ISSUER,
-  loadMongoConnection,
-  loadRedisConnection,
+  getGreyBoxAccessToken,
+  getGreyBoxAccountAdmin,
+  setupIntegration,
 } from "../grey-box";
-import { Client } from "@lindorm-io/koa-client";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/client", () => {
+  let account: Account;
   let accessToken: string;
 
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
 
-    ({ token: accessToken } = TEST_TOKEN_ISSUER.sign({
-      audience: Audience.ACCESS,
-      clientId: TEST_CLIENT.id,
-      expiry: JWT_ACCESS_TOKEN_EXPIRY,
-      permission: TEST_ACCOUNT.permission,
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-      subject: TEST_ACCOUNT.id,
-    }));
+  beforeEach(async () => {
+    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccountAdmin("admin@lindorm.io"));
+    accessToken = getGreyBoxAccessToken(account);
   });
 
   test("POST /", async () => {
@@ -64,7 +58,7 @@ describe("/client", () => {
   });
 
   test("PATCH /:id", async () => {
-    const tmp = await TEST_CLIENT_REPOSITORY.create(
+    const client = await TEST_CLIENT_REPOSITORY.create(
       new Client({
         secret: await encryptClientSecret("secret"),
         approved: true,
@@ -73,7 +67,7 @@ describe("/client", () => {
     );
 
     await request(koa.callback())
-      .patch(`/client/${tmp.id}`)
+      .patch(`/client/${client.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
@@ -86,7 +80,7 @@ describe("/client", () => {
       })
       .expect(204);
 
-    await expect(TEST_CLIENT_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
+    await expect(TEST_CLIENT_REPOSITORY.find({ id: client.id })).resolves.toStrictEqual(
       expect.objectContaining({
         approved: false,
         description: "new-description",
@@ -97,7 +91,7 @@ describe("/client", () => {
   });
 
   test("DELETE /:id", async () => {
-    const tmp = await TEST_CLIENT_REPOSITORY.create(
+    const client = await TEST_CLIENT_REPOSITORY.create(
       new Client({
         secret: await encryptClientSecret("secret"),
         approved: true,
@@ -106,13 +100,13 @@ describe("/client", () => {
     );
 
     await request(koa.callback())
-      .delete(`/client/${tmp.id}`)
+      .delete(`/client/${client.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(202);
 
-    await expect(TEST_CLIENT_REPOSITORY.find({ id: tmp.id })).rejects.toStrictEqual(
+    await expect(TEST_CLIENT_REPOSITORY.find({ id: client.id })).rejects.toStrictEqual(
       expect.any(RepositoryEntityNotFoundError),
     );
   });

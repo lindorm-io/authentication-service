@@ -18,7 +18,7 @@ export class RequestLimitCache extends CacheBase<RequestLimit> implements IReque
   constructor(options: ICacheOptions) {
     super({
       client: options.client,
-      entityName: RequestLimit.constructor.name,
+      entityName: "RequestLimit",
       expiresInSeconds: options.expiresInSeconds,
       logger: options.logger,
       schema,

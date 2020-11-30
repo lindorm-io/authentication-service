@@ -1,42 +1,35 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Audience } from "../../enum";
-import { Scope } from "@lindorm-io/jwt";
-import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
-import { getRandomValue } from "@lindorm-io/core";
+import { Account, Device } from "../../entity";
+import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
-  TEST_DEVICE,
   TEST_DEVICE_REPOSITORY,
-  TEST_TOKEN_ISSUER,
-  loadMongoConnection,
-  loadRedisConnection,
+  getGreyBoxAccessToken,
+  getGreyBoxAccount,
+  getGreyBoxDevice,
+  setupIntegration,
 } from "../grey-box";
-import { Device } from "../../entity";
-import { encryptDevicePIN } from "../../support/device";
-import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/device", () => {
+  let account: Account;
+  let device: Device;
   let accessToken: string;
 
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
 
-    ({ token: accessToken } = TEST_TOKEN_ISSUER.sign({
-      audience: Audience.ACCESS,
-      clientId: TEST_CLIENT.id,
-      expiry: JWT_ACCESS_TOKEN_EXPIRY,
-      permission: TEST_ACCOUNT.permission,
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-      subject: TEST_ACCOUNT.id,
-    }));
+  beforeEach(async () => {
+    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
+    device = await TEST_DEVICE_REPOSITORY.create(await getGreyBoxDevice(account));
+    accessToken = getGreyBoxAccessToken(account);
   });
 
   test("POST /", async () => {
@@ -48,8 +41,8 @@ describe("/device", () => {
       .send({
         name: "name",
         pin: "123456",
-        public_key: TEST_DEVICE.device.publicKey,
-        secret: getRandomValue(32),
+        public_key: device.publicKey,
+        secret: "test_device_secret",
       })
       .expect(201);
 
@@ -65,32 +58,21 @@ describe("/device", () => {
   });
 
   test("DELETE /:id", async () => {
-    const tmp = await TEST_DEVICE_REPOSITORY.create(
-      new Device({
-        accountId: TEST_ACCOUNT.id,
-        pin: {
-          signature: await encryptDevicePIN("123456"),
-          updated: new Date(),
-        },
-        publicKey: TEST_DEVICE.device.publicKey,
-      }),
-    );
-
     await request(koa.callback())
-      .delete(`/device/${tmp.id}`)
+      .delete(`/device/${device.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(202);
 
-    await expect(TEST_DEVICE_REPOSITORY.find({ id: tmp.id })).rejects.toStrictEqual(
+    await expect(TEST_DEVICE_REPOSITORY.find({ id: device.id })).rejects.toStrictEqual(
       expect.any(RepositoryEntityNotFoundError),
     );
   });
 
   test("PATCH /:id/name", async () => {
     await request(koa.callback())
-      .patch(`/device/${TEST_DEVICE.id}/name`)
+      .patch(`/device/${device.id}/name`)
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
@@ -99,7 +81,7 @@ describe("/device", () => {
       })
       .expect(204);
 
-    await expect(TEST_DEVICE_REPOSITORY.find({ id: TEST_DEVICE.id })).resolves.toStrictEqual(
+    await expect(TEST_DEVICE_REPOSITORY.find({ id: device.id })).resolves.toStrictEqual(
       expect.objectContaining({
         name: "new-name",
       }),
@@ -107,39 +89,39 @@ describe("/device", () => {
   });
 
   test("PATCH /:id/pin", async () => {
-    const oldSignature = TEST_DEVICE.device.pin.signature;
+    const oldSignature = device.pin.signature;
 
     await request(koa.callback())
-      .patch(`/device/${TEST_DEVICE.id}/pin`)
+      .patch(`/device/${device.id}/pin`)
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
-        pin: TEST_DEVICE.pin,
-        updatedPin: TEST_DEVICE.pin,
+        pin: "123456",
+        updatedPin: "987654",
       })
       .expect(204);
 
-    const result = await TEST_DEVICE_REPOSITORY.find({ id: TEST_DEVICE.id });
+    const result = await TEST_DEVICE_REPOSITORY.find({ id: device.id });
 
     expect(result.pin.signature).not.toBe(oldSignature);
   });
 
   test("PATCH /:id/secret", async () => {
-    const oldSignature = TEST_DEVICE.device.secret;
+    const oldSignature = device.secret;
 
     await request(koa.callback())
-      .patch(`/device/${TEST_DEVICE.id}/secret`)
+      .patch(`/device/${device.id}/secret`)
       .set("Authorization", `Bearer ${accessToken}`)
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({
-        pin: TEST_DEVICE.pin,
-        updatedSecret: getRandomValue(32),
+        pin: "123456",
+        updatedSecret: "test_device_secret",
       })
       .expect(204);
 
-    const result = await TEST_DEVICE_REPOSITORY.find({ id: TEST_DEVICE.id });
+    const result = await TEST_DEVICE_REPOSITORY.find({ id: device.id });
 
     expect(result.secret).not.toBe(oldSignature);
   });

@@ -2,10 +2,9 @@ import { IAuthContext } from "../../typing";
 import { MAIL_HANDLER_CONFIG, NODE_ENVIRONMENT } from "../../config";
 import { MailHandler } from "../../class";
 import { NodeEnvironment } from "@lindorm-io/core";
+import { inMemoryEmail } from "../../test";
 
 const mailHandler = new MailHandler(MAIL_HANDLER_CONFIG);
-
-export const emailInMemory: Array<any> = [];
 
 export interface ISendEmailLinkOptions {
   grantType: string;
@@ -32,7 +31,7 @@ export const sendEmailLink = (ctx: IAuthContext) => async (options: ISendEmailLi
   url.searchParams.append("token", encodeURI(token));
 
   if (NODE_ENVIRONMENT === NodeEnvironment.TEST) {
-    emailInMemory.push({
+    inMemoryEmail.push({
       emailAuthorizationUri: client.extra.emailAuthorizationUri,
       grantType,
       redirectUri,
@@ -56,7 +55,7 @@ export const sendEmailOTP = (ctx: IAuthContext) => async (options: ISendEmailOTP
   const { otpCode, subject } = options;
 
   if (NODE_ENVIRONMENT === NodeEnvironment.TEST) {
-    emailInMemory.push({
+    inMemoryEmail.push({
       otpCode,
       to: subject,
     });

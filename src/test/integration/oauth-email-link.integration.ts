@@ -1,27 +1,33 @@
 import MockDate from "mockdate";
 import request from "supertest";
+import { Account } from "../../entity";
 import { GrantType, ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
-import { emailInMemory } from "../../support";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   generateTestOauthData,
-  loadMongoConnection,
-  loadRedisConnection,
+  getGreyBoxAccount,
+  inMemoryEmail,
+  setupIntegration,
 } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth EMAIL_LINK", () => {
+  let account: Account;
+
   const { codeMethod, codeVerifier, codeChallenge, state } = generateTestOauthData();
 
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
+
+  beforeEach(async () => {
+    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
   });
 
   test("should resolve", async () => {
@@ -40,7 +46,7 @@ describe("/oauth EMAIL_LINK", () => {
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
         scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
-        subject: TEST_ACCOUNT.email,
+        subject: account.email,
       })
       .expect(200);
 
@@ -50,7 +56,7 @@ describe("/oauth EMAIL_LINK", () => {
       state: state,
     });
 
-    const { token } = emailInMemory[0];
+    const { token } = inMemoryEmail[0];
 
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
@@ -64,7 +70,7 @@ describe("/oauth EMAIL_LINK", () => {
 
         code_verifier: codeVerifier,
         grant_type: GrantType.EMAIL_LINK,
-        subject: TEST_ACCOUNT.email,
+        subject: account.email,
       })
       .expect(200);
 

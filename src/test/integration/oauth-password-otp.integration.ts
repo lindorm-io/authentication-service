@@ -1,26 +1,36 @@
 import MockDate from "mockdate";
 import request from "supertest";
+import { Account } from "../../entity";
 import { GrantType, MultiFactorChallengeType, ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT_OTP,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
+  generateTestAccountOTP,
   generateTestOauthData,
-  loadMongoConnection,
-  loadRedisConnection,
+  getGreyBoxAccountWithOTP,
+  setupIntegration,
 } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth PASSWORD_OTP", () => {
+  let account: Account;
+  let otpCode: string;
+
   const { codeMethod, codeVerifier, codeChallenge, state } = generateTestOauthData();
 
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
+
+  beforeEach(async () => {
+    const { otp, bindingCode } = generateTestAccountOTP();
+    account = await TEST_ACCOUNT_REPOSITORY.create(await getGreyBoxAccountWithOTP("test@lindorm.io", otp));
+    otpCode = bindingCode;
   });
 
   test("should resolve", async () => {
@@ -39,7 +49,7 @@ describe("/oauth PASSWORD_OTP", () => {
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
         scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
-        subject: TEST_ACCOUNT_OTP.email,
+        subject: account.email,
       })
       .expect(200);
 
@@ -67,8 +77,8 @@ describe("/oauth PASSWORD_OTP", () => {
 
         code_verifier: codeVerifier,
         grant_type: GrantType.PASSWORD,
-        password: TEST_ACCOUNT_OTP.password,
-        subject: TEST_ACCOUNT_OTP.email,
+        password: "test_account_password",
+        subject: account.email,
       })
       .expect(200);
 
@@ -99,7 +109,7 @@ describe("/oauth PASSWORD_OTP", () => {
 
         challenge_type: MultiFactorChallengeType.OTP,
         grant_type: GrantType.PASSWORD,
-        subject: TEST_ACCOUNT_OTP.email,
+        subject: account.email,
       })
       .expect(200);
 
@@ -118,9 +128,9 @@ describe("/oauth PASSWORD_OTP", () => {
 
         multi_factor_token: multiFactorToken,
 
-        binding_code: TEST_ACCOUNT_OTP.bindingCode,
+        binding_code: otpCode,
         grant_type: GrantType.MULTI_FACTOR_OTP,
-        subject: TEST_ACCOUNT_OTP.email,
+        subject: account.email,
       })
       .expect(200);
 

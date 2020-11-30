@@ -2,14 +2,13 @@ import MockDate from "mockdate";
 import request from "supertest";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
-import { loadMongoConnection, loadRedisConnection, TEST_CLIENT, TEST_KEY_PAIR_REPOSITORY } from "../grey-box";
+import { setupIntegration, TEST_CLIENT, TEST_KEY_PAIR_REPOSITORY } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/.well-known", () => {
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
   });
 

@@ -10,16 +10,8 @@ const { name, version } = JSON.parse(pkg);
 export const winston = new Logger({
   packageName: name,
   packageVersion: version,
+  test: NODE_ENVIRONMENT === NodeEnvironment.TEST,
 });
-
-if (NODE_ENVIRONMENT === NodeEnvironment.DEVELOPMENT) {
-  winston.addConsole(LogLevel.DEBUG);
-  winston.addTail(LogLevel.DEBUG);
-}
-
-if (NODE_ENVIRONMENT === NodeEnvironment.TEST) {
-  winston.addConsole(LogLevel.ERROR);
-}
 
 if (NODE_ENVIRONMENT === NodeEnvironment.PRODUCTION) {
   winston.addFileTransport(LogLevel.ERROR);
@@ -28,7 +20,8 @@ if (NODE_ENVIRONMENT === NodeEnvironment.PRODUCTION) {
   winston.addFileTransport(LogLevel.VERBOSE);
   winston.addFileTransport(LogLevel.DEBUG);
   winston.addFileTransport(LogLevel.SILLY);
+}
 
-  winston.addFilter("request.body.password");
-  winston.addFilter("request.body.secret");
+if (NODE_ENVIRONMENT !== NodeEnvironment.PRODUCTION) {
+  winston.addConsole(LogLevel.SILLY);
 }

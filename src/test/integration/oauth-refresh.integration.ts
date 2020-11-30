@@ -1,62 +1,38 @@
 import MockDate from "mockdate";
 import request from "supertest";
-import { Audience, GrantType, ResponseType } from "../../enum";
-import { Scope } from "@lindorm-io/jwt";
-import { Session } from "../../entity";
+import { Account, Session } from "../../entity";
+import { GrantType, ResponseType } from "../../enum";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
-  generateTestOauthData,
-  loadMongoConnection,
-  loadRedisConnection,
   TEST_SESSION_REPOSITORY,
-  TEST_TOKEN_ISSUER,
+  generateTestOauthData,
+  getGreyBoxAccount,
+  getGreyBoxRefreshToken,
+  getGreyBoxSession,
+  setupIntegration,
 } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth REFRESH_TOKEN", () => {
-  const { codeMethod, codeChallenge } = generateTestOauthData();
+  let account: Account;
   let session: Session;
   let refreshToken: string;
 
+  const { codeMethod, codeChallenge } = generateTestOauthData();
+
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
 
-    session = await TEST_SESSION_REPOSITORY.create(
-      new Session({
-        accountId: TEST_ACCOUNT.id,
-        authenticated: true,
-        authorization: {
-          codeChallenge: codeChallenge,
-          codeMethod: codeMethod,
-          email: TEST_ACCOUNT.email,
-          id: uuid(),
-          redirectUri: "https://redirect.uri/",
-          responseType: ResponseType.REFRESH,
-        },
-        clientId: TEST_CLIENT.id,
-        expires: new Date("2099-01-01"),
-        grantType: GrantType.EMAIL_OTP,
-        refreshId: uuid(),
-        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-      }),
-    );
-
-    ({ token: refreshToken } = TEST_TOKEN_ISSUER.sign({
-      audience: Audience.REFRESH,
-      authMethodsReference: "email",
-      clientId: TEST_CLIENT.id,
-      expiry: session.expires,
-      id: session.refreshId,
-      permission: TEST_ACCOUNT.permission,
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-      subject: session.id,
-    }));
+  beforeEach(async () => {
+    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
+    session = await TEST_SESSION_REPOSITORY.create(getGreyBoxSession(account, codeChallenge, codeMethod));
+    refreshToken = getGreyBoxRefreshToken(account, session);
   });
 
   test("should resolve", async () => {
@@ -71,7 +47,7 @@ describe("/oauth REFRESH_TOKEN", () => {
         refresh_token: refreshToken,
 
         grant_type: GrantType.REFRESH_TOKEN,
-        subject: TEST_ACCOUNT.email,
+        subject: account.email,
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
       })
       .expect(200);

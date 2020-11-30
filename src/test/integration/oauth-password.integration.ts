@@ -1,26 +1,32 @@
 import MockDate from "mockdate";
 import request from "supertest";
+import { Account } from "../../entity";
 import { GrantType, ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT_PWD,
+  TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   generateTestOauthData,
-  loadMongoConnection,
-  loadRedisConnection,
+  getGreyBoxAccountWithPassword,
+  setupIntegration,
 } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth PASSWORD", () => {
+  let account: Account;
+
   const { codeMethod, codeVerifier, codeChallenge, state } = generateTestOauthData();
 
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
+  });
+
+  beforeEach(async () => {
+    account = await TEST_ACCOUNT_REPOSITORY.create(await getGreyBoxAccountWithPassword("test@lindorm.io"));
   });
 
   test("should resolve", async () => {
@@ -39,7 +45,7 @@ describe("/oauth PASSWORD", () => {
         response_type: [ResponseType.REFRESH, ResponseType.ACCESS].join(" "),
         scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
         state: state,
-        subject: TEST_ACCOUNT_PWD.email,
+        subject: account.email,
       })
       .expect(200);
 
@@ -67,8 +73,8 @@ describe("/oauth PASSWORD", () => {
 
         code_verifier: codeVerifier,
         grant_type: GrantType.PASSWORD,
-        password: TEST_ACCOUNT_PWD.password,
-        subject: TEST_ACCOUNT_PWD.email,
+        password: "test_account_password",
+        subject: account.email,
       })
       .expect(200);
 

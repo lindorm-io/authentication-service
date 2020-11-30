@@ -1,6 +1,7 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
 import { assertAccountAdmin, encryptClientSecret } from "../../support";
+import { isBoolean } from "lodash";
 
 export interface IUpdateClientOptions {
   clientId: string;
@@ -30,7 +31,7 @@ export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClient
 
   const client = await repository.client.find({ id: clientId });
 
-  if (approved) {
+  if (isBoolean(approved)) {
     client.approved = approved;
   }
   if (description) {

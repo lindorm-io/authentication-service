@@ -1,217 +1,213 @@
 import MockDate from "mockdate";
 import request from "supertest";
 import { Account } from "../../entity";
-import { Audience } from "../../enum";
-import { Permission, Scope } from "@lindorm-io/jwt";
-import { CryptoAES } from "@lindorm-io/crypto";
-import { JWT_ACCESS_TOKEN_EXPIRY, OTP_HANDLER_OPTIONS } from "../../config";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
-import { authenticator } from "otplib";
-import { baseParse } from "@lindorm-io/core";
-import { generateAccountOTP } from "../../support/account";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
 import {
-  TEST_ACCOUNT,
   TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
-  TEST_TOKEN_ISSUER,
-  loadMongoConnection,
-  loadRedisConnection,
+  generateTestAccountOTP,
+  getGreyBoxAccessToken,
+  getGreyBoxAccount,
+  getGreyBoxAccountAdmin,
+  getGreyBoxAccountWithOTP,
+  setupIntegration,
 } from "../grey-box";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/account", () => {
-  let accessToken: string;
-
   beforeAll(async () => {
-    await loadMongoConnection();
-    await loadRedisConnection();
+    await setupIntegration();
     koa.load();
-
-    ({ token: accessToken } = TEST_TOKEN_ISSUER.sign({
-      audience: Audience.ACCESS,
-      clientId: TEST_CLIENT.id,
-      expiry: JWT_ACCESS_TOKEN_EXPIRY,
-      permission: TEST_ACCOUNT.permission,
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
-      subject: TEST_ACCOUNT.id,
-    }));
   });
 
-  test("POST /", async () => {
-    const response = await request(koa.callback())
-      .post("/account/")
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .send({
-        email: "create@lindorm.io",
-        permission: Permission.USER,
-      })
-      .expect(201);
+  describe("ADMIN", () => {
+    let account: Account;
+    let accessToken: string;
 
-    expect(response.body).toStrictEqual({
-      account_id: expect.any(String),
+    beforeEach(async () => {
+      account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccountAdmin("admin@lindorm.io"));
+      accessToken = getGreyBoxAccessToken(account);
     });
 
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: response.body.account_id })).resolves.toStrictEqual(
-      expect.objectContaining({
-        id: response.body.account_id,
-      }),
-    );
-  });
+    test("POST /", async () => {
+      const response = await request(koa.callback())
+        .post("/account/")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .send({
+          email: "create@lindorm.io",
+          permission: "user",
+        })
+        .expect(201);
 
-  test("GET /:id", async () => {
-    const response = await request(koa.callback())
-      .get(`/account/${TEST_ACCOUNT.id}`)
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .expect(200);
+      expect(response.body).toStrictEqual({
+        account_id: expect.any(String),
+      });
 
-    expect(response.body).toStrictEqual({
-      created: "2020-01-01T07:00:00.000Z",
-      devices: [],
-      email: TEST_ACCOUNT.email,
-      has_otp: false,
-      has_password: false,
-      permission: Permission.ADMIN,
-      sessions: [],
-      updated: "2020-01-01T07:00:00.000Z",
+      await expect(TEST_ACCOUNT_REPOSITORY.find({ id: response.body.account_id })).resolves.toStrictEqual(
+        expect.objectContaining({
+          id: response.body.account_id,
+        }),
+      );
+    });
+
+    test("DELETE /:id", async () => {
+      const tmp = await TEST_ACCOUNT_REPOSITORY.create(
+        new Account({
+          email: "remove@email.com",
+        }),
+      );
+
+      await request(koa.callback())
+        .delete(`/account/${tmp.id}`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .expect(204);
+
+      await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).rejects.toStrictEqual(
+        expect.any(RepositoryEntityNotFoundError),
+      );
+    });
+
+    test("PATCH /:id/permission", async () => {
+      const tmp = await TEST_ACCOUNT_REPOSITORY.create(
+        new Account({
+          email: "update@email.com",
+        }),
+      );
+
+      await request(koa.callback())
+        .patch(`/account/${tmp.id}/permission`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .send({
+          permission: "locked",
+        })
+        .expect(204);
+
+      await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
+        expect.objectContaining({
+          permission: "locked",
+        }),
+      );
     });
   });
 
-  test("DELETE /:id", async () => {
-    const tmp = await TEST_ACCOUNT_REPOSITORY.create(
-      new Account({
-        email: "remove@email.com",
-      }),
-    );
+  describe("USER", () => {
+    let account: Account;
+    let accessToken: string;
 
-    await request(koa.callback())
-      .delete(`/account/${tmp.id}`)
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .expect(204);
-
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).rejects.toStrictEqual(
-      expect.any(RepositoryEntityNotFoundError),
-    );
-  });
-
-  test("DELETE /:id/otp", async () => {
-    const tmp = await TEST_ACCOUNT_REPOSITORY.create(
-      new Account({
-        email: "otp@email.com",
-        otp: generateAccountOTP(),
-      }),
-    );
-    const aes = new CryptoAES({
-      secret: OTP_HANDLER_OPTIONS.secret,
+    beforeEach(async () => {
+      account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
+      accessToken = getGreyBoxAccessToken(account);
     });
 
-    const bindingCode = authenticator.generate(aes.decrypt(baseParse(tmp.otp.signature)));
+    test("GET /:id", async () => {
+      const response = await request(koa.callback())
+        .get(`/account/${account.id}`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .expect(200);
 
-    await request(koa.callback())
-      .delete(`/account/${tmp.id}/otp`)
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .send({
-        binding_code: bindingCode,
-      })
-      .expect(204);
-
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
-      expect.objectContaining({
-        otp: { signature: null, uri: null },
-      }),
-    );
-  });
-
-  test("PATCH /:id/permission", async () => {
-    const tmp = await TEST_ACCOUNT_REPOSITORY.create(
-      new Account({
-        email: "update@email.com",
-      }),
-    );
-
-    await request(koa.callback())
-      .patch(`/account/${tmp.id}/permission`)
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .send({
-        permission: Permission.LOCKED,
-      })
-      .expect(204);
-
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: tmp.id })).resolves.toStrictEqual(
-      expect.objectContaining({
-        permission: Permission.LOCKED,
-      }),
-    );
-  });
-
-  test("PATCH /email", async () => {
-    await request(koa.callback())
-      .patch("/account/email")
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .send({
-        updatedEmail: "new@lindorm.io",
-      })
-      .expect(204);
-
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: TEST_ACCOUNT.id })).resolves.toStrictEqual(
-      expect.objectContaining({
-        email: "new@lindorm.io",
-      }),
-    );
-  });
-
-  test("POST /otp", async () => {
-    const response = await request(koa.callback())
-      .post("/account/otp")
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .expect(200);
-
-    expect(response.body).toStrictEqual({
-      uri: expect.any(String),
+      expect(response.body).toStrictEqual({
+        created: "2020-01-01T07:00:00.000Z",
+        devices: [],
+        email: account.email,
+        has_otp: false,
+        has_password: false,
+        permission: "user",
+        sessions: [],
+        updated: "2020-01-01T07:00:00.000Z",
+      });
     });
 
-    await expect(TEST_ACCOUNT_REPOSITORY.find({ id: TEST_ACCOUNT.id })).resolves.toStrictEqual(
-      expect.objectContaining({
-        otp: {
-          signature: expect.any(String),
-          uri: response.body.uri,
-        },
-      }),
-    );
-  });
+    test("DELETE /:id/otp", async () => {
+      const { otp, bindingCode } = generateTestAccountOTP();
 
-  test("PUT /password", async () => {
-    const oldSignature = TEST_ACCOUNT.account.password.signature;
+      account = await TEST_ACCOUNT_REPOSITORY.create(await getGreyBoxAccountWithOTP("test@lindorm.io", otp));
+      accessToken = getGreyBoxAccessToken(account);
 
-    await request(koa.callback())
-      .put("/account/password")
-      .set("Authorization", `Bearer ${accessToken}`)
-      .set("X-Client-ID", TEST_CLIENT.id)
-      .set("X-Correlation-ID", uuid())
-      .send({
-        password: "password",
-        updatedPassword: "new-password",
-      })
-      .expect(204);
+      await request(koa.callback())
+        .delete(`/account/${account.id}/otp`)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .send({
+          binding_code: bindingCode,
+        })
+        .expect(204);
 
-    const result = await TEST_ACCOUNT_REPOSITORY.find({ id: TEST_ACCOUNT.id });
+      await expect(TEST_ACCOUNT_REPOSITORY.find({ id: account.id })).resolves.toStrictEqual(
+        expect.objectContaining({
+          otp: { signature: null, uri: null },
+        }),
+      );
+    });
 
-    expect(result.password.signature).not.toBe(oldSignature);
+    test("PATCH /email", async () => {
+      await request(koa.callback())
+        .patch("/account/email")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .send({
+          updatedEmail: "new@lindorm.io",
+        })
+        .expect(204);
+
+      await expect(TEST_ACCOUNT_REPOSITORY.find({ id: account.id })).resolves.toStrictEqual(
+        expect.objectContaining({
+          email: "new@lindorm.io",
+        }),
+      );
+    });
+
+    test("POST /otp", async () => {
+      const response = await request(koa.callback())
+        .post("/account/otp")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .expect(200);
+
+      expect(response.body).toStrictEqual({
+        uri: expect.any(String),
+      });
+
+      await expect(TEST_ACCOUNT_REPOSITORY.find({ id: account.id })).resolves.toStrictEqual(
+        expect.objectContaining({
+          otp: {
+            signature: expect.any(String),
+            uri: response.body.uri,
+          },
+        }),
+      );
+    });
+
+    test("PUT /password", async () => {
+      const oldSignature = account.password.signature;
+
+      await request(koa.callback())
+        .put("/account/password")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .set("X-Client-ID", TEST_CLIENT.id)
+        .set("X-Correlation-ID", uuid())
+        .send({
+          password: "password",
+          updatedPassword: "new-password",
+        })
+        .expect(204);
+
+      const result = await TEST_ACCOUNT_REPOSITORY.find({ id: account.id });
+
+      expect(result.password.signature).not.toBe(oldSignature);
+    });
   });
 });
