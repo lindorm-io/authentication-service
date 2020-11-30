@@ -1,7 +1,6 @@
 import Joi from "@hapi/joi";
 import { IAuthContext } from "../../typing";
 import { assertAccountAdmin, encryptClientSecret } from "../../support";
-import { isBoolean, isString } from "lodash";
 
 export interface IUpdateClientOptions {
   clientId: string;
@@ -14,8 +13,8 @@ export interface IUpdateClientOptions {
 
 const schema = Joi.object({
   clientId: Joi.string().guid().required(),
-  description: Joi.string(),
   approved: Joi.boolean(),
+  description: Joi.string(),
   emailAuthorizationUri: Joi.string().uri(),
   name: Joi.string(),
   secret: Joi.string().allow(null).length(32),
@@ -31,19 +30,19 @@ export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClient
 
   const client = await repository.client.find({ id: clientId });
 
-  if (isBoolean(approved)) {
+  if (approved) {
     client.approved = approved;
   }
-  if (isString(description)) {
+  if (description) {
     client.description = description;
   }
-  if (isString(emailAuthorizationUri)) {
+  if (emailAuthorizationUri) {
     client.extra = { emailAuthorizationUri };
   }
-  if (isString(name)) {
+  if (name) {
     client.name = name;
   }
-  if (isString(secret)) {
+  if (secret) {
     client.secret = encryptClientSecret(secret);
   }
 
