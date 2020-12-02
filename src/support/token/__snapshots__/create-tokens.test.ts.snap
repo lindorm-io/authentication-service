@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createTokens should return access token 1`] = `
+Object {
+  "accessToken": "accessToken",
+}
+`;
+
+exports[`createTokens should return access token 2`] = `
+Object {
+  "identityToken": "identityToken",
+}
+`;
+
+exports[`createTokens should return all tokens 1`] = `
+Object {
+  "accessToken": "accessToken",
+  "identityToken": "identityToken",
+  "refreshToken": "refreshToken",
+}
+`;
+
+exports[`createTokens should return refresh token 1`] = `
+Object {
+  "refreshToken": "refreshToken",
+}
+`;

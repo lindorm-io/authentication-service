@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOpenIdInformation should return openid information 1`] = `
+Object {
+  "email": "email@lindorm.io",
+  "emailVerified": true,
+  "sub": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "updatedAt": 1577862000,
+}
+`;

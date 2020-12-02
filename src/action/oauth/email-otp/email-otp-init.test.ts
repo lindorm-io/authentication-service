@@ -41,12 +41,6 @@ describe("performEmailOTPInit", () => {
         state: "1bVcJqZ1pBeqVLxV",
         subject: "email@lindorm.io",
       }),
-    ).resolves.toStrictEqual({
-      expires: "expires",
-      expiresIn: "expiresIn",
-      redirectUri: "https://redirect.uri/",
-      state: "1bVcJqZ1pBeqVLxV",
-      token: "token",
-    });
+    ).resolves.toMatchSnapshot();
   });
 });

@@ -37,10 +37,6 @@ describe("performEmailLinkInit", () => {
         state: "1bVcJqZ1pBeqVLxV",
         subject: "email@lindorm.io",
       }),
-    ).resolves.toStrictEqual({
-      expires: "expires",
-      expiresIn: "expiresIn",
-      state: "1bVcJqZ1pBeqVLxV",
-    });
+    ).resolves.toMatchSnapshot();
   });
 });

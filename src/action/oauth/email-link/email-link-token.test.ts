@@ -26,6 +26,6 @@ describe("performEmailLinkToken", () => {
         grantType: GrantType.REFRESH_TOKEN,
         subject: "email@lindorm.io",
       }),
-    ).resolves.toBe("tokens");
+    ).resolves.toMatchSnapshot();
   });
 });

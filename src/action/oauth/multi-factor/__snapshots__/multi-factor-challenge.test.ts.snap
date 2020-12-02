@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`performMultiFactorChallenge should return challenge data 1`] = `
+Object {
+  "bindingMethod": "prompt",
+  "challengeType": "otp",
+}
+`;

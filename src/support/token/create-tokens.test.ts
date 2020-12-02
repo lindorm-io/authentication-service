@@ -65,9 +65,7 @@ describe("createTokens", () => {
         responseType: ResponseType.REFRESH,
         session,
       }),
-    ).toStrictEqual({
-      refreshToken: "refreshToken",
-    });
+    ).toMatchSnapshot();
   });
 
   test("should return access token", () => {
@@ -81,9 +79,7 @@ describe("createTokens", () => {
         responseType: ResponseType.ACCESS,
         session,
       }),
-    ).toStrictEqual({
-      accessToken: "accessToken",
-    });
+    ).toMatchSnapshot();
   });
 
   test("should return access token", () => {
@@ -97,9 +93,7 @@ describe("createTokens", () => {
         responseType: ResponseType.IDENTITY,
         session,
       }),
-    ).toStrictEqual({
-      identityToken: "identityToken",
-    });
+    ).toMatchSnapshot();
   });
 
   test("should return all tokens", () => {
@@ -113,10 +107,6 @@ describe("createTokens", () => {
         responseType: `${ResponseType.REFRESH} ${ResponseType.ACCESS} ${ResponseType.IDENTITY}`,
         session,
       }),
-    ).toStrictEqual({
-      accessToken: "accessToken",
-      identityToken: "identityToken",
-      refreshToken: "refreshToken",
-    });
+    ).toMatchSnapshot();
   });
 });

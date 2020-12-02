@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`performDevicePINInit should create a new session 1`] = `
+Object {
+  "deviceChallenge": "getRandomValue",
+  "expires": "expires",
+  "expiresIn": "expiresIn",
+  "redirectUri": "https://redirect.uri/",
+  "state": "1bVcJqZ1pBeqVLxV",
+  "token": "token",
+}
+`;

@@ -1,13 +1,13 @@
 import * as create from "../support/request-limit/create-or-update-request-limit";
 import * as validate from "../support/request-limit/validate-back-off";
 import MockDate from "mockdate";
-import { GrantType } from "../enum";
-import { MOCK_LOGGER, mockCacheRequestLimit } from "../test/mocks";
-import { requestLimitMiddleware } from "./request-limit-middleware";
+import { AssertDeviceChallengeError, RequestLimitFailedTryError } from "../error";
 import { CacheEntityNotFoundError } from "@lindorm-io/redis/dist/error";
+import { GrantType } from "../enum";
 import { RequestLimit } from "../entity";
-import { AssertDeviceChallengeError } from "../error";
-import { RequestLimitFailedTryError } from "../error/RequestLimitFailedTryError";
+import { mockCacheRequestLimit } from "../test/mocks";
+import { requestLimitMiddleware } from "./request-limit-middleware";
+import { winston } from "../logger";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -27,7 +27,7 @@ describe("requestLimitMiddleware", () => {
       cache: {
         requestLimit: mockCacheRequestLimit,
       },
-      logger: MOCK_LOGGER,
+      logger: winston,
       request: {
         body: {
           grantType: GrantType.DEVICE_PIN,

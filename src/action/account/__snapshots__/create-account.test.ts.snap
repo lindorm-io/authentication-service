@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createAccount should remove account 1`] = `
+Object {
+  "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+}
+`;

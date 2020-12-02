@@ -29,7 +29,7 @@ describe("addAccountOTP", () => {
   test("should update account otp", async () => {
     const ctx = getMockContext();
 
-    await expect(addAccountOTP(ctx)()).resolves.toStrictEqual({ uri: "uri" });
+    await expect(addAccountOTP(ctx)()).resolves.toMatchSnapshot();
 
     expect(ctx.repository.account.update).toHaveBeenCalledWith({
       _created: date,

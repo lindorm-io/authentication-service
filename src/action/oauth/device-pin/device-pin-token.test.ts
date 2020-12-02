@@ -31,6 +31,6 @@ describe("performDevicePINToken", () => {
         pin: "pin",
         subject: "email@lindorm.io",
       }),
-    ).resolves.toBe("tokens");
+    ).resolves.toMatchSnapshot();
   });
 });

@@ -60,6 +60,6 @@ describe("performPasswordToken", () => {
         password: "password",
         subject: "email@lindorm.io",
       }),
-    ).resolves.toStrictEqual({ multiFactorToken: "multi-factor-token" });
+    ).resolves.toMatchSnapshot();
   });
 });

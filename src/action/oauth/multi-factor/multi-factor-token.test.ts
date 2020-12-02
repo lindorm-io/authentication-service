@@ -53,7 +53,7 @@ describe("performMultiFactorToken", () => {
         grantType: GrantType.REFRESH_TOKEN,
         subject: "email@lindorm.io",
       }),
-    ).resolves.toBe("tokens");
+    ).resolves.toMatchSnapshot();
   });
 
   test("should throw error on client mismatch", async () => {

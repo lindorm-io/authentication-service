@@ -24,7 +24,7 @@ koa.addMiddleware(getMongoMiddleware());
 koa.addMiddleware(repositoryMiddleware);
 koa.addMiddleware(getRedisMiddleware());
 koa.addMiddleware(cacheMiddleware);
-koa.addMiddleware(clientMiddleware);
+koa.addMiddleware(clientMiddleware());
 koa.addMiddleware(keystoreMiddleware);
 koa.addMiddleware(tokenIssuerMiddleware(TOKEN_ISSUER_MW_OPTIONS));
 

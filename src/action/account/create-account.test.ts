@@ -34,7 +34,7 @@ describe("createAccount", () => {
         email: "lindorm@lindorm.io",
         permission: Permission.LOCKED,
       }),
-    ).resolves.toStrictEqual({ accountId: "be3a62d1-24a0-401c-96dd-3aff95356811" });
+    ).resolves.toMatchSnapshot();
 
     expect(ctx.repository.account.create).toHaveBeenCalledWith({
       _created: date,

@@ -24,11 +24,6 @@ describe("getOpenIdInformation", () => {
   });
 
   test("should return openid information", async () => {
-    await expect(getOpenIdInformation(getMockContext())()).resolves.toStrictEqual({
-      email: "email@lindorm.io",
-      emailVerified: true,
-      sub: "be3a62d1-24a0-401c-96dd-3aff95356811",
-      updatedAt: 1577862000,
-    });
+    await expect(getOpenIdInformation(getMockContext())()).resolves.toMatchSnapshot();
   });
 });

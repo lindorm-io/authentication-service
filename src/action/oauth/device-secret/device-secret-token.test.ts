@@ -31,6 +31,6 @@ describe("performDeviceSecretToken", () => {
         secret: "secret",
         subject: "email@lindorm.io",
       }),
-    ).resolves.toBe("tokens");
+    ).resolves.toMatchSnapshot();
   });
 });

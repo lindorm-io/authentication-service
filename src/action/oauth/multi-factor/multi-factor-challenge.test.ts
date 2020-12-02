@@ -50,10 +50,7 @@ describe("performMultiFactorChallenge", () => {
         grantType: GrantType.REFRESH_TOKEN,
         subject: "email@lindorm.io",
       }),
-    ).resolves.toStrictEqual({
-      bindingMethod: "prompt",
-      challengeType: "otp",
-    });
+    ).resolves.toMatchSnapshot();
   });
 
   test("should throw error on client mismatch", async () => {

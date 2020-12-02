@@ -28,6 +28,6 @@ describe("performEmailOTPToken", () => {
         otpCode: "otpCode",
         subject: "email@lindorm.io",
       }),
-    ).resolves.toBe("tokens");
+    ).resolves.toMatchSnapshot();
   });
 });
