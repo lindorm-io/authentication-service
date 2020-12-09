@@ -1,98 +1,62 @@
 import MockDate from "mockdate";
 import { Account } from "../../entity";
-import { getMockCache, MOCK_LOGGER, MOCK_UUID, getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
-import { updateClient } from "./update-client";
+import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { getRandomValue } from "@lindorm-io/core";
+import { updateClient } from "./update-client";
+import { winston } from "../../logger";
+import { getGreyBoxCache, getGreyBoxRepository, inMemoryCache, inMemoryStore } from "../../test";
+import { Client } from "@lindorm-io/koa-client";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../support", () => ({
   assertAccountAdmin: jest.fn(() => () => undefined),
-  encryptClientSecret: jest.fn(() => "encryptClientSecret"),
+  encryptClientSecret: jest.fn(
+    () =>
+      "VTJGc2RHVmtYMTlNcTVzT1hJMGlaUlZaMXZrQWZWWDVPcUpaY0tqT29hN05KR3h2VkplQko0M0JFNnVmbGVsVk1tMnI3RmlwNllPK05HQ2V1QnJZaWZabXJVbTMrVHRvSHFaM0xvOGNKM3l3NFNZdlg3U0VrUHA3MjdMQTdlVkg4czFaUzB6VTJzMTBra0Yxdko3RzgybENNd0k4T1hZU0ZOVkZwVkZ5SnhabUllSURLQlRmdDdZT1JLa2JsNzRhZUV5eDBSZ1BBeTFqYzR0d2w0NFYzUT09",
+  ),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");
-const date = new Date("2020-01-01 08:00:00.000");
 
 describe("updateClient", () => {
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    getMockContext = () => ({
+  beforeEach(async () => {
+    ctx = {
       account: new Account(MOCK_ACCOUNT_OPTIONS),
-      cache: getMockCache(),
-      logger: MOCK_LOGGER,
-      repository: getMockRepository(),
-    });
+      cache: await getGreyBoxCache(),
+      logger: winston,
+      repository: await getGreyBoxRepository(),
+    };
+
+    const client = await ctx.repository.client.create(
+      new Client({
+        id: "0aa7b983-d62f-4778-ba90-36a3bda3ca0b",
+      }),
+    );
+    await ctx.cache.client.create(client);
   });
 
   test("should update client", async () => {
-    const ctx = getMockContext();
-
     await expect(
       updateClient(ctx)({
-        clientId: MOCK_UUID,
+        clientId: "0aa7b983-d62f-4778-ba90-36a3bda3ca0b",
         approved: true,
         description: "description",
         emailAuthorizationUri: "https://lindorm.io/",
+        jwtAccessTokenExpiry: "10 minutes",
+        jwtAuthorizationTokenExpiry: "20 minutes",
+        jwtIdentityTokenExpiry: "30 minutes",
+        jwtMultiFactorTokenExpiry: "40 minutes",
+        jwtRefreshTokenExpiry: "50 minutes",
         name: "name",
         secret: getRandomValue(32),
       }),
     ).resolves.toBe(undefined);
 
-    expect(ctx.repository.client.update).toHaveBeenCalledWith({
-      _approved: true,
-      _created: date,
-      _description: "description",
-      _events: [
-        {
-          date: date,
-          name: "client_approved_changed",
-          payload: {
-            approved: true,
-          },
-        },
-        {
-          date: date,
-          name: "client_description_changed",
-          payload: {
-            description: "description",
-          },
-        },
-        {
-          date: date,
-          name: "client_extra_changed",
-          payload: {
-            extra: {
-              emailAuthorizationUri: "https://lindorm.io/",
-            },
-          },
-        },
-        {
-          date: date,
-          name: "client_name_changed",
-          payload: {
-            name: "name",
-          },
-        },
-        {
-          date: date,
-          name: "client_secret_changed",
-          payload: {
-            secret: "encryptClientSecret",
-          },
-        },
-      ],
-      _extra: {
-        emailAuthorizationUri: "https://lindorm.io/",
-      },
-      _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
-      _name: "name",
-      _secret: "encryptClientSecret",
-      _updated: date,
-      _version: 0,
-    });
-    expect(ctx.cache.client.update).toHaveBeenCalled();
+    expect(inMemoryCache).toMatchSnapshot();
+    expect(inMemoryStore).toMatchSnapshot();
   });
 });

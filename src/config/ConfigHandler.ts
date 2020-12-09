@@ -29,7 +29,7 @@ export interface IConfigurationData extends IConfigurationDataBase {
   MONGO_DB_NAME: string;
 }
 
-export class Config extends ConfigurationBase<IConfigurationData> {
+export class ConfigHandler extends ConfigurationBase<IConfigurationData> {
   constructor(options: IConfigurationOptions<IConfigurationData>) {
     super(options);
   }

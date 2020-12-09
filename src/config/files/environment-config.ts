@@ -1,4 +1,4 @@
-import { IConfigurationData } from "../../class";
+import { IConfigurationData } from "../ConfigHandler";
 import { NodeEnvironment } from "@lindorm-io/core";
 import { config } from "dotenv";
 import { isString } from "lodash";

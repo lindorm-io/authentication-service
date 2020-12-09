@@ -32,6 +32,8 @@ export const createSession = (ctx: IAuthContext) => async (options: ICreateSessi
     subject,
   } = options;
 
+  const expires = client.extra?.jwtAuthorizationTokenExpiry || JWT_AUTHORIZATION_TOKEN_EXPIRY;
+
   return await repository.session.create(
     new Session({
       agent: userAgent,
@@ -47,7 +49,7 @@ export const createSession = (ctx: IAuthContext) => async (options: ICreateSessi
       },
       clientId: client.id,
       deviceId: device?.id,
-      expires: getSessionExpires(JWT_AUTHORIZATION_TOKEN_EXPIRY),
+      expires: getSessionExpires(expires),
       grantType,
       scope,
     }),

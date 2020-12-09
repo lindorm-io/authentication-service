@@ -30,7 +30,7 @@ export const getAccessToken = (ctx: IAuthContext) => (options: IGetAccessTokenOp
     authMethodsReference: authMethodsReference,
     clientId: client.id,
     deviceId: device?.id,
-    expiry: JWT_ACCESS_TOKEN_EXPIRY,
+    expiry: client?.extra?.jwtAccessTokenExpiry || JWT_ACCESS_TOKEN_EXPIRY,
     permission: account.permission,
     scope,
     subject: account.id,

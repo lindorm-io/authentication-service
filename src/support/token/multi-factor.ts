@@ -30,7 +30,7 @@ export const getMultiFactorToken = (ctx: IAuthContext) => (
     authMethodsReference: authMethodsReference,
     clientId: client.id,
     deviceId: device?.id,
-    expiry: JWT_MULTI_FACTOR_TOKEN_EXPIRY,
+    expiry: client?.extra?.jwtMultiFactorTokenExpiry || JWT_MULTI_FACTOR_TOKEN_EXPIRY,
     subject: session.id,
   });
 };

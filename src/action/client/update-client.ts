@@ -4,10 +4,15 @@ import { assertAccountAdmin, encryptClientSecret } from "../../support";
 import { isBoolean } from "lodash";
 
 export interface IUpdateClientOptions {
-  clientId: string;
   approved?: boolean;
+  clientId: string;
   description?: string;
   emailAuthorizationUri?: string;
+  jwtAccessTokenExpiry?: string;
+  jwtAuthorizationTokenExpiry?: string;
+  jwtIdentityTokenExpiry?: string;
+  jwtMultiFactorTokenExpiry?: string;
+  jwtRefreshTokenExpiry?: string;
   name?: string;
   secret?: string;
 }
@@ -17,6 +22,11 @@ const schema = Joi.object({
   approved: Joi.boolean(),
   description: Joi.string(),
   emailAuthorizationUri: Joi.string().uri(),
+  jwtAccessTokenExpiry: Joi.string(),
+  jwtAuthorizationTokenExpiry: Joi.string(),
+  jwtIdentityTokenExpiry: Joi.string(),
+  jwtMultiFactorTokenExpiry: Joi.string(),
+  jwtRefreshTokenExpiry: Joi.string(),
   name: Joi.string(),
   secret: Joi.string().allow(null).length(32),
 });
@@ -25,7 +35,19 @@ export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClient
   await schema.validateAsync(options);
 
   const { account, cache, logger, repository } = ctx;
-  const { approved, clientId, description, emailAuthorizationUri, name, secret } = options;
+  const {
+    approved,
+    clientId,
+    description,
+    emailAuthorizationUri,
+    jwtAccessTokenExpiry,
+    jwtAuthorizationTokenExpiry,
+    jwtIdentityTokenExpiry,
+    jwtMultiFactorTokenExpiry,
+    jwtRefreshTokenExpiry,
+    name,
+    secret,
+  } = options;
 
   await assertAccountAdmin(ctx)();
 
@@ -38,7 +60,22 @@ export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClient
     client.description = description;
   }
   if (emailAuthorizationUri) {
-    client.extra = { emailAuthorizationUri };
+    client.extra = { ...client.extra, emailAuthorizationUri };
+  }
+  if (jwtAccessTokenExpiry) {
+    client.extra = { ...client.extra, jwtAccessTokenExpiry };
+  }
+  if (jwtAuthorizationTokenExpiry) {
+    client.extra = { ...client.extra, jwtAuthorizationTokenExpiry };
+  }
+  if (jwtIdentityTokenExpiry) {
+    client.extra = { ...client.extra, jwtIdentityTokenExpiry };
+  }
+  if (jwtMultiFactorTokenExpiry) {
+    client.extra = { ...client.extra, jwtMultiFactorTokenExpiry };
+  }
+  if (jwtRefreshTokenExpiry) {
+    client.extra = { ...client.extra, jwtRefreshTokenExpiry };
   }
   if (name) {
     client.name = name;

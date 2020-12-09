@@ -28,7 +28,9 @@ export const extendSession = (ctx: IAuthContext) => async (): Promise<Session> =
     throw new InvalidDeviceError(device?.id);
   }
 
-  session.expires = getSessionExpires(JWT_REFRESH_TOKEN_EXPIRY);
+  const expires = client.extra?.jwtRefreshTokenExpiry || JWT_REFRESH_TOKEN_EXPIRY;
+
+  session.expires = getSessionExpires(expires);
   session.refreshId = uuid();
 
   return repository.session.update(session);

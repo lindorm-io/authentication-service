@@ -13,16 +13,18 @@ export interface IAuthenticateSessionOptions {
 export const authenticateSession = (ctx: IAuthContext) => async (
   options: IAuthenticateSessionOptions,
 ): Promise<Session> => {
-  const { repository } = ctx;
+  const { client, repository } = ctx;
   const { account, session } = options;
 
   if (session.authenticated) {
     throw new InvalidAuthorizationTokenError();
   }
 
+  const expires = client.extra?.jwtRefreshTokenExpiry || JWT_REFRESH_TOKEN_EXPIRY;
+
   session.accountId = account.id;
   session.authenticated = true;
-  session.expires = getSessionExpires(JWT_REFRESH_TOKEN_EXPIRY);
+  session.expires = getSessionExpires(expires);
   session.refreshId = uuid();
 
   return repository.session.update(session);

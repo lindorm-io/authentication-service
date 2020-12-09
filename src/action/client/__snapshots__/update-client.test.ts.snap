@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateClient should update client 1`] = `
+Object {
+  "Client::0aa7b983-d62f-4778-ba90-36a3bda3ca0b": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"0aa7b983-d62f-4778-ba90-36a3bda3ca0b\\",\\"version\\":\\"1\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[{\\"name\\":\\"client_created\\",\\"payload\\":{\\"approved\\":\\"false\\",\\"description\\":\\"null\\",\\"extra\\":{},\\"name\\":\\"null\\",\\"secret\\":\\"null\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\"},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_approved_changed\\",\\"payload\\":{\\"approved\\":\\"true\\"},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_description_changed\\",\\"payload\\":{\\"description\\":\\"description\\"},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_extra_changed\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"https://lindorm.io/\\"}},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_extra_changed\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"https://lindorm.io/\\",\\"jwtAccessTokenExpiry\\":\\"10 minutes\\"}},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_extra_changed\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"https://lindorm.io/\\",\\"jwtAccessTokenExpiry\\":\\"10 minutes\\",\\"jwtAuthorizationTokenExpiry\\":\\"20 minutes\\"}},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_extra_changed\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"https://lindorm.io/\\",\\"jwtAccessTokenExpiry\\":\\"10 minutes\\",\\"jwtAuthorizationTokenExpiry\\":\\"20 minutes\\",\\"jwtIdentityTokenExpiry\\":\\"30 minutes\\"}},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_extra_changed\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"https://lindorm.io/\\",\\"jwtAccessTokenExpiry\\":\\"10 minutes\\",\\"jwtAuthorizationTokenExpiry\\":\\"20 minutes\\",\\"jwtIdentityTokenExpiry\\":\\"30 minutes\\",\\"jwtMultiFactorTokenExpiry\\":\\"40 minutes\\"}},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_extra_changed\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"https://lindorm.io/\\",\\"jwtAccessTokenExpiry\\":\\"10 minutes\\",\\"jwtAuthorizationTokenExpiry\\":\\"20 minutes\\",\\"jwtIdentityTokenExpiry\\":\\"30 minutes\\",\\"jwtMultiFactorTokenExpiry\\":\\"40 minutes\\",\\"jwtRefreshTokenExpiry\\":\\"50 minutes\\"}},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_name_changed\\",\\"payload\\":{\\"name\\":\\"name\\"},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"},{\\"name\\":\\"client_secret_changed\\",\\"payload\\":{\\"secret\\":\\"VTJGc2RHVmtYMTlNcTVzT1hJMGlaUlZaMXZrQWZWWDVPcUpaY0tqT29hN05KR3h2VkplQko0M0JFNnVmbGVsVk1tMnI3RmlwNllPK05HQ2V1QnJZaWZabXJVbTMrVHRvSHFaM0xvOGNKM3l3NFNZdlg3U0VrUHA3MjdMQTdlVkg4czFaUzB6VTJzMTBra0Yxdko3RzgybENNd0k4T1hZU0ZOVkZwVkZ5SnhabUllSURLQlRmdDdZT1JLa2JsNzRhZUV5eDBSZ1BBeTFqYzR0d2w0NFYzUT09\\"},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"}],\\"approved\\":\\"true\\",\\"description\\":\\"description\\",\\"extra\\":{\\"emailAuthorizationUri\\":\\"https://lindorm.io/\\",\\"jwtAccessTokenExpiry\\":\\"10 minutes\\",\\"jwtAuthorizationTokenExpiry\\":\\"20 minutes\\",\\"jwtIdentityTokenExpiry\\":\\"30 minutes\\",\\"jwtMultiFactorTokenExpiry\\":\\"40 minutes\\",\\"jwtRefreshTokenExpiry\\":\\"50 minutes\\"},\\"name\\":\\"name\\",\\"secret\\":\\"VTJGc2RHVmtYMTlNcTVzT1hJMGlaUlZaMXZrQWZWWDVPcUpaY0tqT29hN05KR3h2VkplQko0M0JFNnVmbGVsVk1tMnI3RmlwNllPK05HQ2V1QnJZaWZabXJVbTMrVHRvSHFaM0xvOGNKM3l3NFNZdlg3U0VrUHA3MjdMQTdlVkg4czFaUzB6VTJzMTBra0Yxdko3RzgybENNd0k4T1hZU0ZOVkZwVkZ5SnhabUllSURLQlRmdDdZT1JLa2JsNzRhZUV5eDBSZ1BBeTFqYzR0d2w0NFYzUT09\\"},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[{\\"name\\":\\"string\\",\\"payload\\":{\\"approved\\":\\"boolean\\",\\"description\\":\\"null\\",\\"extra\\":{},\\"name\\":\\"null\\",\\"secret\\":\\"null\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\"},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"approved\\":\\"boolean\\"},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"description\\":\\"string\\"},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"string\\"}},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"string\\",\\"jwtAccessTokenExpiry\\":\\"string\\"}},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"string\\",\\"jwtAccessTokenExpiry\\":\\"string\\",\\"jwtAuthorizationTokenExpiry\\":\\"string\\"}},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"string\\",\\"jwtAccessTokenExpiry\\":\\"string\\",\\"jwtAuthorizationTokenExpiry\\":\\"string\\",\\"jwtIdentityTokenExpiry\\":\\"string\\"}},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"string\\",\\"jwtAccessTokenExpiry\\":\\"string\\",\\"jwtAuthorizationTokenExpiry\\":\\"string\\",\\"jwtIdentityTokenExpiry\\":\\"string\\",\\"jwtMultiFactorTokenExpiry\\":\\"string\\"}},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"extra\\":{\\"emailAuthorizationUri\\":\\"string\\",\\"jwtAccessTokenExpiry\\":\\"string\\",\\"jwtAuthorizationTokenExpiry\\":\\"string\\",\\"jwtIdentityTokenExpiry\\":\\"string\\",\\"jwtMultiFactorTokenExpiry\\":\\"string\\",\\"jwtRefreshTokenExpiry\\":\\"string\\"}},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"name\\":\\"string\\"},\\"date\\":\\"date\\"},{\\"name\\":\\"string\\",\\"payload\\":{\\"secret\\":\\"string\\"},\\"date\\":\\"date\\"}],\\"approved\\":\\"boolean\\",\\"description\\":\\"string\\",\\"extra\\":{\\"emailAuthorizationUri\\":\\"string\\",\\"jwtAccessTokenExpiry\\":\\"string\\",\\"jwtAuthorizationTokenExpiry\\":\\"string\\",\\"jwtIdentityTokenExpiry\\":\\"string\\",\\"jwtMultiFactorTokenExpiry\\":\\"string\\",\\"jwtRefreshTokenExpiry\\":\\"string\\"},\\"name\\":\\"string\\",\\"secret\\":\\"string\\"}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`updateClient should update client 2`] = `
+Object {
+  "authentication": Object {
+    "client": Object {
+      "data": Array [
+        Object {
+          "approved": true,
+          "created": 2020-01-01T07:00:00.000Z,
+          "description": "description",
+          "events": Array [
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_created",
+              "payload": Object {
+                "approved": false,
+                "created": 2020-01-01T07:00:00.000Z,
+                "description": null,
+                "extra": Object {},
+                "name": null,
+                "secret": null,
+                "updated": 2020-01-01T07:00:00.000Z,
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_approved_changed",
+              "payload": Object {
+                "approved": true,
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_description_changed",
+              "payload": Object {
+                "description": "description",
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_extra_changed",
+              "payload": Object {
+                "extra": Object {
+                  "emailAuthorizationUri": "https://lindorm.io/",
+                },
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_extra_changed",
+              "payload": Object {
+                "extra": Object {
+                  "emailAuthorizationUri": "https://lindorm.io/",
+                  "jwtAccessTokenExpiry": "10 minutes",
+                },
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_extra_changed",
+              "payload": Object {
+                "extra": Object {
+                  "emailAuthorizationUri": "https://lindorm.io/",
+                  "jwtAccessTokenExpiry": "10 minutes",
+                  "jwtAuthorizationTokenExpiry": "20 minutes",
+                },
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_extra_changed",
+              "payload": Object {
+                "extra": Object {
+                  "emailAuthorizationUri": "https://lindorm.io/",
+                  "jwtAccessTokenExpiry": "10 minutes",
+                  "jwtAuthorizationTokenExpiry": "20 minutes",
+                  "jwtIdentityTokenExpiry": "30 minutes",
+                },
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_extra_changed",
+              "payload": Object {
+                "extra": Object {
+                  "emailAuthorizationUri": "https://lindorm.io/",
+                  "jwtAccessTokenExpiry": "10 minutes",
+                  "jwtAuthorizationTokenExpiry": "20 minutes",
+                  "jwtIdentityTokenExpiry": "30 minutes",
+                  "jwtMultiFactorTokenExpiry": "40 minutes",
+                },
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_extra_changed",
+              "payload": Object {
+                "extra": Object {
+                  "emailAuthorizationUri": "https://lindorm.io/",
+                  "jwtAccessTokenExpiry": "10 minutes",
+                  "jwtAuthorizationTokenExpiry": "20 minutes",
+                  "jwtIdentityTokenExpiry": "30 minutes",
+                  "jwtMultiFactorTokenExpiry": "40 minutes",
+                  "jwtRefreshTokenExpiry": "50 minutes",
+                },
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_name_changed",
+              "payload": Object {
+                "name": "name",
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "client_secret_changed",
+              "payload": Object {
+                "secret": "VTJGc2RHVmtYMTlNcTVzT1hJMGlaUlZaMXZrQWZWWDVPcUpaY0tqT29hN05KR3h2VkplQko0M0JFNnVmbGVsVk1tMnI3RmlwNllPK05HQ2V1QnJZaWZabXJVbTMrVHRvSHFaM0xvOGNKM3l3NFNZdlg3U0VrUHA3MjdMQTdlVkg4czFaUzB6VTJzMTBra0Yxdko3RzgybENNd0k4T1hZU0ZOVkZwVkZ5SnhabUllSURLQlRmdDdZT1JLa2JsNzRhZUV5eDBSZ1BBeTFqYzR0d2w0NFYzUT09",
+              },
+            },
+          ],
+          "extra": Object {
+            "emailAuthorizationUri": "https://lindorm.io/",
+            "jwtAccessTokenExpiry": "10 minutes",
+            "jwtAuthorizationTokenExpiry": "20 minutes",
+            "jwtIdentityTokenExpiry": "30 minutes",
+            "jwtMultiFactorTokenExpiry": "40 minutes",
+            "jwtRefreshTokenExpiry": "50 minutes",
+          },
+          "id": "0aa7b983-d62f-4778-ba90-36a3bda3ca0b",
+          "name": "name",
+          "secret": "VTJGc2RHVmtYMTlNcTVzT1hJMGlaUlZaMXZrQWZWWDVPcUpaY0tqT29hN05KR3h2VkplQko0M0JFNnVmbGVsVk1tMnI3RmlwNllPK05HQ2V1QnJZaWZabXJVbTMrVHRvSHFaM0xvOGNKM3l3NFNZdlg3U0VrUHA3MjdMQTdlVkg4czFaUzB6VTJzMTBra0Yxdko3RzgybENNd0k4T1hZU0ZOVkZwVkZ5SnhabUllSURLQlRmdDdZT1JLa2JsNzRhZUV5eDBSZ1BBeTFqYzR0d2w0NFYzUT09",
+          "updated": 2020-01-01T07:00:00.000Z,
+          "version": 1,
+        },
+      ],
+      "indices": Array [
+        Object {
+          "index": Object {
+            "id": 1,
+          },
+          "options": Object {
+            "unique": true,
+          },
+        },
+      ],
+    },
+  },
+}
+`;

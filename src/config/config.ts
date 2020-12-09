@@ -1,11 +1,11 @@
 import { Audience } from "../enum";
-import { Config } from "../class";
+import { ConfigHandler } from "./ConfigHandler";
 import { MongoConnectionType } from "@lindorm-io/mongo";
 import { RedisConnectionType } from "@lindorm-io/redis";
 import { developmentConfig, environmentConfig, productionConfig, stagingConfig, testConfig } from "./files";
 import { stringToMilliseconds } from "@lindorm-io/core";
 
-const handler = new Config({
+const handler = new ConfigHandler({
   productionConfig,
   stagingConfig,
   developmentConfig,
