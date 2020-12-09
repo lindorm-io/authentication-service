@@ -33,7 +33,7 @@
     "test:unit": "jest --config jest.config.js --forceExit --",
     "test:unit:watch": "jest --config jest.config.js --watch --",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "update": "ncu -a && npm install",
+    "update": "ncu -u && npm install",
     "validate": "npm run test:clear && npm run lint && npm run typecheck && npm run test"
   },
   "dependencies": {
@@ -66,24 +66,24 @@
     "@types/koa-router": "^7.4.1",
     "@types/lodash": "^4.14.165",
     "@types/mailgun-js": "^0.22.11",
-    "@types/mongodb": "^3.5.34",
+    "@types/mongodb": "^3.6.1",
     "@types/node": "^14.14.10",
     "@types/supertest": "^2.0.10",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "concurrently": "^5.3.0",
-    "eslint": "^7.14.0",
-    "husky": "^4.3.0",
+    "eslint": "^7.15.0",
+    "husky": "^4.3.5",
     "jest": "^26.6.3",
     "jest-extended": "^0.11.5",
-    "lint-staged": "^10.5.2",
+    "lint-staged": "^10.5.3",
     "mockdate": "^3.0.2",
     "prettier": "2.2.1",
     "rimraf": "^3.0.2",
     "supertest": "^6.0.1",
     "ts-jest": "^26.4.4",
-    "ts-node": "^9.0.0",
+    "ts-node": "^9.1.0",
     "typescript": "^4.1.2"
   }
 }
