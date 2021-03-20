@@ -30,15 +30,27 @@ describe("findOrCreateAccount", () => {
     );
   });
 
-  afterEach(resetStore);
+  afterEach(() => {
+    jest.clearAllMocks();
+    resetStore();
+  });
 
   test("should return an account", async () => {
     await expect(findOrCreateAccount(ctx)(account.email)).resolves.toMatchSnapshot();
     expect(ensureIdentity).toHaveBeenCalled();
   });
 
+  test("should not ensure identity if id already exists", async () => {
+    account.identityId = "3cdca0ff-1167-4ef3-8217-3767333389bd";
+    await ctx.repository.account.update(account);
+
+    await expect(findOrCreateAccount(ctx)(account.email)).resolves.toMatchSnapshot();
+    expect(ensureIdentity).not.toHaveBeenCalled();
+  });
+
   test("should throw error when account is locked", async () => {
     account.permission = Permission.LOCKED;
+
     await ctx.repository.account.update(account);
     await expect(findOrCreateAccount(ctx)(account.email)).rejects.toStrictEqual(expect.any(InvalidPermissionError));
   });

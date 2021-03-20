@@ -13,7 +13,11 @@ export const findOrCreateAccount = (ctx: IKoaAuthContext) => async (email: strin
     throw new InvalidPermissionError();
   }
 
-  await ensureIdentity(account.id);
+  if (!account.identityId) {
+    await ensureIdentity(account.id);
+    account.identityId = account.id;
+    await repository.account.update(account);
+  }
 
   return account;
 };
