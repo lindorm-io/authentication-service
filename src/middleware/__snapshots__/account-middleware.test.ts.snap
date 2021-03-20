@@ -6,7 +6,7 @@ Account {
   "_email": "email@lindorm.io",
   "_events": Array [],
   "_id": "accountId",
-  "_identityId": null,
+  "_identityLinked": false,
   "_otp": Object {
     "signature": null,
     "uri": null,

@@ -41,7 +41,7 @@ describe("findOrCreateAccount", () => {
   });
 
   test("should not ensure identity if id already exists", async () => {
-    account.identityId = "3cdca0ff-1167-4ef3-8217-3767333389bd";
+    account.identityLinked = true;
     await ctx.repository.account.update(account);
 
     await expect(findOrCreateAccount(ctx)(account.email)).resolves.toMatchSnapshot();

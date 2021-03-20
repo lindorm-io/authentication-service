@@ -14,7 +14,7 @@ export interface IAccountPassword {
 
 export interface IAccount extends IEntity {
   email: string;
-  identityId: string;
+  identityLinked: boolean;
   otp: IAccountOTP;
   password: IAccountPassword;
   permission: string;
@@ -22,7 +22,7 @@ export interface IAccount extends IEntity {
 
 export interface IAccountOptions extends IEntityBaseOptions {
   email: string;
-  identityId?: string;
+  identityLinked?: boolean;
   otp?: IAccountOTP;
   password?: IAccountPassword;
   permission?: string;
@@ -30,7 +30,7 @@ export interface IAccountOptions extends IEntityBaseOptions {
 
 export class Account extends EntityBase implements IAccount {
   private _email: string;
-  private _identityId: string;
+  private _identityLinked: boolean;
   private _otp: IAccountOTP;
   private _password: IAccountPassword;
   private _permission: string;
@@ -38,7 +38,7 @@ export class Account extends EntityBase implements IAccount {
   constructor(options: IAccountOptions) {
     super(options);
     this._email = options.email.toLowerCase();
-    this._identityId = options.identityId || null;
+    this._identityLinked = options.identityLinked || false;
     this._otp = {
       signature: options.otp?.signature || null,
       uri: options.otp?.uri || null,
@@ -58,12 +58,12 @@ export class Account extends EntityBase implements IAccount {
     this.addEvent(AccountEvent.EMAIL_CHANGED, { email: this._email });
   }
 
-  public get identityId(): string {
-    return this._identityId;
+  public get identityLinked(): boolean {
+    return this._identityLinked;
   }
-  public set identityId(identityId: string) {
-    this._identityId = identityId;
-    this.addEvent(AccountEvent.EMAIL_CHANGED, { identityId: this._identityId });
+  public set identityLinked(identityLinked: boolean) {
+    this._identityLinked = identityLinked;
+    this.addEvent(AccountEvent.EMAIL_CHANGED, { identityLinked: this._identityLinked });
   }
 
   public get otp(): IAccountOTP {

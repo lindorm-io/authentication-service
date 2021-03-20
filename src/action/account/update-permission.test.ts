@@ -48,7 +48,7 @@ describe("updateAccountPermission", () => {
         },
       ],
       _id: MOCK_UUID,
-      _identityId: null,
+      _identityLinked: false,
       _otp: {
         signature: null,
         uri: null,

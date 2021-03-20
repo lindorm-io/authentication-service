@@ -44,7 +44,7 @@ describe("createAccount", () => {
       _email: "lindorm@lindorm.io",
       _events: [],
       _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
-      _identityId: null,
+      _identityLinked: false,
       _otp: {
         signature: null,
         uri: null,

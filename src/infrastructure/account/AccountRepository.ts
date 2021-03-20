@@ -7,7 +7,6 @@ import { schema } from "./schema";
 export interface IAccountFilter {
   id?: string;
   email?: string;
-  identityId?: string;
   permission?: string;
 }
 
@@ -44,7 +43,7 @@ export class AccountRepository extends RepositoryBase<Account> implements IAccou
       events: entity.events,
 
       email: entity.email,
-      identityId: entity.identityId,
+      identityLinked: entity.identityLinked,
       otp: entity.otp,
       permission: entity.permission,
       password: entity.password,

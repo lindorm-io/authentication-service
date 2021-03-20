@@ -14,7 +14,7 @@ describe("Account.ts", () => {
   beforeEach(() => {
     account = new Account({
       email: "email@lindorm.io",
-      identityId: "1148b4d6-214b-4bc3-9611-feecc065bf3c",
+      identityLinked: false,
       otp: { signature: "signature", uri: "uri" },
       password: { signature: "password", updated: date },
       permission: "permission",
@@ -54,12 +54,12 @@ describe("Account.ts", () => {
     expect(account.events).toMatchSnapshot();
   });
 
-  test("should get/set identityId", () => {
-    expect(account.identityId).toBe("1148b4d6-214b-4bc3-9611-feecc065bf3c");
+  test("should get/set identityLinked", () => {
+    expect(account.identityLinked).toBe(false);
 
-    account.identityId = "ca02be54-0b11-4d45-b918-f637c3162517";
+    account.identityLinked = true;
 
-    expect(account.identityId).toBe("ca02be54-0b11-4d45-b918-f637c3162517");
+    expect(account.identityLinked).toBe(true);
     expect(account.events).toMatchSnapshot();
   });
 

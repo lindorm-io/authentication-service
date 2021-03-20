@@ -42,7 +42,7 @@ describe("removeAccountOTP", () => {
       _email: "email@lindorm.io",
       _events: [{ date: date, name: "account_otp_changed", payload: { otp: { signature: null, uri: null } } }],
       _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
-      _identityId: null,
+      _identityLinked: false,
       _otp: { signature: null, uri: null },
       _password: { signature: null, updated: null },
       _permission: "user",

@@ -6,7 +6,7 @@ Account {
   "_email": "email@lindorm.io",
   "_events": Array [],
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
-  "_identityId": null,
+  "_identityLinked": false,
   "_otp": Object {
     "signature": null,
     "uri": null,
@@ -56,13 +56,13 @@ Array [
 ]
 `;
 
-exports[`Account.ts should get/set identityId 1`] = `
+exports[`Account.ts should get/set identityLinked 1`] = `
 Array [
   Object {
     "date": 2020-01-01T07:00:00.000Z,
     "name": "account_email_changed",
     "payload": Object {
-      "identityId": "ca02be54-0b11-4d45-b918-f637c3162517",
+      "identityLinked": true,
     },
   },
 ]
@@ -116,7 +116,7 @@ Account {
   "_email": "email@lindorm.io",
   "_events": Array [],
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
-  "_identityId": "1148b4d6-214b-4bc3-9611-feecc065bf3c",
+  "_identityLinked": false,
   "_otp": Object {
     "signature": "signature",
     "uri": "uri",
@@ -137,7 +137,7 @@ Account {
   "_email": "email@lindorm.io",
   "_events": Array [],
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
-  "_identityId": null,
+  "_identityLinked": false,
   "_otp": Object {
     "signature": null,
     "uri": null,
