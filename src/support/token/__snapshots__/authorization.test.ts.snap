@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getAuthorizationToken should return an authorization token 1`] = `
+Object {
+  "expires": 32501992332,
+  "expiresIn": 30924130332,
+  "id": "authorizationId",
+  "level": undefined,
+  "token": Object {
+    "aud": "authorization",
+    "cid": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "did": "deviceId",
+    "exp": 32501992332,
+    "iat": 1577862000,
+    "iss": "https://test.authentication.lindorm.io",
+    "jti": "authorizationId",
+    "nbf": 1577862000,
+    "sub": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  },
+}
+`;

@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`verifyToken should verify token 1`] = `
+Object {
+  "authContextClass": null,
+  "authMethodsReference": null,
+  "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "deviceId": null,
+  "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "level": 0,
+  "payload": Object {},
+  "permission": null,
+  "scope": null,
+  "subject": "subject",
+}
+`;
+
+exports[`verifyToken should verify token without client 1`] = `
+Object {
+  "authContextClass": null,
+  "authMethodsReference": null,
+  "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "deviceId": null,
+  "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "level": 0,
+  "payload": Object {},
+  "permission": null,
+  "scope": null,
+  "subject": "subject",
+}
+`;
+
+exports[`verifyToken should verify token without device 1`] = `
+Object {
+  "authContextClass": null,
+  "authMethodsReference": null,
+  "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "deviceId": null,
+  "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "level": 0,
+  "payload": Object {},
+  "permission": null,
+  "scope": null,
+  "subject": "subject",
+}
+`;
