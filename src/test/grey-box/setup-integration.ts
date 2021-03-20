@@ -9,7 +9,6 @@ import { getKeyPairEC, getKeyPairRSA } from "./key-pair";
 import { winston } from "../../logger";
 import {
   AccountRepository,
-  DeviceRepository,
   KeyPairCache,
   KeyPairRepository,
   RequestLimitCache,
@@ -18,7 +17,6 @@ import {
 
 export let TEST_ACCOUNT_REPOSITORY: AccountRepository;
 export let TEST_CLIENT_REPOSITORY: ClientRepository;
-export let TEST_DEVICE_REPOSITORY: DeviceRepository;
 export let TEST_KEY_PAIR_REPOSITORY: KeyPairRepository;
 export let TEST_SESSION_REPOSITORY: SessionRepository;
 
@@ -32,7 +30,7 @@ export let TEST_TOKEN_ISSUER: TokenIssuer;
 export let TEST_KEY_PAIR_HANDLER: KeyPairHandler;
 
 export const setupIntegration = async (): Promise<void> => {
-  const { account, client, device, keyPair, session } = await getGreyBoxRepository();
+  const { account, client, keyPair, session } = await getGreyBoxRepository();
   const { client: clientCache, keyPair: keyPairCache, requestLimit } = await getGreyBoxCache();
 
   const keyPairEC = getKeyPairEC();
@@ -40,7 +38,6 @@ export const setupIntegration = async (): Promise<void> => {
 
   TEST_ACCOUNT_REPOSITORY = account;
   TEST_CLIENT_REPOSITORY = client;
-  TEST_DEVICE_REPOSITORY = device;
   TEST_KEY_PAIR_REPOSITORY = keyPair;
   TEST_SESSION_REPOSITORY = session;
 

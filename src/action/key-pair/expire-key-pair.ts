@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { InvalidExpiryString } from "../../error";
 import { add } from "date-fns";
 import { assertAccountAdmin } from "../../support";
@@ -15,7 +15,7 @@ const schema = Joi.object({
   expires: Joi.string().required(),
 });
 
-export const expireKeyPair = (ctx: IAuthContext) => async (options: IExpireKeyPairOptions): Promise<void> => {
+export const expireKeyPair = (ctx: IKoaAuthContext) => async (options: IExpireKeyPairOptions): Promise<void> => {
   await schema.validateAsync(options);
 
   const { cache, logger, repository } = ctx;
@@ -32,7 +32,12 @@ export const expireKeyPair = (ctx: IAuthContext) => async (options: IExpireKeyPa
   keyPair.expires = add(new Date(), stringToDurationObject(expires));
 
   const updated = await repository.keyPair.update(keyPair);
-  await cache.keyPair.update(updated);
+
+  try {
+    await cache.keyPair.update(updated);
+  } catch (err) {
+    logger.error("could not update cache", err);
+  }
 
   logger.debug("key pair updated", {
     id: keyPair.id,

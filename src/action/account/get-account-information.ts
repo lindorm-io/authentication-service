@@ -1,12 +1,6 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
-import {
-  IGetAccountDevicesData,
-  IGetAccountSessionsData,
-  getAccount,
-  getAccountDevices,
-  getAccountSessions,
-} from "../../support";
+import { IKoaAuthContext } from "../../typing";
+import { IGetAccountSessionsData, getAccount, getAccountSessions } from "../../support";
 
 export interface IGetAccountInformationOptions {
   accountId: string;
@@ -14,7 +8,6 @@ export interface IGetAccountInformationOptions {
 
 export interface IGetAccountInformationData {
   created: Date;
-  devices: Array<IGetAccountDevicesData>;
   email: string;
   hasOtp: boolean;
   hasPassword: boolean;
@@ -27,7 +20,7 @@ const schema = Joi.object({
   accountId: Joi.string().guid().required(),
 });
 
-export const getAccountInformation = (ctx: IAuthContext) => async (
+export const getAccountInformation = (ctx: IKoaAuthContext) => async (
   options: IGetAccountInformationOptions,
 ): Promise<IGetAccountInformationData> => {
   await schema.validateAsync(options);
@@ -38,12 +31,10 @@ export const getAccountInformation = (ctx: IAuthContext) => async (
   logger.info("requesting account information", { id: accountId });
 
   const account = await getAccount(ctx)(accountId);
-  const devices = await getAccountDevices(ctx)(account);
   const sessions = await getAccountSessions(ctx)(account);
 
   return {
     created: account.created,
-    devices,
     email: account.email,
     hasOtp: !!account.otp.uri,
     hasPassword: !!account.password.signature,

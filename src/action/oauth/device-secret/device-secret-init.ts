@@ -1,14 +1,15 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../../typing";
+import { IKoaAuthContext } from "../../../typing";
 import { JOI_CODE_CHALLENGE, JOI_CODE_METHOD, JOI_EMAIL, JOI_GRANT_TYPE, JOI_STATE } from "../../../constant";
 import { assertValidScopeInput, assertValidResponseTypeInput } from "../../../util";
 import { createSession, getAuthorizationToken } from "../../../support";
-import { getRandomValue } from "@lindorm-io/core";
-import { DeviceNotFoundError } from "../../../error";
+import { getRandomValue, stringComparison } from "@lindorm-io/core";
+import { InvalidDeviceError } from "../../../error";
 
 export interface IPerformDeviceSecretInitOptions {
   codeChallenge: string;
   codeMethod: string;
+  deviceId: string;
   grantType: string;
   redirectUri: string;
   responseType: string;
@@ -29,6 +30,7 @@ export interface IPerformDeviceSecretInitData {
 const schema = Joi.object({
   codeChallenge: JOI_CODE_CHALLENGE,
   codeMethod: JOI_CODE_METHOD,
+  deviceId: Joi.string().guid().required(),
   grantType: JOI_GRANT_TYPE,
   redirectUri: Joi.string().uri().required(),
   responseType: Joi.string().required(),
@@ -37,16 +39,16 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performDeviceSecretInit = (ctx: IAuthContext) => async (
+export const performDeviceSecretInit = (ctx: IKoaAuthContext) => async (
   options: IPerformDeviceSecretInitOptions,
 ): Promise<IPerformDeviceSecretInitData> => {
   await schema.validateAsync(options);
 
-  const { client, device } = ctx;
-  const { codeChallenge, codeMethod, grantType, redirectUri, responseType, scope, state, subject } = options;
+  const { client, metadata } = ctx;
+  const { codeChallenge, codeMethod, deviceId, grantType, redirectUri, responseType, scope, state, subject } = options;
 
-  if (!device) {
-    throw new DeviceNotFoundError();
+  if (!stringComparison(deviceId, metadata.deviceId)) {
+    throw new InvalidDeviceError(deviceId);
   }
 
   assertValidResponseTypeInput(responseType);
@@ -66,7 +68,7 @@ export const performDeviceSecretInit = (ctx: IAuthContext) => async (
     subject,
   });
 
-  const { expires, expiresIn, token } = getAuthorizationToken(ctx)({ client, device, session });
+  const { expires, expiresIn, token } = getAuthorizationToken(ctx)({ client, session });
 
   return {
     deviceChallenge,

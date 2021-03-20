@@ -20,18 +20,21 @@ jest.mock("@lindorm-io/core", () => ({
 }));
 
 describe("performDevicePINInit", () => {
-  let getMockContext: any;
+  let ctx: any;
 
   beforeEach(() => {
-    getMockContext = () => ({
+    ctx = {
       client: "client",
-      device: "device",
-    });
+      metadata: {
+        deviceId: "47d9ba18-22bd-40aa-8e34-85746b14ca5d",
+      },
+    };
   });
 
   test("should create a new session", async () => {
     await expect(
-      performDevicePINInit(getMockContext())({
+      performDevicePINInit(ctx)({
+        deviceId: "47d9ba18-22bd-40aa-8e34-85746b14ca5d",
         codeChallenge: "Z1teIWMlf6xFacp4quXP3O0XI204ZT1b",
         codeMethod: "sha512",
         grantType: GrantType.DEVICE_PIN,

@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { assertAccountAdmin, encryptClientSecret } from "../../support";
 import { Client } from "@lindorm-io/koa-client";
 
@@ -21,7 +21,7 @@ const schema = Joi.object({
   secret: Joi.string().allow(null).length(32),
 });
 
-export const createClient = (ctx: IAuthContext) => async (
+export const createClient = (ctx: IKoaAuthContext) => async (
   options: ICreateClientOptions,
 ): Promise<ICreateClientData> => {
   await schema.validateAsync(options);

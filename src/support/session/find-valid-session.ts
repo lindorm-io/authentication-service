@@ -1,5 +1,5 @@
-import { IAuthContext } from "../../typing";
-import { InvalidAuthorizationError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
+import { IKoaAuthContext } from "../../typing";
+import { InvalidAuthorizationError, InvalidDeviceError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
 import { InvalidClientError } from "@lindorm-io/koa-client";
 import { Session } from "../../entity";
 import { assertCodeChallenge } from "./challenge";
@@ -11,8 +11,8 @@ export interface IFindSessionOptions {
   subject: string;
 }
 
-export const findValidSession = (ctx: IAuthContext) => async (options: IFindSessionOptions): Promise<Session> => {
-  const { client, repository, token } = ctx;
+export const findValidSession = (ctx: IKoaAuthContext) => async (options: IFindSessionOptions): Promise<Session> => {
+  const { client, metadata, repository, token } = ctx;
   const { codeVerifier, grantType, subject } = options;
   const {
     authorization: { id: authorizationId, subject: sessionId },
@@ -29,6 +29,10 @@ export const findValidSession = (ctx: IAuthContext) => async (options: IFindSess
 
     if (session.clientId !== client.id) {
       throw new InvalidClientError(client.id);
+    }
+
+    if (session.deviceId !== metadata.deviceId) {
+      throw new InvalidDeviceError(metadata.deviceId);
     }
 
     if (session.grantType !== grantType) {

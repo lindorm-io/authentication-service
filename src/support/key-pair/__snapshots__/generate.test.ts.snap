@@ -3,6 +3,7 @@
 exports[`generateKeyPair should generate EC key pair 1`] = `
 KeyPair {
   "_algorithm": "ec-algorithm",
+  "_allowed": true,
   "_created": 2020-01-01T07:00:00.000Z,
   "_events": Array [],
   "_expires": null,
@@ -19,6 +20,7 @@ KeyPair {
 exports[`generateKeyPair should generate RSA key pair 1`] = `
 KeyPair {
   "_algorithm": "rsa-algorithm",
+  "_allowed": true,
   "_created": 2020-01-01T07:00:00.000Z,
   "_events": Array [],
   "_expires": null,

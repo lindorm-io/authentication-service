@@ -1,5 +1,5 @@
 import { HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { Router } from "@lindorm-io/koa";
 import { logoutWithToken } from "../../action";
 import { tokenValidationMiddleware } from "../../middleware";
@@ -10,7 +10,7 @@ router.use(tokenValidationMiddleware);
 
 router.post(
   "/",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     await logoutWithToken(ctx)();
 
     ctx.body = {};

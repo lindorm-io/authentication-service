@@ -1,27 +1,26 @@
-import { Account, Device, Session } from "../../entity";
+import { Account, Session } from "../../entity";
 import { Audience } from "../../enum";
 import { Client } from "@lindorm-io/koa-client";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 
 export interface IGetRefreshTokenOptions {
   account: Account;
   authMethodsReference: string;
   client: Client;
-  device?: Device;
   scope: string;
   session: Session;
 }
 
-export const getRefreshToken = (ctx: IAuthContext) => (options: IGetRefreshTokenOptions): ITokenIssuerSignData => {
-  const { logger, issuer } = ctx;
+export const getRefreshToken = (ctx: IKoaAuthContext) => (options: IGetRefreshTokenOptions): ITokenIssuerSignData => {
+  const { logger, issuer, metadata } = ctx;
   const { tokenIssuer } = issuer;
-  const { authMethodsReference, client, device, account, scope, session } = options;
+  const { authMethodsReference, client, account, scope, session } = options;
 
   logger.debug("creating refresh token", {
     account: account.id,
     client: client.id,
-    device: device?.id,
+    device: metadata.deviceId,
     scope,
     session: session.id,
   });
@@ -30,7 +29,7 @@ export const getRefreshToken = (ctx: IAuthContext) => (options: IGetRefreshToken
     audience: Audience.REFRESH,
     authMethodsReference: authMethodsReference,
     clientId: client.id,
-    deviceId: device?.id,
+    deviceId: metadata.deviceId,
     expiry: session.expires,
     id: session.refreshId,
     permission: account.permission,

@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../../typing";
+import { IKoaAuthContext } from "../../../typing";
 import { JOI_CODE_CHALLENGE, JOI_CODE_METHOD, JOI_EMAIL, JOI_GRANT_TYPE, JOI_STATE } from "../../../constant";
 import { assertValidScopeInput, assertValidResponseTypeInput } from "../../../util";
 import { createSession, getAuthorizationToken } from "../../../support";
@@ -34,7 +34,7 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performPasswordInit = (ctx: IAuthContext) => async (
+export const performPasswordInit = (ctx: IKoaAuthContext) => async (
   options: IPerformPasswordInitOptions,
 ): Promise<IPerformPasswordInitData> => {
   await schema.validateAsync(options);

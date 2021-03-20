@@ -1,6 +1,6 @@
 import MockDate from "mockdate";
-import { Device, ISessionOptions, Session } from "../../entity";
-import { MOCK_DEVICE_OPTIONS, MOCK_SESSION_OPTIONS, getMockRepository } from "../../test/mocks";
+import { ISessionOptions, Session } from "../../entity";
+import { MOCK_SESSION_OPTIONS, getMockRepository } from "../../test/mocks";
 import { extendSession } from "./extend-session";
 import { InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
 import { Client, InvalidClientError } from "@lindorm-io/koa-client";
@@ -32,7 +32,7 @@ describe("extendSession", () => {
     );
     getMockContext = () => ({
       client: new Client({ id: "clientId" }),
-      device: new Device({ ...MOCK_DEVICE_OPTIONS, id: "deviceId" }),
+      metadata: { deviceId: "deviceId" },
       repository: mockRepository,
       token: { refresh: { id: "refreshId", subject: "sessionId" } },
     });
@@ -84,7 +84,7 @@ describe("extendSession", () => {
 
   test("should throw error when deviceId is wrong", async () => {
     const ctx = getMockContext();
-    ctx.device = new Device({ ...MOCK_DEVICE_OPTIONS, id: "wrong" });
+    ctx.metadata.deviceId = "wrong";
 
     await expect(extendSession(ctx)()).rejects.toStrictEqual(expect.any(InvalidDeviceError));
   });

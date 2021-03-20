@@ -22,9 +22,9 @@ describe("/.well-known", () => {
     expect(response.body).toMatchSnapshot();
   });
 
-  test("GET /jwks", async () => {
+  test("GET /jwks.json", async () => {
     const response = await request(koa.callback())
-      .get(`/.well-known/jwks`)
+      .get(`/.well-known/jwks.json`)
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .expect(200);

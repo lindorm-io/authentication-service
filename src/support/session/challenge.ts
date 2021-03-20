@@ -1,6 +1,5 @@
-import { AssertCodeChallengeError, AssertDeviceChallengeError } from "../../error";
-import { Device, Session } from "../../entity";
-import { KeyPairHandler } from "@lindorm-io/key-pair";
+import { AssertCodeChallengeError } from "../../error";
+import { Session } from "../../entity";
 import { createHash } from "crypto";
 import { stringComparison } from "@lindorm-io/core";
 
@@ -10,23 +9,5 @@ export const assertCodeChallenge = (session: Session, codeVerifier: string): voi
 
   if (!stringComparison(challenge, hash)) {
     throw new AssertCodeChallengeError(challenge, hash);
-  }
-};
-
-export const assertDeviceChallenge = (session: Session, device: Device, deviceVerifier: string): void => {
-  const { publicKey } = device;
-
-  const challenge = session.authorization.deviceChallenge;
-  const handler = new KeyPairHandler({
-    algorithm: "RS512",
-    passphrase: "",
-    privateKey: null,
-    publicKey,
-  });
-
-  try {
-    handler.assert(challenge, deviceVerifier);
-  } catch (err) {
-    throw new AssertDeviceChallengeError(challenge, deviceVerifier);
   }
 };

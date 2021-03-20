@@ -1,18 +1,17 @@
 import MockDate from "mockdate";
-import { Account, Device, Session } from "../../entity";
+import { Account, Session } from "../../entity";
+import { Client } from "@lindorm-io/koa-client";
 import { ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
 import { createTokens } from "./create-tokens";
+import { winston } from "../../logger";
 import {
   MOCK_ACCOUNT_OPTIONS,
   MOCK_CLIENT_OPTIONS,
-  MOCK_DEVICE_OPTIONS,
   MOCK_SESSION_OPTIONS,
   MOCK_EC_TOKEN_ISSUER,
-  MOCK_LOGGER,
   getMockRepository,
 } from "../../test/mocks";
-import { Client } from "@lindorm-io/koa-client";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -34,19 +33,18 @@ describe("createTokens", () => {
 
   let account: Account;
   let client: Client;
-  let device: Device;
   let session: Session;
 
   beforeEach(() => {
     getMockContext = () => ({
       issuer: { tokenIssuer: MOCK_EC_TOKEN_ISSUER },
-      logger: MOCK_LOGGER,
+      logger: winston,
+      metadata: { deviceId: "deviceId" },
       repository: getMockRepository(),
     });
 
     account = new Account(MOCK_ACCOUNT_OPTIONS);
     client = new Client(MOCK_CLIENT_OPTIONS);
-    device = new Device(MOCK_DEVICE_OPTIONS);
     session = new Session({
       ...MOCK_SESSION_OPTIONS,
       refreshId: "refreshId",
@@ -60,7 +58,6 @@ describe("createTokens", () => {
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        device,
         payload: {},
         responseType: ResponseType.REFRESH,
         session,
@@ -74,7 +71,6 @@ describe("createTokens", () => {
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        device,
         payload: {},
         responseType: ResponseType.ACCESS,
         session,
@@ -82,13 +78,12 @@ describe("createTokens", () => {
     ).toMatchSnapshot();
   });
 
-  test("should return access token", () => {
+  test("should return identity token", () => {
     expect(
       createTokens(getMockContext())({
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        device,
         payload: {},
         responseType: ResponseType.IDENTITY,
         session,
@@ -102,7 +97,6 @@ describe("createTokens", () => {
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        device,
         payload: {},
         responseType: `${ResponseType.REFRESH} ${ResponseType.ACCESS} ${ResponseType.IDENTITY}`,
         session,

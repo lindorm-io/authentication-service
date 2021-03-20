@@ -1,13 +1,11 @@
+import dotenv from "dotenv";
 import { IConfigurationData } from "../ConfigHandler";
-import { NodeEnvironment } from "@lindorm-io/core";
-import { config } from "dotenv";
-import { isString } from "lodash";
 
-config();
+dotenv.config();
 
 export const environmentConfig: IConfigurationData = {
-  NODE_ENVIRONMENT: process.env.NODE_ENV || NodeEnvironment.DEVELOPMENT,
-  SERVER_PORT: isString(process.env.SERVER_PORT) ? parseInt(process.env.SERVER_PORT, 10) : null,
+  NODE_ENVIRONMENT: process.env.NODE_ENV,
+  SERVER_PORT: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT, 10) : null,
   HOST: process.env.HOST,
 
   JWT_ISSUER: process.env.JWT_ISSUER,
@@ -26,11 +24,19 @@ export const environmentConfig: IConfigurationData = {
   MAILGUN_DOMAIN: process.env.MAILGUN_DOMAIN,
   MAILGUN_FROM: process.env.MAILGUN_FROM,
 
-  REDIS_PORT: isString(process.env.REDIS_PORT) ? parseInt(process.env.REDIS_PORT, 10) : null,
+  REDIS_PORT: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : null,
 
   MONGO_INITDB_ROOT_USERNAME: process.env.MONGO_INITDB_ROOT_USERNAME,
   MONGO_INITDB_ROOT_PASSWORD: process.env.MONGO_INITDB_ROOT_PASSWORD,
   MONGO_HOST: process.env.MONGO_HOST,
-  MONGO_EXPOSE_PORT: isString(process.env.MONGO_EXPOSE_PORT) ? parseInt(process.env.MONGO_EXPOSE_PORT, 10) : null,
+  MONGO_EXPOSE_PORT: process.env.MONGO_EXPOSE_PORT ? parseInt(process.env.MONGO_EXPOSE_PORT, 10) : null,
   MONGO_DB_NAME: process.env.MONGO_DB_NAME,
+
+  DEVICE_SERVICE_BASE_URL: process.env.DEVICE_SERVICE_BASE_URL,
+  DEVICE_SERVICE_AUTH_USERNAME: process.env.DEVICE_SERVICE_AUTH_USERNAME,
+  DEVICE_SERVICE_AUTH_PASSWORD: process.env.DEVICE_SERVICE_AUTH_PASSWORD,
+
+  IDENTITY_SERVICE_BASE_URL: process.env.IDENTITY_SERVICE_BASE_URL,
+  IDENTITY_SERVICE_AUTH_USERNAME: process.env.IDENTITY_SERVICE_AUTH_USERNAME,
+  IDENTITY_SERVICE_AUTH_PASSWORD: process.env.IDENTITY_SERVICE_AUTH_PASSWORD,
 };

@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { JOI_PERMISSION } from "../../constant";
 import { Permission } from "@lindorm-io/jwt";
 import { assertAccountAdmin } from "../../support";
@@ -14,7 +14,7 @@ const schema = Joi.object({
   permission: JOI_PERMISSION,
 });
 
-export const updateAccountPermission = (ctx: IAuthContext) => async (
+export const updateAccountPermission = (ctx: IKoaAuthContext) => async (
   options: IUpdateAccountPermission,
 ): Promise<void> => {
   await schema.validateAsync(options);

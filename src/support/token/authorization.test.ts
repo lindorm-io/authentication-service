@@ -1,15 +1,13 @@
 import MockDate from "mockdate";
-import { getAuthorizationToken } from "./authorization";
-import { Device, Session } from "../../entity";
-import {
-  MOCK_CLIENT_OPTIONS,
-  MOCK_DEVICE_OPTIONS,
-  MOCK_SESSION_OPTIONS,
-  MOCK_EC_TOKEN_ISSUER,
-  MOCK_LOGGER,
-} from "../../test/mocks";
 import { Client } from "@lindorm-io/koa-client";
+import { MOCK_CLIENT_OPTIONS, MOCK_SESSION_OPTIONS, MOCK_EC_TOKEN_ISSUER } from "../../test/mocks";
+import { Session } from "../../entity";
+import { getAuthorizationToken } from "./authorization";
+import { winston } from "../../logger";
 
+jest.mock("jsonwebtoken", () => ({
+  sign: (data: any) => data,
+}));
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
@@ -20,17 +18,16 @@ describe("getAuthorizationToken", () => {
   let getMockContext: any;
 
   let client: Client;
-  let device: Device;
   let session: Session;
 
   beforeEach(() => {
     getMockContext = () => ({
-      logger: MOCK_LOGGER,
+      logger: winston,
       issuer: { tokenIssuer: MOCK_EC_TOKEN_ISSUER },
+      metadata: { deviceId: "deviceId" },
     });
 
     client = new Client(MOCK_CLIENT_OPTIONS);
-    device = new Device(MOCK_DEVICE_OPTIONS);
     session = new Session(MOCK_SESSION_OPTIONS);
   });
 
@@ -38,30 +35,8 @@ describe("getAuthorizationToken", () => {
     expect(
       getAuthorizationToken(getMockContext())({
         client,
-        device,
         session,
       }),
-    ).toStrictEqual({
-      expires: 32501992332,
-      expiresIn: 30924130332,
-      id: "authorizationId",
-      level: undefined,
-      token: expect.any(String),
-    });
-  });
-
-  test("should return an authorization token without device", () => {
-    expect(
-      getAuthorizationToken(getMockContext())({
-        client,
-        session,
-      }),
-    ).toStrictEqual({
-      expires: 32501992332,
-      expiresIn: 30924130332,
-      id: "authorizationId",
-      level: undefined,
-      token: expect.any(String),
-    });
+    ).toMatchSnapshot();
   });
 });

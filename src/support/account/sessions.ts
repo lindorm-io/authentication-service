@@ -1,4 +1,4 @@
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { orderBy } from "lodash";
 import { Account, ISessionAgent } from "../../entity";
 
@@ -11,7 +11,7 @@ export interface IGetAccountSessionsData {
   updated: Date;
 }
 
-export const getAccountSessions = (ctx: IAuthContext) => async (
+export const getAccountSessions = (ctx: IKoaAuthContext) => async (
   account: Account,
 ): Promise<Array<IGetAccountSessionsData>> => {
   const { repository } = ctx;

@@ -1,6 +1,6 @@
 import { GrantType } from "../../enum";
 import { HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { Router } from "@lindorm-io/koa";
 import { requestLimitSuccessMiddleware, tokenValidationMiddleware } from "../../middleware";
 import {
@@ -20,10 +20,11 @@ router.use(requestLimitSuccessMiddleware);
 
 router.post(
   "/",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const {
       bindingCode,
       codeVerifier,
+      deviceId,
       deviceVerifier,
       grantType,
       otpCode,
@@ -38,6 +39,7 @@ router.post(
       case GrantType.DEVICE_PIN:
         ctx.body = await performDevicePINToken(ctx)({
           codeVerifier,
+          deviceId,
           deviceVerifier,
           grantType,
           pin,
@@ -48,6 +50,7 @@ router.post(
       case GrantType.DEVICE_SECRET:
         ctx.body = await performDeviceSecretToken(ctx)({
           codeVerifier,
+          deviceId,
           deviceVerifier,
           grantType,
           secret,

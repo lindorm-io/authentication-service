@@ -1,19 +1,21 @@
 import { BEARER_TOKEN_MW_OPTIONS } from "../config";
 import { HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../typing";
+import { IKoaAuthContext } from "../typing";
 import { Router } from "@lindorm-io/koa";
 import { accountMiddleware } from "../middleware";
 import { bearerTokenMiddleware } from "@lindorm-io/koa-jwt";
 import { createClient, removeClient, updateClient } from "../action";
+import { clientMiddleware } from "@lindorm-io/koa-client";
 
 export const router = new Router();
 
+router.use(clientMiddleware());
 router.use(bearerTokenMiddleware(BEARER_TOKEN_MW_OPTIONS));
 router.use(accountMiddleware);
 
 router.post(
   "/",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { description, emailAuthorizationUri, name, secret } = ctx.request.body;
 
     ctx.body = await createClient(ctx)({
@@ -28,7 +30,7 @@ router.post(
 
 router.patch(
   "/:id",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { approved, description, emailAuthorizationUri, name, secret } = ctx.request.body;
 
     await updateClient(ctx)({
@@ -47,7 +49,7 @@ router.patch(
 
 router.delete(
   "/:id",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     await removeClient(ctx)({
       clientId: ctx.params.id,
     });

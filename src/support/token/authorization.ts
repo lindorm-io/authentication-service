@@ -1,25 +1,24 @@
 import { Audience } from "../../enum";
 import { Client } from "@lindorm-io/koa-client";
-import { Device, Session } from "../../entity";
-import { IAuthContext } from "../../typing";
+import { Session } from "../../entity";
+import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 
 export interface IGetAuthorizationTokenOptions {
   client: Client;
-  device?: Device;
   session: Session;
 }
 
-export const getAuthorizationToken = (ctx: IAuthContext) => (
+export const getAuthorizationToken = (ctx: IKoaAuthContext) => (
   options: IGetAuthorizationTokenOptions,
 ): ITokenIssuerSignData => {
-  const { logger, issuer } = ctx;
+  const { logger, issuer, metadata } = ctx;
   const { tokenIssuer } = issuer;
-  const { client, device, session } = options;
+  const { client, session } = options;
 
   logger.debug("creating authorization token", {
     client: client.id,
-    device: device?.id,
+    device: metadata.deviceId,
     session: session.id,
   });
 
@@ -27,7 +26,7 @@ export const getAuthorizationToken = (ctx: IAuthContext) => (
     id: session.authorization.id,
     audience: Audience.AUTHORIZATION,
     clientId: client.id,
-    deviceId: device?.id,
+    deviceId: metadata.deviceId,
     expiry: session.expires,
     subject: session.id,
   });

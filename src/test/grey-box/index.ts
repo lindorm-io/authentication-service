@@ -1,6 +1,5 @@
 export * from "./account";
 export * from "./client";
-export * from "./device";
 export * from "./generate-test-oauth-data";
 export * from "./in-memory";
 export * from "./key-pair";

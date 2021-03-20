@@ -1,8 +1,8 @@
 import { Account } from "../../entity";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { assertAccountPermission } from "./permission";
 
-export const getAccount = (ctx: IAuthContext) => async (accountId: string): Promise<Account> => {
+export const getAccount = (ctx: IKoaAuthContext) => async (accountId: string): Promise<Account> => {
   const { account, repository } = ctx;
 
   await assertAccountPermission(ctx)(accountId);

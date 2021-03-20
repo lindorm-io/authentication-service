@@ -1,16 +1,16 @@
 import { GrantType, ResponseType } from "../enum";
-import { Scope } from "@lindorm-io/jwt";
 import { HOST, JWT_ISSUER } from "../config";
 import { HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../typing";
+import { IKoaAuthContext } from "../typing";
 import { Router } from "@lindorm-io/koa";
+import { Scope } from "@lindorm-io/jwt";
 import { getUnixTime } from "date-fns";
 
 export const router = new Router();
 
 router.get(
   "/openid-configuration",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     ctx.body = {
       issuer: JWT_ISSUER,
       authorization_endpoint: new URL("/oauth/authorization", HOST).toString(),
@@ -46,8 +46,8 @@ router.get(
 );
 
 router.get(
-  "/jwks",
-  async (ctx: IAuthContext): Promise<void> => {
+  "/jwks.json",
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const usableKeys = ctx.keystore.getUsableKeys();
     const keys: Array<any> = [];
 

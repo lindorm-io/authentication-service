@@ -15,6 +15,15 @@ export const indices: Array<IIndex> = [
   },
   {
     index: { refreshId: 1 },
-    options: { unique: true },
+    options: {
+      partialFilterExpression: {
+        refreshId: {
+          $exists: true,
+          $gt: "0",
+          $type: "string",
+        },
+      },
+      unique: true,
+    },
   },
 ];

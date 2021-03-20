@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext, ICreateTokensData } from "../../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { InvalidClientError } from "@lindorm-io/koa-client";
 import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
@@ -18,7 +18,7 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performMultiFactorToken = (ctx: IAuthContext) => async (
+export const performMultiFactorToken = (ctx: IKoaAuthContext) => async (
   options: IPerformMultiFactorTokenOptions,
 ): Promise<ICreateTokensData> => {
   await schema.validateAsync(options);

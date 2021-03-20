@@ -1,4 +1,3 @@
-export * from "./devices";
 export * from "./find-or-create-account";
 export * from "./get-account";
 export * from "./otp";

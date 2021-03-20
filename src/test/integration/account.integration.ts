@@ -15,6 +15,10 @@ import {
   setupIntegration,
 } from "../grey-box";
 
+jest.mock("../../axios", () => ({
+  ensureIdentity: jest.fn(() => ({})),
+}));
+
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/account", () => {
@@ -118,7 +122,6 @@ describe("/account", () => {
 
       expect(response.body).toStrictEqual({
         created: "2020-01-01T07:00:00.000Z",
-        devices: [],
         email: account.email,
         has_otp: false,
         has_password: false,

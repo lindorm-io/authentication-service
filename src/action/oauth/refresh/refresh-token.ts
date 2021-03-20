@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext, ICreateTokensData } from "../../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { InvalidPermissionError, InvalidRefreshTokenError, InvalidSubjectError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import { isLocked } from "@lindorm-io/jwt";
@@ -17,7 +17,7 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performRefreshToken = (ctx: IAuthContext) => async (
+export const performRefreshToken = (ctx: IKoaAuthContext) => async (
   options: IPerformRefreshTokenOptions,
 ): Promise<ICreateTokensData> => {
   await schema.validateAsync(options);

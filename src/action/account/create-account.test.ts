@@ -8,8 +8,11 @@ import MockDate from "mockdate";
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
+jest.mock("../../axios", () => ({
+  ensureIdentity: jest.fn(() => ({})),
+}));
 jest.mock("../../support", () => ({
-  assertAccountAdmin: jest.fn(() => () => undefined),
+  assertAccountAdmin: jest.fn(() => () => {}),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");

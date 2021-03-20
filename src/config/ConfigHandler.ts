@@ -27,6 +27,14 @@ export interface IConfigurationData extends IConfigurationDataBase {
   MONGO_HOST: string;
   MONGO_EXPOSE_PORT: number;
   MONGO_DB_NAME: string;
+
+  DEVICE_SERVICE_BASE_URL: string;
+  DEVICE_SERVICE_AUTH_USERNAME: string;
+  DEVICE_SERVICE_AUTH_PASSWORD: string;
+
+  IDENTITY_SERVICE_BASE_URL: string;
+  IDENTITY_SERVICE_AUTH_USERNAME: string;
+  IDENTITY_SERVICE_AUTH_PASSWORD: string;
 }
 
 export class ConfigHandler extends ConfigurationBase<IConfigurationData> {

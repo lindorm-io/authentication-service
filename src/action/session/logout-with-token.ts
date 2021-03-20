@@ -1,6 +1,6 @@
 import Joi from "@hapi/joi";
 import { JOI_JWT_TOKEN } from "../../constant";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { assertAccountPermission } from "../../support";
 
 export interface ILogoutWithTokenOptions {
@@ -11,7 +11,7 @@ const schema = Joi.object({
   refreshToken: JOI_JWT_TOKEN,
 });
 
-export const logoutWithToken = (ctx: IAuthContext) => async (options?: ILogoutWithTokenOptions): Promise<void> => {
+export const logoutWithToken = (ctx: IKoaAuthContext) => async (options?: ILogoutWithTokenOptions): Promise<void> => {
   await schema.validateAsync(options);
 
   const { repository, token } = ctx;

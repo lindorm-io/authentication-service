@@ -1,8 +1,9 @@
 import Joi from "@hapi/joi";
 import { Account } from "../../entity";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { JOI_EMAIL, JOI_PERMISSION } from "../../constant";
 import { assertAccountAdmin } from "../../support";
+import { ensureIdentity } from "../../axios";
 
 export interface ICreateAccountOptions {
   email: string;
@@ -18,7 +19,7 @@ const schema = Joi.object({
   permission: JOI_PERMISSION,
 });
 
-export const createAccount = (ctx: IAuthContext) => async (
+export const createAccount = (ctx: IKoaAuthContext) => async (
   options: ICreateAccountOptions,
 ): Promise<ICreateAccountData> => {
   await schema.validateAsync(options);
@@ -39,6 +40,10 @@ export const createAccount = (ctx: IAuthContext) => async (
     adminId: admin.id,
     accountId: account.id,
   });
+
+  const { created, updated } = await ensureIdentity(account.id);
+
+  logger.debug("identity created", { created, updated });
 
   return { accountId: account.id };
 };

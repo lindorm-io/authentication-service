@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { assertAccountOTP, assertBearerTokenScope, getAccount } from "../../support";
 import { isAdmin, Scope } from "@lindorm-io/jwt";
 
@@ -13,7 +13,7 @@ const schema = Joi.object({
   bindingCode: Joi.string().required(),
 });
 
-export const removeAccountOTP = (ctx: IAuthContext) => async (options: IRemoveAccountOTPOptions): Promise<void> => {
+export const removeAccountOTP = (ctx: IKoaAuthContext) => async (options: IRemoveAccountOTPOptions): Promise<void> => {
   await schema.validateAsync(options);
 
   const { account: requesterAccount, logger, repository } = ctx;

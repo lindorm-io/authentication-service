@@ -1,5 +1,5 @@
 import { Client } from "@lindorm-io/koa-client";
-import { encryptClientSecret } from "../../support/client";
+import { encryptClientSecret } from "../../support";
 
 export const getGreyBoxClient = (): Client =>
   new Client({

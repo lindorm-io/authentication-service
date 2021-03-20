@@ -1,5 +1,5 @@
 import { GrantType } from "../../enum";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { RequestLimit } from "../../entity";
 import { getBackOffDate } from "./back-off";
 
@@ -8,7 +8,7 @@ export interface ICreateOrUpdateOptions {
   subject: string;
 }
 
-export const createOrUpdateRequestLimit = (ctx: IAuthContext) => async (
+export const createOrUpdateRequestLimit = (ctx: IKoaAuthContext) => async (
   options: ICreateOrUpdateOptions,
 ): Promise<void> => {
   const { cache } = ctx;

@@ -4,9 +4,9 @@ import { NodeEnvironment } from "@lindorm-io/core";
 export const testConfig: IConfigurationData = {
   NODE_ENVIRONMENT: NodeEnvironment.TEST,
   SERVER_PORT: 3000,
-  HOST: "http://localhost/",
+  HOST: "https://test.authentication.lindorm.io",
 
-  JWT_ISSUER: "https://test.lindorm.io/",
+  JWT_ISSUER: "https://test.authentication.lindorm.io",
   JWT_ACCESS_TOKEN_EXPIRY: "2 minutes",
   JWT_AUTHORIZATION_TOKEN_EXPIRY: "45 minutes",
   JWT_IDENTITY_TOKEN_EXPIRY: "1 days",
@@ -16,11 +16,11 @@ export const testConfig: IConfigurationData = {
   CRYPTO_AES_SECRET: "secret",
   CRYPTO_SHA_SECRET: "secret",
 
-  ACCOUNT_OTP_ISSUER: "test.lindorm.io",
+  ACCOUNT_OTP_ISSUER: "test.authentication.lindorm.io",
 
   MAILGUN_API_KEY: "api-key",
   MAILGUN_DOMAIN: "test.lindorm.io",
-  MAILGUN_FROM: "noreply@lindorm.io",
+  MAILGUN_FROM: "auth@lindorm.io",
 
   REDIS_PORT: 6379,
 
@@ -29,4 +29,12 @@ export const testConfig: IConfigurationData = {
   MONGO_HOST: "localhost",
   MONGO_EXPOSE_PORT: 27017,
   MONGO_DB_NAME: "authentication",
+
+  DEVICE_SERVICE_BASE_URL: "https://test.device.lindorm.io",
+  DEVICE_SERVICE_AUTH_USERNAME: "secret",
+  DEVICE_SERVICE_AUTH_PASSWORD: "secret",
+
+  IDENTITY_SERVICE_BASE_URL: "https://test.identity.lindorm.io",
+  IDENTITY_SERVICE_AUTH_USERNAME: "secret",
+  IDENTITY_SERVICE_AUTH_PASSWORD: "secret",
 };

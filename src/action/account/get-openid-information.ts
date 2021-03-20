@@ -1,4 +1,4 @@
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { Scope, TokenIssuer } from "@lindorm-io/jwt";
 import { assertBearerTokenScope } from "../../support";
 
@@ -9,7 +9,7 @@ export interface IGetOpenIdInformation {
   updatedAt: number;
 }
 
-export const getOpenIdInformation = (ctx: IAuthContext) => async (): Promise<IGetOpenIdInformation> => {
+export const getOpenIdInformation = (ctx: IKoaAuthContext) => async (): Promise<IGetOpenIdInformation> => {
   const { account, logger } = ctx;
 
   logger.info("requesting openid account information", { id: account.id });

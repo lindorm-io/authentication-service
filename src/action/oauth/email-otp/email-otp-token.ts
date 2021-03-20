@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext, ICreateTokensData } from "../../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import {
   assertSessionOTP,
@@ -23,7 +23,7 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performEmailOTPToken = (ctx: IAuthContext) => async (
+export const performEmailOTPToken = (ctx: IKoaAuthContext) => async (
   options: IPerformEmailOTPTokenOptions,
 ): Promise<ICreateTokensData> => {
   await schema.validateAsync(options);

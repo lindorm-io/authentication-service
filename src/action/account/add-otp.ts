@@ -1,4 +1,4 @@
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { Scope } from "@lindorm-io/jwt";
 import { assertBearerTokenScope, generateAccountOTP } from "../../support";
 
@@ -6,7 +6,7 @@ export interface IAddAccountOTPData {
   uri: string;
 }
 
-export const addAccountOTP = (ctx: IAuthContext) => async (): Promise<IAddAccountOTPData> => {
+export const addAccountOTP = (ctx: IKoaAuthContext) => async (): Promise<IAddAccountOTPData> => {
   const { account, logger, repository } = ctx;
 
   assertBearerTokenScope(ctx)([Scope.DEFAULT, Scope.EDIT]);

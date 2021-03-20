@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { KeyType } from "@lindorm-io/key-pair";
 import { assertAccountAdmin, generateKeyPair } from "../../support";
 
@@ -17,7 +17,7 @@ const schema = Joi.object({
   type: Joi.string().valid(KeyType.EC, KeyType.RSA).required(),
 });
 
-export const createKeyPair = (ctx: IAuthContext) => async (
+export const createKeyPair = (ctx: IKoaAuthContext) => async (
   options: ICreateKeyPairOptions,
 ): Promise<ICreateKeyPairData> => {
   await schema.validateAsync(options);

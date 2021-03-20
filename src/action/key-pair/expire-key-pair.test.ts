@@ -1,7 +1,10 @@
 import MockDate from "mockdate";
 import { InvalidExpiryString } from "../../error";
-import { MOCK_UUID, MOCK_LOGGER, getMockRepository, getMockCache } from "../../test/mocks";
+import { KeyPair } from "@lindorm-io/key-pair";
+import { MOCK_KEY_PAIR_OPTIONS } from "../../test/mocks";
 import { expireKeyPair } from "./expire-key-pair";
+import { getGreyBoxCache, getGreyBoxRepository, inMemoryCache, inMemoryStore, resetStore } from "../../test";
+import { winston } from "../../logger";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -11,58 +14,38 @@ jest.mock("../../support", () => ({
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");
-const date = new Date("2020-01-01 08:00:00.000");
-const tomorrow = new Date("2020-01-02 08:00:00.000");
 
 describe("createKeyPair", () => {
-  let getMockContext: any;
+  let ctx: any;
+  let keyPair: KeyPair;
 
-  beforeEach(() => {
-    getMockContext = () => ({
-      cache: getMockCache(),
-      logger: MOCK_LOGGER,
-      repository: getMockRepository(),
-    });
+  beforeEach(async () => {
+    ctx = {
+      cache: await getGreyBoxCache(),
+      logger: winston,
+      repository: await getGreyBoxRepository(),
+    };
+    keyPair = await ctx.repository.keyPair.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
   });
 
-  test("should expire a key-pair using stringToDuration", async () => {
-    const ctx = getMockContext();
+  afterEach(resetStore);
 
+  test("should expire a key-pair using stringToDuration", async () => {
     await expect(
       expireKeyPair(ctx)({
-        keyPairId: MOCK_UUID,
+        keyPairId: keyPair.id,
         expires: "1 days",
       }),
     ).resolves.toBe(undefined);
 
-    expect(ctx.repository.keyPair.update).toHaveBeenCalledWith({
-      _algorithm: "ES512",
-      _created: date,
-      _events: [
-        {
-          date: date,
-          name: "key_pair_expires_changed",
-          payload: {
-            expires: tomorrow,
-          },
-        },
-      ],
-      _expires: tomorrow,
-      _id: MOCK_UUID,
-      _passphrase: null,
-      _privateKey: expect.any(String),
-      _publicKey: expect.any(String),
-      _type: "ec",
-      _updated: date,
-      _version: 0,
-    });
-    expect(ctx.cache.keyPair.update).toHaveBeenCalled();
+    expect(inMemoryCache).toMatchSnapshot();
+    expect(inMemoryStore).toMatchSnapshot();
   });
 
   test("should throw error if expires is wrong", async () => {
     await expect(
-      expireKeyPair(getMockContext())({
-        keyPairId: MOCK_UUID,
+      expireKeyPair(ctx)({
+        keyPairId: keyPair.id,
         expires: "wrong",
       }),
     ).rejects.toStrictEqual(expect.any(InvalidExpiryString));

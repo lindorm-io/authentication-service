@@ -1,6 +1,6 @@
-import { Account, Device, Session } from "../../entity";
+import { Account, Session } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
-import { IAuthContext, ICreateTokensData } from "../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../typing";
 import { ResponseType } from "../../enum";
 import { TObject } from "@lindorm-io/core";
 import { assertValidResponseTypeInput, isResponseType } from "../../util";
@@ -13,14 +13,13 @@ export interface ICreateTokensOptions {
   account: Account;
   authMethodsReference: string;
   client: Client;
-  device?: Device;
   payload?: TObject<any>;
   responseType: string;
   session: Session;
 }
 
-export const createTokens = (ctx: IAuthContext) => (options: ICreateTokensOptions): ICreateTokensData => {
-  const { account, authMethodsReference, client, device, payload, responseType, session } = options;
+export const createTokens = (ctx: IKoaAuthContext) => (options: ICreateTokensOptions): ICreateTokensData => {
+  const { account, authMethodsReference, client, payload, responseType, session } = options;
   const { scope } = session;
 
   assertValidResponseTypeInput(responseType);
@@ -32,7 +31,6 @@ export const createTokens = (ctx: IAuthContext) => (options: ICreateTokensOption
       account,
       authMethodsReference,
       client,
-      device,
       scope,
       session,
     });
@@ -43,7 +41,6 @@ export const createTokens = (ctx: IAuthContext) => (options: ICreateTokensOption
       account,
       authMethodsReference,
       client,
-      device,
       scope,
     });
   }
@@ -52,7 +49,6 @@ export const createTokens = (ctx: IAuthContext) => (options: ICreateTokensOption
     result.identityToken = getIdentityToken(ctx)({
       account,
       client,
-      device,
       payload,
     });
   }

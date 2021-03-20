@@ -1,6 +1,5 @@
 import MockDate from "mockdate";
-import { MOCK_DEVICE_OPTIONS, getMockRepository } from "../../test/mocks";
-import { Device } from "../../entity";
+import { getMockRepository } from "../../test/mocks";
 import { createSession } from "./create-session";
 import { Client } from "@lindorm-io/koa-client";
 
@@ -22,7 +21,7 @@ describe("createSession", () => {
   beforeEach(() => {
     getMockContext = () => ({
       client: new Client({ id: "client-id" }),
-      device: new Device({ ...MOCK_DEVICE_OPTIONS, id: "device-id" }),
+      metadata: { deviceId: "deviceId" },
       userAgent: {
         browser: "browser",
         geoIp: "geoIp",

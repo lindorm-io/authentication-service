@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { assertAccountAdmin } from "../../support";
 
 export interface IRemoveAccountOptions {
@@ -10,7 +10,7 @@ const schema = Joi.object({
   accountId: Joi.string().guid().required(),
 });
 
-export const removeAccount = (ctx: IAuthContext) => async (options: IRemoveAccountOptions): Promise<void> => {
+export const removeAccount = (ctx: IKoaAuthContext) => async (options: IRemoveAccountOptions): Promise<void> => {
   await schema.validateAsync(options);
 
   const { account: admin, logger, repository } = ctx;

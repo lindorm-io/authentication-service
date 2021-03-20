@@ -1,18 +1,14 @@
 import Joi from "@hapi/joi";
-import { IAuthContext, ICreateTokensData } from "../../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
+import { InvalidDeviceError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import {
-  assertDeviceChallenge,
-  assertDevicePIN,
-  authenticateSession,
-  createTokens,
-  findOrCreateAccount,
-  findValidSession,
-} from "../../../support";
-import { DeviceNotFoundError } from "../../../error";
+import { authenticateSession, createTokens, findValidSession } from "../../../support";
+import { stringComparison } from "@lindorm-io/core";
+import { verifyDevicePIN } from "../../../axios";
 
 export interface IPerformDevicePINTokenOptions {
   codeVerifier: string;
+  deviceId: string;
   deviceVerifier: string;
   grantType: string;
   pin: string;
@@ -21,47 +17,51 @@ export interface IPerformDevicePINTokenOptions {
 
 const schema = Joi.object({
   codeVerifier: Joi.string().required(),
+  deviceId: Joi.string().guid().required(),
   deviceVerifier: Joi.string().required(),
   grantType: JOI_GRANT_TYPE,
   pin: Joi.string().required(),
   subject: JOI_EMAIL,
 });
 
-export const performDevicePINToken = (ctx: IAuthContext) => async (
-  options: IPerformDevicePINTokenOptions,
-): Promise<ICreateTokensData> => {
-  await schema.validateAsync(options);
+export const performDevicePINToken = (ctx: IKoaAuthContext) => {
+  return async (options: IPerformDevicePINTokenOptions): Promise<ICreateTokensData> => {
+    await schema.validateAsync(options);
 
-  const { client, device } = ctx;
-  const { codeVerifier, deviceVerifier, grantType, pin, subject } = options;
-  const authMethodsReference = "pin";
+    const { client, metadata, repository } = ctx;
+    const { codeVerifier, deviceId, deviceVerifier, grantType, pin, subject } = options;
+    const authMethodsReference = "pin";
 
-  if (!device) {
-    throw new DeviceNotFoundError();
-  }
+    if (!stringComparison(deviceId, metadata.deviceId)) {
+      throw new InvalidDeviceError(deviceId);
+    }
 
-  const session = await findValidSession(ctx)({
-    codeVerifier,
-    grantType,
-    subject,
-  });
+    const session = await findValidSession(ctx)({
+      codeVerifier,
+      grantType,
+      subject,
+    });
 
-  const account = await findOrCreateAccount(ctx)(session.authorization.email);
+    const account = await repository.account.find({ email: session.authorization.email });
 
-  assertDeviceChallenge(session, device, deviceVerifier);
+    await verifyDevicePIN({
+      account,
+      deviceVerifier,
+      pin,
+      session,
+    });
 
-  await assertDevicePIN(device, pin);
+    const authenticated = await authenticateSession(ctx)({
+      account,
+      session,
+    });
 
-  const authenticated = await authenticateSession(ctx)({
-    account,
-    session,
-  });
-
-  return createTokens(ctx)({
-    account,
-    authMethodsReference,
-    client,
-    responseType: session.authorization.responseType,
-    session: authenticated,
-  });
+    return createTokens(ctx)({
+      account,
+      authMethodsReference,
+      client,
+      responseType: session.authorization.responseType,
+      session: authenticated,
+    });
+  };
 };

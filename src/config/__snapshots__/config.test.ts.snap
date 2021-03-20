@@ -4,12 +4,12 @@ exports[`config should provide configuration 1`] = `
 Object {
   "BEARER_TOKEN_MW_OPTIONS": Object {
     "audience": "access",
-    "issuer": "https://test.lindorm.io/",
+    "issuer": "https://test.authentication.lindorm.io",
   },
   "CLIENT_CACHE_WORKER_OPTIONS": Object {
     "mongoConnectionOptions": Object {
       "auth": Object {
-        "password": "password",
+        "password": "example",
         "user": "root",
       },
       "databaseName": "authentication",
@@ -33,22 +33,33 @@ Object {
     "aesSecret": "secret",
     "shaSecret": "secret",
   },
-  "HOST": "http://localhost/",
+  "DEVICE_SERVICE_BASE_URL": "https://test.device.lindorm.io",
+  "DEVICE_SERVICE_BASIC_AUTH": Object {
+    "password": "secret",
+    "username": "secret",
+  },
+  "HOST": "https://test.authentication.lindorm.io",
+  "IDENTITY_SERVICE_BASE_URL": "https://test.identity.lindorm.io",
+  "IDENTITY_SERVICE_BASIC_AUTH": Object {
+    "password": "secret",
+    "username": "secret",
+  },
+  "IS_TEST": true,
   "JWT_ACCESS_TOKEN_EXPIRY": "2 minutes",
   "JWT_AUTHORIZATION_TOKEN_EXPIRY": "45 minutes",
   "JWT_IDENTITY_TOKEN_EXPIRY": "1 days",
-  "JWT_ISSUER": "https://test.lindorm.io/",
+  "JWT_ISSUER": "https://test.authentication.lindorm.io",
   "JWT_MULTI_FACTOR_TOKEN_EXPIRY": "30 minutes",
   "JWT_REFRESH_TOKEN_EXPIRY": "1 days",
   "MAIL_HANDLER_CONFIG": Object {
     "apiKey": "api-key",
     "domain": "test.lindorm.io",
     "environment": "test",
-    "from": "noreply@lindorm.io",
+    "from": "auth@lindorm.io",
   },
   "MONGO_CONNECTION_OPTIONS": Object {
     "auth": Object {
-      "password": "password",
+      "password": "example",
       "user": "root",
     },
     "databaseName": "authentication",
@@ -60,7 +71,7 @@ Object {
   },
   "NODE_ENVIRONMENT": "test",
   "OTP_HANDLER_OPTIONS": Object {
-    "issuer": "test.lindorm.io",
+    "issuer": "test.authentication.lindorm.io",
     "secret": "secret",
   },
   "REDIS_CONNECTION_OPTIONS": Object {
@@ -69,7 +80,7 @@ Object {
   },
   "SERVER_PORT": 3000,
   "TOKEN_ISSUER_MW_OPTIONS": Object {
-    "issuer": "https://test.lindorm.io/",
+    "issuer": "https://test.authentication.lindorm.io",
   },
 }
 `;

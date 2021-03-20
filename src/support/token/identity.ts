@@ -1,7 +1,7 @@
-import { Account, Device } from "../../entity";
+import { Account } from "../../entity";
 import { Audience } from "../../enum";
 import { Client } from "@lindorm-io/koa-client";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 import { JWT_IDENTITY_TOKEN_EXPIRY } from "../../config";
 import { TObject } from "@lindorm-io/core";
@@ -9,25 +9,24 @@ import { TObject } from "@lindorm-io/core";
 export interface IGetIdentityTokenOptions {
   account: Account;
   client: Client;
-  device?: Device;
   payload: TObject<any>;
 }
 
-export const getIdentityToken = (ctx: IAuthContext) => (options: IGetIdentityTokenOptions): ITokenIssuerSignData => {
-  const { logger, issuer } = ctx;
+export const getIdentityToken = (ctx: IKoaAuthContext) => (options: IGetIdentityTokenOptions): ITokenIssuerSignData => {
+  const { logger, issuer, metadata } = ctx;
   const { tokenIssuer } = issuer;
-  const { account, client, device, payload } = options;
+  const { account, client, payload } = options;
 
   logger.debug("creating identity token", {
     client: client.id,
-    device: device?.id,
+    device: metadata.deviceId,
     account: account.id,
   });
 
   return tokenIssuer.sign({
     audience: Audience.IDENTITY,
     clientId: client.id,
-    deviceId: device?.id,
+    deviceId: metadata.deviceId,
     expiry: JWT_IDENTITY_TOKEN_EXPIRY,
     subject: account.id,
     payload,

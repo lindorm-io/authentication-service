@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { assertAccountAdmin, encryptClientSecret } from "../../support";
 import { isBoolean } from "lodash";
 
@@ -31,7 +31,7 @@ const schema = Joi.object({
   secret: Joi.string().allow(null).length(32),
 });
 
-export const updateClient = (ctx: IAuthContext) => async (options: IUpdateClientOptions): Promise<void> => {
+export const updateClient = (ctx: IKoaAuthContext) => async (options: IUpdateClientOptions): Promise<void> => {
   await schema.validateAsync(options);
 
   const { account, cache, logger, repository } = ctx;

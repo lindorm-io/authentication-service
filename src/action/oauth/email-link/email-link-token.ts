@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext, ICreateTokensData } from "../../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import { authenticateSession, createTokens, findOrCreateAccount, findValidSession } from "../../../support";
 
@@ -15,14 +15,14 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performEmailLinkToken = (ctx: IAuthContext) => async (
+export const performEmailLinkToken = (ctx: IKoaAuthContext) => async (
   options: IPerformEmailLinkTokenOptions,
 ): Promise<ICreateTokensData> => {
   await schema.validateAsync(options);
 
   const { client } = ctx;
   const { codeVerifier, grantType, subject } = options;
-  const authMethodsReference = "email@lindorm.io";
+  const authMethodsReference = "email";
 
   const session = await findValidSession(ctx)({
     codeVerifier,

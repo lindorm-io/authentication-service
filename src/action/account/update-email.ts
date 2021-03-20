@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { JOI_EMAIL } from "../../constant";
 import { Scope } from "@lindorm-io/jwt";
 import { assertBearerTokenScope } from "../../support";
@@ -12,7 +12,9 @@ const schema = Joi.object({
   updatedEmail: JOI_EMAIL,
 });
 
-export const updateAccountEmail = (ctx: IAuthContext) => async (options: IUpdateAccountEmailOptions): Promise<void> => {
+export const updateAccountEmail = (ctx: IKoaAuthContext) => async (
+  options: IUpdateAccountEmailOptions,
+): Promise<void> => {
   await schema.validateAsync(options);
 
   const { account, logger, repository } = ctx;

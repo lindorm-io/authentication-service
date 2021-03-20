@@ -1,18 +1,14 @@
 import Joi from "@hapi/joi";
-import { IAuthContext, ICreateTokensData } from "../../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
+import { InvalidDeviceError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import {
-  assertDeviceChallenge,
-  assertDeviceSecret,
-  authenticateSession,
-  createTokens,
-  findOrCreateAccount,
-  findValidSession,
-} from "../../../support";
-import { DeviceNotFoundError } from "../../../error";
+import { authenticateSession, createTokens, findValidSession } from "../../../support";
+import { stringComparison } from "@lindorm-io/core";
+import { verifyDeviceSecret } from "../../../axios";
 
 export interface IPerformDeviceSecretTokenOptions {
   codeVerifier: string;
+  deviceId: string;
   deviceVerifier: string;
   grantType: string;
   secret: string;
@@ -21,23 +17,24 @@ export interface IPerformDeviceSecretTokenOptions {
 
 const schema = Joi.object({
   codeVerifier: Joi.string().required(),
+  deviceId: Joi.string().guid().required(),
   deviceVerifier: Joi.string().required(),
   grantType: JOI_GRANT_TYPE,
   secret: Joi.string().required(),
   subject: JOI_EMAIL,
 });
 
-export const performDeviceSecretToken = (ctx: IAuthContext) => async (
+export const performDeviceSecretToken = (ctx: IKoaAuthContext) => async (
   options: IPerformDeviceSecretTokenOptions,
 ): Promise<ICreateTokensData> => {
   await schema.validateAsync(options);
 
-  const { client, device } = ctx;
-  const { codeVerifier, deviceVerifier, grantType, secret, subject } = options;
+  const { client, metadata, repository } = ctx;
+  const { codeVerifier, deviceId, deviceVerifier, grantType, secret, subject } = options;
   const authMethodsReference = "biometrics";
 
-  if (!device) {
-    throw new DeviceNotFoundError();
+  if (!stringComparison(deviceId, metadata.deviceId)) {
+    throw new InvalidDeviceError(deviceId);
   }
 
   const session = await findValidSession(ctx)({
@@ -46,11 +43,14 @@ export const performDeviceSecretToken = (ctx: IAuthContext) => async (
     subject,
   });
 
-  const account = await findOrCreateAccount(ctx)(session.authorization.email);
+  const account = await repository.account.find({ email: session.authorization.email });
 
-  assertDeviceChallenge(session, device, deviceVerifier);
-
-  await assertDeviceSecret(device, secret);
+  await verifyDeviceSecret({
+    account,
+    deviceVerifier,
+    secret,
+    session,
+  });
 
   const authenticated = await authenticateSession(ctx)({
     account,

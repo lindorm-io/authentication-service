@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { assertAccountPermission } from "../../support";
 
 export interface ILogoutWithIdOptions {
@@ -10,7 +10,7 @@ const schema = Joi.object({
   sessionId: Joi.string().guid().required(),
 });
 
-export const logoutWithId = (ctx: IAuthContext) => async (options?: ILogoutWithIdOptions): Promise<void> => {
+export const logoutWithId = (ctx: IKoaAuthContext) => async (options?: ILogoutWithIdOptions): Promise<void> => {
   await schema.validateAsync(options);
 
   const { repository } = ctx;

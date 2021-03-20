@@ -1,5 +1,5 @@
 import { Account, Session } from "../../entity";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { JWT_REFRESH_TOKEN_EXPIRY } from "../../config";
 import { getSessionExpires } from "./expires";
 import { v4 as uuid } from "uuid";
@@ -10,7 +10,7 @@ export interface IAuthenticateSessionOptions {
   session: Session;
 }
 
-export const authenticateSession = (ctx: IAuthContext) => async (
+export const authenticateSession = (ctx: IKoaAuthContext) => async (
   options: IAuthenticateSessionOptions,
 ): Promise<Session> => {
   const { client, repository } = ctx;

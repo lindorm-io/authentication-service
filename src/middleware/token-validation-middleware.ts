@@ -1,13 +1,13 @@
 import { Audience } from "../enum";
-import { IAuthContext } from "../typing";
+import { IKoaAuthContext } from "../typing";
 import { TPromise } from "@lindorm-io/core";
 import { isString } from "lodash";
 import { sanitiseToken } from "@lindorm-io/jwt";
 
-export const tokenValidationMiddleware = async (ctx: IAuthContext, next: TPromise<void>): Promise<any> => {
+export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<any> => {
   const start = Date.now();
 
-  const { client, device, issuer, logger } = ctx;
+  const { client, issuer, logger, metadata } = ctx;
   const { tokenIssuer } = issuer;
   const { authorizationToken, multiFactorToken, refreshToken } = ctx.request.body;
 
@@ -15,7 +15,7 @@ export const tokenValidationMiddleware = async (ctx: IAuthContext, next: TPromis
     const verified = tokenIssuer.verify({
       audience: Audience.AUTHORIZATION,
       clientId: client.id,
-      deviceId: device?.id,
+      deviceId: metadata.deviceId,
       token: authorizationToken,
     });
 
@@ -29,7 +29,7 @@ export const tokenValidationMiddleware = async (ctx: IAuthContext, next: TPromis
     const verified = tokenIssuer.verify({
       audience: Audience.MULTI_FACTOR,
       clientId: client.id,
-      deviceId: device?.id,
+      deviceId: metadata.deviceId,
       token: multiFactorToken,
     });
 
@@ -43,7 +43,7 @@ export const tokenValidationMiddleware = async (ctx: IAuthContext, next: TPromis
     const verified = tokenIssuer.verify({
       audience: Audience.REFRESH,
       clientId: client.id,
-      deviceId: device?.id,
+      deviceId: metadata.deviceId,
       token: refreshToken,
     });
 

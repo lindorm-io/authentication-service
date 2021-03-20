@@ -1,31 +1,44 @@
-import { MOCK_SESSION_OPTIONS } from "../../../test/mocks";
+import { Account, Session } from "../../../entity";
 import { GrantType } from "../../../enum";
-import { Session } from "../../../entity";
+import { MOCK_SESSION_OPTIONS } from "../../../test/mocks";
+import { getGreyBoxRepository, resetStore } from "../../../test";
 import { performDeviceSecretToken } from "./device-secret-token";
 
 jest.mock("../../../support", () => ({
-  assertDeviceChallenge: jest.fn(() => undefined),
-  assertDeviceSecret: jest.fn(() => undefined),
   authenticateSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
-  findOrCreateAccount: jest.fn(() => () => "account"),
   findValidSession: jest.fn(() => () => new Session(MOCK_SESSION_OPTIONS)),
+}));
+jest.mock("../../../axios", () => ({
+  verifyDeviceSecret: jest.fn(),
 }));
 
 describe("performDeviceSecretToken", () => {
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    getMockContext = () => ({
+  beforeEach(async () => {
+    ctx = {
       client: "client",
-      device: "device",
-    });
+      metadata: {
+        deviceId: "96fd2bc9-90d7-41c1-a595-e3a3efe6fb3c",
+      },
+      repository: await getGreyBoxRepository(),
+    };
+
+    await ctx.repository.account.create(
+      new Account({
+        email: "email@lindorm.io",
+      }),
+    );
   });
+
+  afterEach(resetStore);
 
   test("should return tokens", async () => {
     await expect(
-      performDeviceSecretToken(getMockContext())({
+      performDeviceSecretToken(ctx)({
         codeVerifier: "codeVerifier",
+        deviceId: "96fd2bc9-90d7-41c1-a595-e3a3efe6fb3c",
         deviceVerifier: "deviceVerifier",
         grantType: GrantType.REFRESH_TOKEN,
         secret: "secret",

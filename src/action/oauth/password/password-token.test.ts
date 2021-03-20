@@ -7,7 +7,6 @@ jest.mock("../../../support", () => ({
   assertAccountPassword: jest.fn(() => undefined),
   authenticateSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
-  findOrCreateAccount: jest.fn(() => () => "account"),
   findValidSession: jest.fn(() => () => new Session(MOCK_SESSION_OPTIONS)),
   getMultiFactorToken: jest.fn(() => () => "multi-factor-token"),
 }));

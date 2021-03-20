@@ -1,19 +1,21 @@
 import { BEARER_TOKEN_MW_OPTIONS } from "../config";
 import { HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../typing";
+import { IKoaAuthContext } from "../typing";
 import { Router } from "@lindorm-io/koa";
 import { accountMiddleware } from "../middleware";
 import { bearerTokenMiddleware } from "@lindorm-io/koa-jwt";
 import { createKeyPair, expireKeyPair } from "../action";
+import { clientMiddleware } from "@lindorm-io/koa-client";
 
 export const router = new Router();
 
+router.use(clientMiddleware());
 router.use(bearerTokenMiddleware(BEARER_TOKEN_MW_OPTIONS));
 router.use(accountMiddleware);
 
 router.post(
   "/",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { type } = ctx.request.body;
 
     ctx.body = await createKeyPair(ctx)({ type });
@@ -23,7 +25,7 @@ router.post(
 
 router.patch(
   "/:id/expire",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { expires } = ctx.request.body;
 
     await expireKeyPair(ctx)({

@@ -8,6 +8,7 @@ export const schema = Joi.object({
   updated: Joi.date().required(),
   events: JOI_EVENTS,
 
+  allowed: Joi.boolean().required(),
   algorithm: Joi.string().required(),
   expires: Joi.date().allow(null).required(),
   passphrase: Joi.string().allow(null).required(),

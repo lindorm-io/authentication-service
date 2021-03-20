@@ -1,6 +1,6 @@
 import { BEARER_TOKEN_MW_OPTIONS } from "../config";
 import { HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../typing";
+import { IKoaAuthContext } from "../typing";
 import { Router } from "@lindorm-io/koa";
 import { accountMiddleware } from "../middleware";
 import { bearerTokenMiddleware } from "@lindorm-io/koa-jwt";
@@ -14,15 +14,17 @@ import {
   updateAccountPassword,
   updateAccountPermission,
 } from "../action";
+import { clientMiddleware } from "@lindorm-io/koa-client";
 
 export const router = new Router();
 
+router.use(clientMiddleware());
 router.use(bearerTokenMiddleware(BEARER_TOKEN_MW_OPTIONS));
 router.use(accountMiddleware);
 
 router.post(
   "/",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { email, permission } = ctx.request.body;
 
     ctx.body = await createAccount(ctx)({ email, permission });
@@ -32,7 +34,7 @@ router.post(
 
 router.get(
   "/:id",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     ctx.body = await getAccountInformation(ctx)({
       accountId: ctx.params.id,
     });
@@ -42,7 +44,7 @@ router.get(
 
 router.delete(
   "/:id",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     await removeAccount(ctx)({
       accountId: ctx.params.id,
     });
@@ -54,7 +56,7 @@ router.delete(
 
 router.delete(
   "/:id/otp",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { bindingCode } = ctx.request.body;
 
     await removeAccountOTP(ctx)({
@@ -69,7 +71,7 @@ router.delete(
 
 router.patch(
   "/:id/permission",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { permission } = ctx.request.body;
 
     await updateAccountPermission(ctx)({
@@ -84,7 +86,7 @@ router.patch(
 
 router.patch(
   "/email",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { updatedEmail } = ctx.request.body;
 
     await updateAccountEmail(ctx)({
@@ -98,7 +100,7 @@ router.patch(
 
 router.post(
   "/otp",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     ctx.body = await addAccountOTP(ctx)();
 
     ctx.status = HttpStatus.Success.OK;
@@ -107,7 +109,7 @@ router.post(
 
 router.put(
   "/password",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { password, updatedPassword } = ctx.request.body;
 
     await updateAccountPassword(ctx)({

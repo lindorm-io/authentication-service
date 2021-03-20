@@ -10,7 +10,7 @@ describe("generateAccountOTP", () => {
   test("should resolve", () => {
     expect(generateAccountOTP()).toStrictEqual({
       signature: expect.any(String),
-      uri: expect.stringContaining("otpauth://totp/test.lindorm.io"),
+      uri: expect.stringContaining("otpauth://totp/test.authentication.lindorm.io"),
     });
   });
 });

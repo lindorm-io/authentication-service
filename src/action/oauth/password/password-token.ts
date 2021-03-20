@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext, ICreateTokensData } from "../../../typing";
+import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import {
   assertAccountPassword,
@@ -23,7 +23,7 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performPasswordToken = (ctx: IAuthContext) => async (
+export const performPasswordToken = (ctx: IKoaAuthContext) => async (
   options: IPerformPasswordTokenOptions,
 ): Promise<ICreateTokensData> => {
   await schema.validateAsync(options);

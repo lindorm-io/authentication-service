@@ -1,4 +1,4 @@
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { JWT_AUTHORIZATION_TOKEN_EXPIRY } from "../../config";
 import { Session } from "../../entity";
 import { encryptSessionOTP } from "./otp";
@@ -18,8 +18,8 @@ export interface ICreateSessionOptions {
   subject: string;
 }
 
-export const createSession = (ctx: IAuthContext) => async (options: ICreateSessionOptions): Promise<Session> => {
-  const { client, device, repository, userAgent } = ctx;
+export const createSession = (ctx: IKoaAuthContext) => async (options: ICreateSessionOptions): Promise<Session> => {
+  const { client, metadata, repository, userAgent } = ctx;
   const {
     codeChallenge,
     codeMethod,
@@ -48,7 +48,7 @@ export const createSession = (ctx: IAuthContext) => async (options: ICreateSessi
         responseType,
       },
       clientId: client.id,
-      deviceId: device?.id,
+      deviceId: metadata.deviceId,
       expires: getSessionExpires(expires),
       grantType,
       scope,

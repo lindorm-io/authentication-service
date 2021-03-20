@@ -1,19 +1,20 @@
 import { CRYPTO_SECRET_OPTIONS } from "../../config";
 import { HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { Router } from "@lindorm-io/koa";
-import { clientValidationMiddleware } from "@lindorm-io/koa-client";
-import { performMultiFactorChallenge } from "../../action/oauth/multi-factor";
+import { clientMiddleware, clientValidationMiddleware } from "@lindorm-io/koa-client";
+import { performMultiFactorChallenge } from "../../action";
 import { tokenValidationMiddleware } from "../../middleware";
 
 export const router = new Router();
 
+router.use(clientMiddleware());
 router.use(clientValidationMiddleware(CRYPTO_SECRET_OPTIONS));
 router.use(tokenValidationMiddleware);
 
 router.post(
   "/challenge",
-  async (ctx: IAuthContext): Promise<void> => {
+  async (ctx: IKoaAuthContext): Promise<void> => {
     const { authenticatorId, challengeType, grantType, subject } = ctx.request.body;
 
     ctx.body = await performMultiFactorChallenge(ctx)({

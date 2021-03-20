@@ -1,8 +1,8 @@
 import { AccountNotFoundError, InvalidPermissionError } from "../../error";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { isAdmin } from "@lindorm-io/jwt";
 
-export const assertAccountPermission = (ctx: IAuthContext) => (accountId: string): Promise<void> => {
+export const assertAccountPermission = (ctx: IKoaAuthContext) => (accountId: string): Promise<void> => {
   const { account } = ctx;
 
   if (!account) {
@@ -20,7 +20,7 @@ export const assertAccountPermission = (ctx: IAuthContext) => (accountId: string
   throw new InvalidPermissionError();
 };
 
-export const assertAccountAdmin = (ctx: IAuthContext) => (): Promise<void> => {
+export const assertAccountAdmin = (ctx: IKoaAuthContext) => (): Promise<void> => {
   const { account } = ctx;
 
   if (!account) {

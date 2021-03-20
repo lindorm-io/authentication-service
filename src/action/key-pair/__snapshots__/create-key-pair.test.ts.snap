@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createKeyPair should create key pair 1`] = `
+Object {
+  "KeyPair::be3a62d1-24a0-401c-96dd-3aff95356811": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"be3a62d1-24a0-401c-96dd-3aff95356811\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[{\\"name\\":\\"key_pair_created\\",\\"payload\\":{\\"algorithm\\":\\"ES512\\",\\"allowed\\":\\"true\\",\\"expires\\":\\"null\\",\\"passphrase\\":\\"null\\",\\"privateKey\\":\\"-----BEGIN PRIVATE KEY-----\\\\nMIHuAgEAMBAGByqGSM49AgEGBSuBBAAjBIHWMIHTAgEBBEIBGma7xGZpaAngFXf3\\\\nmJF3IxZfDpI+6wU564K+eehxX104v6dZetjSfMx0rvsYX/s6cO2P3GE7R95VxWEk\\\\n+f4EX0qhgYkDgYYABAB8cBfDwCi41G4kVW4V3Y86nIMMCypYzfO8gYjpS091lxkM\\\\ngoTRS3LM1p65KQfwBolrWIdVrbbOILASf06fQsHw5gEt4snVuMBO+LS6pesX9vA8\\\\nQT1LjX75Xq2InnLY1VToeNmxkuM+oDZgqHOYwzfUhu+zZaA5AuEkqPi47TA9iCSY\\\\nVQ==\\\\n-----END PRIVATE KEY-----\\\\n\\",\\"publicKey\\":\\"-----BEGIN PUBLIC KEY-----\\\\nMIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAfHAXw8AouNRuJFVuFd2POpyDDAsq\\\\nWM3zvIGI6UtPdZcZDIKE0UtyzNaeuSkH8AaJa1iHVa22ziCwEn9On0LB8OYBLeLJ\\\\n1bjATvi0uqXrF/bwPEE9S41++V6tiJ5y2NVU6HjZsZLjPqA2YKhzmMM31Ibvs2Wg\\\\nOQLhJKj4uO0wPYgkmFU=\\\\n-----END PUBLIC KEY-----\\\\n\\",\\"type\\":\\"ec\\"},\\"date\\":\\"2020-01-01T07:00:00.000Z\\"}],\\"allowed\\":\\"true\\",\\"algorithm\\":\\"ES512\\",\\"expires\\":\\"null\\",\\"passphrase\\":\\"null\\",\\"privateKey\\":\\"-----BEGIN PRIVATE KEY-----\\\\nMIHuAgEAMBAGByqGSM49AgEGBSuBBAAjBIHWMIHTAgEBBEIBGma7xGZpaAngFXf3\\\\nmJF3IxZfDpI+6wU564K+eehxX104v6dZetjSfMx0rvsYX/s6cO2P3GE7R95VxWEk\\\\n+f4EX0qhgYkDgYYABAB8cBfDwCi41G4kVW4V3Y86nIMMCypYzfO8gYjpS091lxkM\\\\ngoTRS3LM1p65KQfwBolrWIdVrbbOILASf06fQsHw5gEt4snVuMBO+LS6pesX9vA8\\\\nQT1LjX75Xq2InnLY1VToeNmxkuM+oDZgqHOYwzfUhu+zZaA5AuEkqPi47TA9iCSY\\\\nVQ==\\\\n-----END PRIVATE KEY-----\\\\n\\",\\"publicKey\\":\\"-----BEGIN PUBLIC KEY-----\\\\nMIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAfHAXw8AouNRuJFVuFd2POpyDDAsq\\\\nWM3zvIGI6UtPdZcZDIKE0UtyzNaeuSkH8AaJa1iHVa22ziCwEn9On0LB8OYBLeLJ\\\\n1bjATvi0uqXrF/bwPEE9S41++V6tiJ5y2NVU6HjZsZLjPqA2YKhzmMM31Ibvs2Wg\\\\nOQLhJKj4uO0wPYgkmFU=\\\\n-----END PUBLIC KEY-----\\\\n\\",\\"type\\":\\"ec\\"},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[{\\"name\\":\\"string\\",\\"payload\\":{\\"algorithm\\":\\"string\\",\\"allowed\\":\\"boolean\\",\\"expires\\":\\"null\\",\\"passphrase\\":\\"null\\",\\"privateKey\\":\\"string\\",\\"publicKey\\":\\"string\\",\\"type\\":\\"string\\"},\\"date\\":\\"date\\"}],\\"allowed\\":\\"boolean\\",\\"algorithm\\":\\"string\\",\\"expires\\":\\"null\\",\\"passphrase\\":\\"null\\",\\"privateKey\\":\\"string\\",\\"publicKey\\":\\"string\\",\\"type\\":\\"string\\"}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`createKeyPair should create key pair 2`] = `
+Object {
+  "authentication": Object {
+    "key_pair": Object {
+      "data": Array [
+        Object {
+          "algorithm": "ES512",
+          "allowed": true,
+          "created": 2020-01-01T07:00:00.000Z,
+          "events": Array [
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "key_pair_created",
+              "payload": Object {
+                "algorithm": "ES512",
+                "allowed": true,
+                "expires": null,
+                "passphrase": null,
+                "privateKey": "-----BEGIN PRIVATE KEY-----
+MIHuAgEAMBAGByqGSM49AgEGBSuBBAAjBIHWMIHTAgEBBEIBGma7xGZpaAngFXf3
+mJF3IxZfDpI+6wU564K+eehxX104v6dZetjSfMx0rvsYX/s6cO2P3GE7R95VxWEk
++f4EX0qhgYkDgYYABAB8cBfDwCi41G4kVW4V3Y86nIMMCypYzfO8gYjpS091lxkM
+goTRS3LM1p65KQfwBolrWIdVrbbOILASf06fQsHw5gEt4snVuMBO+LS6pesX9vA8
+QT1LjX75Xq2InnLY1VToeNmxkuM+oDZgqHOYwzfUhu+zZaA5AuEkqPi47TA9iCSY
+VQ==
+-----END PRIVATE KEY-----
+",
+                "publicKey": "-----BEGIN PUBLIC KEY-----
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAfHAXw8AouNRuJFVuFd2POpyDDAsq
+WM3zvIGI6UtPdZcZDIKE0UtyzNaeuSkH8AaJa1iHVa22ziCwEn9On0LB8OYBLeLJ
+1bjATvi0uqXrF/bwPEE9S41++V6tiJ5y2NVU6HjZsZLjPqA2YKhzmMM31Ibvs2Wg
+OQLhJKj4uO0wPYgkmFU=
+-----END PUBLIC KEY-----
+",
+                "type": "ec",
+              },
+            },
+          ],
+          "expires": null,
+          "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "passphrase": null,
+          "privateKey": "-----BEGIN PRIVATE KEY-----
+MIHuAgEAMBAGByqGSM49AgEGBSuBBAAjBIHWMIHTAgEBBEIBGma7xGZpaAngFXf3
+mJF3IxZfDpI+6wU564K+eehxX104v6dZetjSfMx0rvsYX/s6cO2P3GE7R95VxWEk
++f4EX0qhgYkDgYYABAB8cBfDwCi41G4kVW4V3Y86nIMMCypYzfO8gYjpS091lxkM
+goTRS3LM1p65KQfwBolrWIdVrbbOILASf06fQsHw5gEt4snVuMBO+LS6pesX9vA8
+QT1LjX75Xq2InnLY1VToeNmxkuM+oDZgqHOYwzfUhu+zZaA5AuEkqPi47TA9iCSY
+VQ==
+-----END PRIVATE KEY-----
+",
+          "publicKey": "-----BEGIN PUBLIC KEY-----
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAfHAXw8AouNRuJFVuFd2POpyDDAsq
+WM3zvIGI6UtPdZcZDIKE0UtyzNaeuSkH8AaJa1iHVa22ziCwEn9On0LB8OYBLeLJ
+1bjATvi0uqXrF/bwPEE9S41++V6tiJ5y2NVU6HjZsZLjPqA2YKhzmMM31Ibvs2Wg
+OQLhJKj4uO0wPYgkmFU=
+-----END PUBLIC KEY-----
+",
+          "type": "ec",
+          "updated": 2020-01-01T07:00:00.000Z,
+          "version": 0,
+        },
+      ],
+      "indices": Array [
+        Object {
+          "index": Object {
+            "id": 1,
+          },
+          "options": Object {
+            "unique": true,
+          },
+        },
+      ],
+    },
+  },
+}
+`;

@@ -33,6 +33,7 @@ export class KeyPairCache extends CacheBase<KeyPair> implements IKeyPairCache {
       updated: entity.updated,
       events: entity.events,
 
+      allowed: entity.allowed,
       algorithm: entity.algorithm,
       expires: entity.expires,
       passphrase: entity.passphrase,

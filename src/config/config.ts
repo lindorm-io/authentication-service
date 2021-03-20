@@ -1,9 +1,12 @@
+import dotenv from "dotenv";
 import { Audience } from "../enum";
 import { ConfigHandler } from "./ConfigHandler";
 import { MongoConnectionType } from "@lindorm-io/mongo";
 import { RedisConnectionType } from "@lindorm-io/redis";
 import { developmentConfig, environmentConfig, productionConfig, stagingConfig, testConfig } from "./files";
-import { stringToMilliseconds } from "@lindorm-io/core";
+import { NodeEnvironment, stringToMilliseconds } from "@lindorm-io/core";
+
+if (!process.env.NODE_ENV) dotenv.config();
 
 const handler = new ConfigHandler({
   productionConfig,
@@ -18,6 +21,8 @@ const config = handler.get(NODE_ENVIRONMENT);
 
 export const SERVER_PORT = config.SERVER_PORT;
 export const HOST = config.HOST;
+
+export const IS_TEST = NODE_ENVIRONMENT === NodeEnvironment.TEST;
 
 export const JWT_ISSUER = config.JWT_ISSUER;
 export const JWT_ACCESS_TOKEN_EXPIRY = config.JWT_ACCESS_TOKEN_EXPIRY;
@@ -79,4 +84,16 @@ export const CLIENT_CACHE_WORKER_OPTIONS = {
   mongoConnectionOptions: MONGO_CONNECTION_OPTIONS,
   redisConnectionOptions: REDIS_CONNECTION_OPTIONS,
   workerIntervalInMilliseconds: stringToMilliseconds("10 minutes"),
+};
+
+export const IDENTITY_SERVICE_BASE_URL = config.IDENTITY_SERVICE_BASE_URL;
+export const IDENTITY_SERVICE_BASIC_AUTH = {
+  username: config.IDENTITY_SERVICE_AUTH_USERNAME,
+  password: config.IDENTITY_SERVICE_AUTH_PASSWORD,
+};
+
+export const DEVICE_SERVICE_BASE_URL = config.DEVICE_SERVICE_BASE_URL;
+export const DEVICE_SERVICE_BASIC_AUTH = {
+  username: config.DEVICE_SERVICE_AUTH_USERNAME,
+  password: config.DEVICE_SERVICE_AUTH_PASSWORD,
 };

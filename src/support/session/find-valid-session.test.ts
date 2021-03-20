@@ -1,9 +1,9 @@
 import MockDate from "mockdate";
-import { MOCK_CODE_VERIFIER, MOCK_SESSION_OPTIONS, getMockRepository } from "../../test/mocks";
-import { ISessionOptions, Session } from "../../entity";
-import { InvalidAuthorizationError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
-import { findValidSession } from "./find-valid-session";
 import { Client, InvalidClientError } from "@lindorm-io/koa-client";
+import { ISessionOptions, Session } from "../../entity";
+import { InvalidAuthorizationError, InvalidDeviceError, InvalidGrantTypeError, InvalidSubjectError } from "../../error";
+import { MOCK_CODE_VERIFIER, MOCK_SESSION_OPTIONS, getMockRepository } from "../../test/mocks";
+import { findValidSession } from "./find-valid-session";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -34,6 +34,7 @@ describe("findValidSession", () => {
     );
     getMockContext = () => ({
       client: new Client({ id: "clientId" }),
+      metadata: { deviceId: "deviceId" },
       repository: mockRepository,
       token: { authorization: { id: "authorizationId", subject: "sessionId" } },
     });
@@ -75,6 +76,21 @@ describe("findValidSession", () => {
         subject: "email@lindorm.io",
       }),
     ).rejects.toStrictEqual(expect.any(InvalidClientError));
+
+    expect(ctx.repository.session.remove).toHaveBeenCalled();
+  });
+
+  test("should throw error when deviceId is wrong", async () => {
+    const ctx = getMockContext();
+    ctx.metadata.deviceId = "wrong";
+
+    await expect(
+      findValidSession(ctx)({
+        codeVerifier: MOCK_CODE_VERIFIER,
+        grantType: "grantType",
+        subject: "email@lindorm.io",
+      }),
+    ).rejects.toStrictEqual(expect.any(InvalidDeviceError));
 
     expect(ctx.repository.session.remove).toHaveBeenCalled();
   });

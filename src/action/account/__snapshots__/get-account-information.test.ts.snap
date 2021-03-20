@@ -3,9 +3,6 @@
 exports[`getAccountInformation should return account information 1`] = `
 Object {
   "created": 2020-01-01T07:00:00.000Z,
-  "devices": Array [
-    "devices",
-  ],
   "email": "email@lindorm.io",
   "hasOtp": false,
   "hasPassword": false,

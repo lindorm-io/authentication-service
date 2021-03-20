@@ -1,5 +1,5 @@
 import Joi from "@hapi/joi";
-import { IAuthContext } from "../../typing";
+import { IKoaAuthContext } from "../../typing";
 import { Scope } from "@lindorm-io/jwt";
 import { assertAccountPassword, assertBearerTokenScope, encryptAccountPassword } from "../../support";
 
@@ -13,7 +13,7 @@ const schema = Joi.object({
   updatedPassword: Joi.string().required(),
 });
 
-export const updateAccountPassword = (ctx: IAuthContext) => async (
+export const updateAccountPassword = (ctx: IKoaAuthContext) => async (
   options: IUpdateAccountPasswordOptions,
 ): Promise<void> => {
   await schema.validateAsync(options);

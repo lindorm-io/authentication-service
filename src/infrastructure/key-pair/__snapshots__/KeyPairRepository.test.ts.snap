@@ -3,6 +3,7 @@
 exports[`KeyPairRepository should create 1`] = `
 KeyPair {
   "_algorithm": "algorithm",
+  "_allowed": true,
   "_created": 2020-01-01T07:00:00.000Z,
   "_events": Array [
     Object {
@@ -10,6 +11,7 @@ KeyPair {
       "name": "key_pair_created",
       "payload": Object {
         "algorithm": "algorithm",
+        "allowed": true,
         "expires": 2020-01-01T07:00:00.000Z,
         "passphrase": "passphrase",
         "privateKey": "privateKey",
@@ -32,6 +34,7 @@ KeyPair {
 exports[`KeyPairRepository should find 1`] = `
 KeyPair {
   "_algorithm": "algorithm",
+  "_allowed": true,
   "_created": 2020-01-01T07:00:00.000Z,
   "_events": Array [
     Object {
@@ -39,6 +42,7 @@ KeyPair {
       "name": "key_pair_created",
       "payload": Object {
         "algorithm": "algorithm",
+        "allowed": true,
         "expires": 2020-01-01T07:00:00.000Z,
         "passphrase": "passphrase",
         "privateKey": "privateKey",
@@ -62,6 +66,7 @@ exports[`KeyPairRepository should find many 1`] = `
 Array [
   KeyPair {
     "_algorithm": "algorithm",
+    "_allowed": true,
     "_created": 2020-01-01T07:00:00.000Z,
     "_events": Array [
       Object {
@@ -69,6 +74,7 @@ Array [
         "name": "key_pair_created",
         "payload": Object {
           "algorithm": "algorithm",
+          "allowed": true,
           "expires": 2020-01-01T07:00:00.000Z,
           "passphrase": "passphrase",
           "privateKey": "privateKey",
@@ -88,6 +94,7 @@ Array [
   },
   KeyPair {
     "_algorithm": "other",
+    "_allowed": true,
     "_created": 2020-01-01T07:00:00.000Z,
     "_events": Array [
       Object {
@@ -95,6 +102,7 @@ Array [
         "name": "key_pair_created",
         "payload": Object {
           "algorithm": "other",
+          "allowed": true,
           "expires": null,
           "passphrase": null,
           "privateKey": "privateKey",
@@ -118,6 +126,7 @@ Array [
 exports[`KeyPairRepository should update 1`] = `
 KeyPair {
   "_algorithm": "algorithm",
+  "_allowed": true,
   "_created": 2020-01-01T07:00:00.000Z,
   "_events": Array [
     Object {
@@ -125,6 +134,7 @@ KeyPair {
       "name": "key_pair_created",
       "payload": Object {
         "algorithm": "algorithm",
+        "allowed": true,
         "expires": 2020-01-01T07:00:00.000Z,
         "passphrase": "passphrase",
         "privateKey": "privateKey",

@@ -1,11 +1,8 @@
 import MockDate from "mockdate";
 import { MOCK_LOGGER } from "../test/mocks";
 import { repositoryMiddleware } from "./repository-middleware";
-import { SessionRepository } from "../infrastructure/session";
-import { AccountRepository } from "../infrastructure/account";
+import { AccountRepository, KeyPairRepository, SessionRepository } from "../infrastructure";
 import { ClientRepository } from "@lindorm-io/koa-client";
-import { DeviceRepository } from "../infrastructure/device";
-import { KeyPairRepository } from "../infrastructure/key-pair";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -30,7 +27,6 @@ describe("repositoryMiddleware", () => {
 
     expect(ctx.repository.account).toStrictEqual(expect.any(AccountRepository));
     expect(ctx.repository.client).toStrictEqual(expect.any(ClientRepository));
-    expect(ctx.repository.device).toStrictEqual(expect.any(DeviceRepository));
     expect(ctx.repository.keyPair).toStrictEqual(expect.any(KeyPairRepository));
     expect(ctx.repository.session).toStrictEqual(expect.any(SessionRepository));
   });

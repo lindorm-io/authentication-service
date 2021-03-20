@@ -1,12 +1,11 @@
 import { IConfigurationData } from "../ConfigHandler";
-import { NodeEnvironment } from "@lindorm-io/core";
 
 export const productionConfig: IConfigurationData = {
-  NODE_ENVIRONMENT: NodeEnvironment.PRODUCTION,
+  NODE_ENVIRONMENT: process.env.NODE_ENV,
   SERVER_PORT: 3000,
-  HOST: "https://lindorm.io/",
+  HOST: "https://authentication.lindorm.io/",
 
-  JWT_ISSUER: "https://lindorm.io/",
+  JWT_ISSUER: "https://authentication.lindorm.io",
   JWT_ACCESS_TOKEN_EXPIRY: "3 minutes",
   JWT_AUTHORIZATION_TOKEN_EXPIRY: "15 minutes",
   JWT_IDENTITY_TOKEN_EXPIRY: "7 days",
@@ -16,11 +15,11 @@ export const productionConfig: IConfigurationData = {
   CRYPTO_AES_SECRET: null,
   CRYPTO_SHA_SECRET: null,
 
-  ACCOUNT_OTP_ISSUER: "lindorm.io",
+  ACCOUNT_OTP_ISSUER: "authentication.lindorm.io",
 
   MAILGUN_API_KEY: null,
   MAILGUN_DOMAIN: "lindorm.io",
-  MAILGUN_FROM: "noreply@lindorm.io",
+  MAILGUN_FROM: "auth@lindorm.io",
 
   REDIS_PORT: null,
 
@@ -29,4 +28,12 @@ export const productionConfig: IConfigurationData = {
   MONGO_HOST: null,
   MONGO_EXPOSE_PORT: null,
   MONGO_DB_NAME: null,
+
+  DEVICE_SERVICE_BASE_URL: "https://device.lindorm.io",
+  DEVICE_SERVICE_AUTH_USERNAME: null,
+  DEVICE_SERVICE_AUTH_PASSWORD: null,
+
+  IDENTITY_SERVICE_BASE_URL: "https://identity.lindorm.io",
+  IDENTITY_SERVICE_AUTH_USERNAME: null,
+  IDENTITY_SERVICE_AUTH_PASSWORD: null,
 };

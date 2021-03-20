@@ -1,7 +1,6 @@
-import { IAuthContext } from "../../typing";
-import { MAIL_HANDLER_CONFIG, NODE_ENVIRONMENT } from "../../config";
+import { IKoaAuthContext } from "../../typing";
+import { IS_TEST, MAIL_HANDLER_CONFIG } from "../../config";
 import { MailHandler } from "../../class";
-import { NodeEnvironment } from "@lindorm-io/core";
 import { inMemoryEmail } from "../../test";
 
 const mailHandler = new MailHandler(MAIL_HANDLER_CONFIG);
@@ -19,7 +18,7 @@ export interface ISendEmailOTPOptions {
   subject: string;
 }
 
-export const sendEmailLink = (ctx: IAuthContext) => async (options: ISendEmailLinkOptions): Promise<void> => {
+export const sendEmailLink = (ctx: IKoaAuthContext) => async (options: ISendEmailLinkOptions): Promise<void> => {
   const { client, logger } = ctx;
   const { grantType, redirectUri, state, subject, token } = options;
 
@@ -30,7 +29,7 @@ export const sendEmailLink = (ctx: IAuthContext) => async (options: ISendEmailLi
   url.searchParams.append("state", encodeURI(state));
   url.searchParams.append("token", encodeURI(token));
 
-  if (NODE_ENVIRONMENT === NodeEnvironment.TEST) {
+  if (IS_TEST) {
     inMemoryEmail.push({
       emailAuthorizationUri: client.extra.emailAuthorizationUri,
       grantType,
@@ -50,11 +49,11 @@ export const sendEmailLink = (ctx: IAuthContext) => async (options: ISendEmailLi
   logger.debug("email with authorization token sent", { subject });
 };
 
-export const sendEmailOTP = (ctx: IAuthContext) => async (options: ISendEmailOTPOptions): Promise<void> => {
+export const sendEmailOTP = (ctx: IKoaAuthContext) => async (options: ISendEmailOTPOptions): Promise<void> => {
   const { logger } = ctx;
   const { otpCode, subject } = options;
 
-  if (NODE_ENVIRONMENT === NodeEnvironment.TEST) {
+  if (IS_TEST) {
     inMemoryEmail.push({
       otpCode,
       to: subject,

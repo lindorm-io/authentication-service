@@ -1,6 +1,6 @@
 import Joi from "@hapi/joi";
 import { APIError, HttpStatus } from "@lindorm-io/core";
-import { IAuthContext } from "../../../typing";
+import { IKoaAuthContext } from "../../../typing";
 import { InvalidClientError } from "@lindorm-io/koa-client";
 import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { JOI_CHALLENGE_TYPE, JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
@@ -28,7 +28,7 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const performMultiFactorChallenge = (ctx: IAuthContext) => async (
+export const performMultiFactorChallenge = (ctx: IKoaAuthContext) => async (
   options: IPerformMultiFactorChallengeOptions,
 ): Promise<IPerformMultiFactorChallengeData> => {
   await schema.validateAsync(options);

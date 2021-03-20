@@ -4,9 +4,9 @@ import { NodeEnvironment } from "@lindorm-io/core";
 export const stagingConfig: IConfigurationData = {
   NODE_ENVIRONMENT: NodeEnvironment.STAGING,
   SERVER_PORT: 3000,
-  HOST: "https://staging.lindorm.io/",
+  HOST: "https://staging.authentication.lindorm.io",
 
-  JWT_ISSUER: "https://staging.lindorm.io/",
+  JWT_ISSUER: "https://staging.authentication.lindorm.io",
   JWT_ACCESS_TOKEN_EXPIRY: "3 minutes",
   JWT_AUTHORIZATION_TOKEN_EXPIRY: "15 minutes",
   JWT_IDENTITY_TOKEN_EXPIRY: "7 days",
@@ -16,11 +16,11 @@ export const stagingConfig: IConfigurationData = {
   CRYPTO_AES_SECRET: null,
   CRYPTO_SHA_SECRET: null,
 
-  ACCOUNT_OTP_ISSUER: "staging.lindorm.io",
+  ACCOUNT_OTP_ISSUER: "staging.authentication.lindorm.io",
 
   MAILGUN_API_KEY: null,
   MAILGUN_DOMAIN: "staging.lindorm.io",
-  MAILGUN_FROM: "noreply@lindorm.io",
+  MAILGUN_FROM: "auth@lindorm.io",
 
   REDIS_PORT: null,
 
@@ -29,4 +29,12 @@ export const stagingConfig: IConfigurationData = {
   MONGO_HOST: null,
   MONGO_EXPOSE_PORT: null,
   MONGO_DB_NAME: null,
+
+  DEVICE_SERVICE_BASE_URL: "secret",
+  DEVICE_SERVICE_AUTH_USERNAME: "secret",
+  DEVICE_SERVICE_AUTH_PASSWORD: "secret",
+
+  IDENTITY_SERVICE_BASE_URL: "https://staging.identity.lindorm.io",
+  IDENTITY_SERVICE_AUTH_USERNAME: "secret",
+  IDENTITY_SERVICE_AUTH_PASSWORD: "secret",
 };

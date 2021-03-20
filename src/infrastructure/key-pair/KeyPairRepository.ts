@@ -42,6 +42,7 @@ export class KeyPairRepository extends RepositoryBase<KeyPair> implements IKeyPa
       updated: entity.updated,
       events: entity.events,
 
+      allowed: entity.allowed,
       algorithm: entity.algorithm,
       expires: entity.expires,
       passphrase: entity.passphrase,
