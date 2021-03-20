@@ -43,10 +43,13 @@ describe("createOrUpdateRequestLimit", () => {
       _updated: date,
       _version: 0,
     });
+
+    expect(ctx.requestLimit).toMatchSnapshot();
   });
 
   test("should update existing request limit", async () => {
     ctx.requestLimit = new RequestLimit({
+      id: "addde23d-83fe-46bf-a32f-dbc77efa0484",
       subject: "subject@lindorm.io",
       grantType: GrantType.DEVICE_PIN,
       failedTries: 10,
@@ -58,6 +61,18 @@ describe("createOrUpdateRequestLimit", () => {
         grantType: GrantType.DEVICE_PIN,
       }),
     ).resolves.toBe(undefined);
+
+    expect(ctx.cache.requestLimit.update).toHaveBeenCalledWith({
+      _backOffUntil: new Date("2020-01-01T09:00:00.000Z"),
+      _created: date,
+      _events: [],
+      _failedTries: 11,
+      _grantType: "pin_code",
+      _id: "addde23d-83fe-46bf-a32f-dbc77efa0484",
+      _subject: "subject@lindorm.io",
+      _updated: date,
+      _version: 0,
+    });
 
     expect(ctx.requestLimit).toMatchSnapshot();
   });

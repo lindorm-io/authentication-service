@@ -27,4 +27,6 @@ export const createOrUpdateRequestLimit = (ctx: IAuthContext) => async (
 
   ctx.requestLimit.failedTries += 1;
   ctx.requestLimit.backOffUntil = getBackOffDate(ctx.requestLimit);
+
+  await cache.requestLimit.update(ctx.requestLimit);
 };

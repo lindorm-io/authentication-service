@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`createOrUpdateRequestLimit should create a request limit in the cache 1`] = `
+RequestLimit {
+  "_backOffUntil": null,
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_failedTries": 1,
+  "_grantType": "pin_code",
+  "_id": "addde23d-83fe-46bf-a32f-dbc77efa0484",
+  "_subject": "subject@lindorm.io",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
 exports[`createOrUpdateRequestLimit should update existing request limit 1`] = `
 RequestLimit {
   "_backOffUntil": 2020-01-01T09:00:00.000Z,
@@ -7,7 +21,7 @@ RequestLimit {
   "_events": Array [],
   "_failedTries": 11,
   "_grantType": "pin_code",
-  "_id": undefined,
+  "_id": "addde23d-83fe-46bf-a32f-dbc77efa0484",
   "_subject": "subject@lindorm.io",
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
