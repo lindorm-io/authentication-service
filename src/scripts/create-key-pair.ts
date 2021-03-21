@@ -6,8 +6,8 @@ import { generateKeyPair } from "../support";
 import { winston } from "../logger";
 
 (async () => {
+  const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
   try {
-    const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
     await mongo.connect();
 
     const repository = new KeyPairRepository({ logger: winston, db: mongo.getDatabase() });
@@ -19,6 +19,7 @@ import { winston } from "../logger";
   } catch (err) {
     winston.error("error", err);
   } finally {
+    await mongo.disconnect();
     process.exit(0);
   }
 })();

@@ -103,8 +103,8 @@ const createDevice = async (accessToken: string) => {
 };
 
 (async () => {
+  const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
   try {
-    const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
     await mongo.connect();
 
     const keystore = await createKeystore(mongo);
@@ -131,6 +131,7 @@ const createDevice = async (accessToken: string) => {
   } catch (err) {
     winston.error("error", err);
   } finally {
+    await mongo.disconnect();
     process.exit(0);
   }
 })();

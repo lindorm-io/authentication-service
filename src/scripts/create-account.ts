@@ -4,11 +4,12 @@ import { MongoConnection } from "@lindorm-io/mongo";
 import { winston } from "../logger";
 import { Account } from "../entity";
 import { getRandomValue } from "@lindorm-io/core";
-import { ensureIdentity } from "../axios/identity-service";
+import { ensureIdentity } from "../axios";
 
 (async () => {
+  const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
+
   try {
-    const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
     await mongo.connect();
 
     const repository = new AccountRepository({ logger: winston, db: mongo.getDatabase() });
@@ -27,6 +28,7 @@ import { ensureIdentity } from "../axios/identity-service";
   } catch (err) {
     winston.error("error", err);
   } finally {
+    await mongo.disconnect();
     process.exit(0);
   }
 })();
