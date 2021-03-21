@@ -1,21 +1,16 @@
-import { BEARER_TOKEN_MW_OPTIONS, CRYPTO_SECRET_OPTIONS } from "../../config";
 import { HttpStatus } from "@lindorm-io/core";
 import { IKoaAuthContext } from "../../typing";
 import { Router } from "@lindorm-io/koa";
-import { accountMiddleware } from "../../middleware";
-import { bearerAuthMiddleware } from "@lindorm-io/koa-bearer-auth";
-import { clientMiddleware, clientValidationMiddleware } from "@lindorm-io/koa-client";
+import { accountMiddleware, bearerAuthMiddleware } from "../../middleware";
 import { logoutWithId } from "../../action";
-import { router as logout } from "./logout";
+import { router as logoutRoute } from "./logout";
 
 export const router = new Router();
 
-router.use(clientMiddleware());
-router.use(clientValidationMiddleware(CRYPTO_SECRET_OPTIONS));
-router.use(bearerAuthMiddleware(BEARER_TOKEN_MW_OPTIONS));
+router.use(bearerAuthMiddleware);
 router.use(accountMiddleware);
 
-router.use("/logout", logout.routes(), logout.allowedMethods());
+router.use("/logout", logoutRoute.routes(), logoutRoute.allowedMethods());
 
 router.get(
   "/",

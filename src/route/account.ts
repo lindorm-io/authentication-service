@@ -1,9 +1,7 @@
-import { BEARER_TOKEN_MW_OPTIONS } from "../config";
 import { HttpStatus } from "@lindorm-io/core";
 import { IKoaAuthContext } from "../typing";
 import { Router } from "@lindorm-io/koa";
-import { accountMiddleware } from "../middleware";
-import { bearerAuthMiddleware } from "@lindorm-io/koa-bearer-auth";
+import { accountMiddleware, bearerAuthMiddleware } from "../middleware";
 import {
   addAccountOTP,
   createAccount,
@@ -14,12 +12,10 @@ import {
   updateAccountPassword,
   updateAccountPermission,
 } from "../action";
-import { clientMiddleware } from "@lindorm-io/koa-client";
 
 export const router = new Router();
 
-router.use(clientMiddleware());
-router.use(bearerAuthMiddleware(BEARER_TOKEN_MW_OPTIONS));
+router.use(bearerAuthMiddleware);
 router.use(accountMiddleware);
 
 router.post(

@@ -18,7 +18,7 @@ const schema = Joi.object({
   description: Joi.string(),
   emailAuthorizationUri: Joi.string().uri(),
   name: Joi.string(),
-  secret: Joi.string().allow(null).length(32),
+  secret: Joi.string().allow(null).min(32),
 });
 
 export const createClient = (ctx: IKoaAuthContext) => async (
@@ -33,13 +33,9 @@ export const createClient = (ctx: IKoaAuthContext) => async (
 
   const client = new Client({
     description,
-    extra: emailAuthorizationUri
-      ? {
-          emailAuthorizationUri,
-        }
-      : {},
+    extra: emailAuthorizationUri ? { emailAuthorizationUri } : {},
     name,
-    secret: secret && encryptClientSecret(secret),
+    secret: secret && { signature: encryptClientSecret(secret), updated: new Date() },
   });
 
   await repository.client.create(client);

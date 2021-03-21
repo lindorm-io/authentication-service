@@ -1,19 +1,14 @@
+import { AccountRepository, RequestLimitCache, SessionRepository } from "../../infrastructure";
 import { Client, ClientCache, ClientRepository } from "@lindorm-io/koa-client";
 import { JWT_ISSUER } from "../../config";
+import { KeyPairCache, KeyPairRepository } from "@lindorm-io/koa-keystore";
 import { KeyPairHandler, Keystore } from "@lindorm-io/key-pair";
 import { TokenIssuer } from "@lindorm-io/jwt";
 import { getGreyBoxCache } from "./redis";
-import { getGreyBoxClientWithSecret } from "./client";
 import { getGreyBoxRepository } from "./mongo";
-import { getKeyPairEC, getKeyPairRSA } from "./key-pair";
+import { getTestClient } from "./test-client";
+import { getTestKeyPairEC, getTestKeyPairRSA } from "./key-pair";
 import { winston } from "../../logger";
-import {
-  AccountRepository,
-  KeyPairCache,
-  KeyPairRepository,
-  RequestLimitCache,
-  SessionRepository,
-} from "../../infrastructure";
 
 export let TEST_ACCOUNT_REPOSITORY: AccountRepository;
 export let TEST_CLIENT_REPOSITORY: ClientRepository;
@@ -33,8 +28,8 @@ export const setupIntegration = async (): Promise<void> => {
   const { account, client, keyPair, session } = await getGreyBoxRepository();
   const { client: clientCache, keyPair: keyPairCache, requestLimit } = await getGreyBoxCache();
 
-  const keyPairEC = getKeyPairEC();
-  const keyPairRSA = getKeyPairRSA();
+  const keyPairEC = getTestKeyPairEC();
+  const keyPairRSA = getTestKeyPairRSA();
 
   TEST_ACCOUNT_REPOSITORY = account;
   TEST_CLIENT_REPOSITORY = client;
@@ -52,7 +47,7 @@ export const setupIntegration = async (): Promise<void> => {
   });
   TEST_KEY_PAIR_HANDLER = new KeyPairHandler(keyPairRSA);
 
-  TEST_CLIENT = getGreyBoxClientWithSecret();
+  TEST_CLIENT = getTestClient();
 
   await TEST_CLIENT_REPOSITORY.create(TEST_CLIENT);
   await TEST_CLIENT_CACHE.create(TEST_CLIENT);

@@ -10,7 +10,7 @@ import {
   TEST_CLIENT,
   TEST_KEY_PAIR_HANDLER,
   generateTestOauthData,
-  getGreyBoxAccount,
+  getTestAccount,
   setupIntegration,
 } from "../grey-box";
 
@@ -31,7 +31,7 @@ describe("/oauth DEVICE_PIN", () => {
   });
 
   beforeEach(async () => {
-    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
+    account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
   });
 
   test("should resolve", async () => {
@@ -42,7 +42,7 @@ describe("/oauth DEVICE_PIN", () => {
       .set("X-Device-ID", "6c13e4ce-ec2e-40bf-addb-241a0c914295")
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         code_challenge: codeChallenge,
         code_method: codeMethod,
@@ -78,7 +78,7 @@ describe("/oauth DEVICE_PIN", () => {
       .set("X-Device-ID", "6c13e4ce-ec2e-40bf-addb-241a0c914295")
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         authorization_token: token,
         code_verifier: codeVerifier,

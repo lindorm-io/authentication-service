@@ -1,7 +1,5 @@
-import { AccountRepository, KeyPairRepository, SessionRepository } from "../infrastructure";
-import { ClientRepository } from "@lindorm-io/koa-client";
-import { IKoaAuthContext } from "../typing";
-import { TPromise } from "@lindorm-io/core";
+import { AccountRepository, SessionRepository } from "../infrastructure";
+import { IKoaAuthContext, TPromise } from "../typing";
 
 export const repositoryMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();
@@ -10,9 +8,8 @@ export const repositoryMiddleware = async (ctx: IKoaAuthContext, next: TPromise<
   const db = await mongo.getDatabase();
 
   ctx.repository = {
+    ...ctx.repository,
     account: new AccountRepository({ db, logger }),
-    client: new ClientRepository({ db, logger }),
-    keyPair: new KeyPairRepository({ db, logger }),
     session: new SessionRepository({ db, logger }),
   };
 

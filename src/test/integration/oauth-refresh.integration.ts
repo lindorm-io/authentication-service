@@ -9,9 +9,9 @@ import {
   TEST_CLIENT,
   TEST_SESSION_REPOSITORY,
   generateTestOauthData,
-  getGreyBoxAccount,
+  getTestAccount,
   getGreyBoxRefreshToken,
-  getGreyBoxSession,
+  getTestSession,
   setupIntegration,
 } from "../grey-box";
 
@@ -30,8 +30,8 @@ describe("/oauth REFRESH_TOKEN", () => {
   });
 
   beforeEach(async () => {
-    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
-    session = await TEST_SESSION_REPOSITORY.create(getGreyBoxSession(account, codeChallenge, codeMethod));
+    account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
+    session = await TEST_SESSION_REPOSITORY.create(getTestSession(account, TEST_CLIENT, codeChallenge, codeMethod));
     refreshToken = getGreyBoxRefreshToken(account, session);
   });
 
@@ -42,7 +42,7 @@ describe("/oauth REFRESH_TOKEN", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         refresh_token: refreshToken,
 

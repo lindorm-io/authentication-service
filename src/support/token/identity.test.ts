@@ -1,9 +1,8 @@
 import MockDate from "mockdate";
 import { Account } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
-import { MOCK_ACCOUNT_OPTIONS, MOCK_CLIENT_OPTIONS, MOCK_EC_TOKEN_ISSUER } from "../../test/mocks";
 import { getIdentityToken } from "./identity";
-import { winston } from "../../logger";
+import { getTestAccount, getTestClient, getTestIssuer, logger } from "../../test";
 
 jest.mock("jsonwebtoken", () => ({
   sign: (data: any) => data,
@@ -15,25 +14,24 @@ jest.mock("uuid", () => ({
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("getIdentityToken", () => {
-  let getMockContext: any;
-
+  let ctx: any;
   let account: Account;
   let client: Client;
 
   beforeEach(() => {
-    getMockContext = () => ({
-      logger: winston,
-      issuer: { tokenIssuer: MOCK_EC_TOKEN_ISSUER },
+    ctx = {
+      logger,
+      issuer: { tokenIssuer: getTestIssuer() },
       metadata: { deviceId: "deviceId" },
-    });
+    };
 
-    account = new Account(MOCK_ACCOUNT_OPTIONS);
-    client = new Client(MOCK_CLIENT_OPTIONS);
+    account = getTestAccount("email@lindorm.io");
+    client = getTestClient();
   });
 
   test("should return an identity token", () => {
     expect(
-      getIdentityToken(getMockContext())({
+      getIdentityToken(ctx)({
         account,
         client,
         payload: { data: true },

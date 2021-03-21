@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 import { Audience } from "../enum";
 import { ConfigHandler } from "./ConfigHandler";
 import { MongoConnectionType } from "@lindorm-io/mongo";
+import { NodeEnvironment } from "@lindorm-io/core";
 import { RedisConnectionType } from "@lindorm-io/redis";
 import { developmentConfig, environmentConfig, productionConfig, stagingConfig, testConfig } from "./files";
-import { NodeEnvironment, stringToMilliseconds } from "@lindorm-io/core";
 
 if (!process.env.NODE_ENV) dotenv.config();
 
@@ -71,19 +71,13 @@ export const REDIS_CONNECTION_OPTIONS = {
   port: config.REDIS_PORT,
 };
 
-export const BEARER_TOKEN_MW_OPTIONS = {
+export const BEARER_AUTH_MW_OPTIONS = {
   issuer: config.JWT_ISSUER,
   audience: Audience.ACCESS,
 };
 
 export const TOKEN_ISSUER_MW_OPTIONS = {
   issuer: config.JWT_ISSUER,
-};
-
-export const CLIENT_CACHE_WORKER_OPTIONS = {
-  mongoConnectionOptions: MONGO_CONNECTION_OPTIONS,
-  redisConnectionOptions: REDIS_CONNECTION_OPTIONS,
-  workerIntervalInMilliseconds: stringToMilliseconds("10 minutes"),
 };
 
 export const IDENTITY_SERVICE_BASE_URL = config.IDENTITY_SERVICE_BASE_URL;

@@ -28,7 +28,7 @@ const schema = Joi.object({
   jwtMultiFactorTokenExpiry: Joi.string(),
   jwtRefreshTokenExpiry: Joi.string(),
   name: Joi.string(),
-  secret: Joi.string().allow(null).length(32),
+  secret: Joi.string().allow(null).min(32),
 });
 
 export const updateClient = (ctx: IKoaAuthContext) => async (options: IUpdateClientOptions): Promise<void> => {
@@ -81,7 +81,7 @@ export const updateClient = (ctx: IKoaAuthContext) => async (options: IUpdateCli
     client.name = name;
   }
   if (secret) {
-    client.secret = encryptClientSecret(secret);
+    client.secret = { signature: encryptClientSecret(secret), updated: new Date() };
   }
 
   const updated = await repository.client.update(client);

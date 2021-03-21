@@ -1,7 +1,7 @@
 import MockDate from "mockdate";
 import { Client } from "@lindorm-io/koa-client";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
-import { MOCK_CLIENT_OPTIONS, MOCK_EC_TOKEN_ISSUER, MOCK_LOGGER } from "../../test/mocks";
+import { getTestClient, getTestIssuer, logger } from "../../test";
 import { verifyToken } from "./verify-token";
 
 jest.mock("uuid", () => ({
@@ -11,21 +11,22 @@ jest.mock("uuid", () => ({
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("verifyToken", () => {
-  let getMockContext: any;
-
+  let ctx: any;
   let client: Client;
   let signData: ITokenIssuerSignData;
 
   beforeEach(() => {
-    getMockContext = () => ({
-      logger: MOCK_LOGGER,
-      issuer: { tokenIssuer: MOCK_EC_TOKEN_ISSUER },
+    const issuer = getTestIssuer();
+
+    ctx = {
+      logger,
+      issuer: { tokenIssuer: issuer },
       metadata: { deviceId: "deviceId" },
-    });
+    };
 
-    client = new Client(MOCK_CLIENT_OPTIONS);
+    client = getTestClient();
 
-    signData = MOCK_EC_TOKEN_ISSUER.sign({
+    signData = issuer.sign({
       audience: "audience",
       expiry: "5 minutes",
       subject: "subject",
@@ -35,7 +36,7 @@ describe("verifyToken", () => {
 
   test("should verify token", () => {
     expect(
-      verifyToken(getMockContext())({
+      verifyToken(ctx)({
         audience: "audience",
         client,
         token: signData.token,
@@ -45,18 +46,8 @@ describe("verifyToken", () => {
 
   test("should verify token without client", () => {
     expect(
-      verifyToken(getMockContext())({
+      verifyToken(ctx)({
         audience: "audience",
-        token: signData.token,
-      }),
-    ).toMatchSnapshot();
-  });
-
-  test("should verify token without device", () => {
-    expect(
-      verifyToken(getMockContext())({
-        audience: "audience",
-        client,
         token: signData.token,
       }),
     ).toMatchSnapshot();

@@ -9,7 +9,7 @@ import {
   TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   generateTestOauthData,
-  getGreyBoxAccountWithPassword,
+  getTestAccountWithPassword,
   setupIntegration,
 } from "../grey-box";
 
@@ -26,7 +26,7 @@ describe("/oauth PASSWORD", () => {
   });
 
   beforeEach(async () => {
-    account = await TEST_ACCOUNT_REPOSITORY.create(await getGreyBoxAccountWithPassword("test@lindorm.io"));
+    account = await TEST_ACCOUNT_REPOSITORY.create(await getTestAccountWithPassword("test@lindorm.io"));
   });
 
   test("should resolve", async () => {
@@ -36,7 +36,7 @@ describe("/oauth PASSWORD", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         code_challenge: codeChallenge,
         code_method: codeMethod,
@@ -67,7 +67,7 @@ describe("/oauth PASSWORD", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         authorization_token: token,
 

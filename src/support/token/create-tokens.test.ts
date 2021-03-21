@@ -2,16 +2,8 @@ import MockDate from "mockdate";
 import { Account, Session } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
 import { ResponseType } from "../../enum";
-import { Scope } from "@lindorm-io/jwt";
 import { createTokens } from "./create-tokens";
-import { winston } from "../../logger";
-import {
-  MOCK_ACCOUNT_OPTIONS,
-  MOCK_CLIENT_OPTIONS,
-  MOCK_SESSION_OPTIONS,
-  MOCK_EC_TOKEN_ISSUER,
-  getMockRepository,
-} from "../../test/mocks";
+import { getGreyBoxRepository, getTestAccount, getTestClient, getTestIssuer, getTestSession, logger } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -29,32 +21,27 @@ jest.mock("./refresh", () => ({
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("createTokens", () => {
-  let getMockContext: any;
-
+  let ctx: any;
   let account: Account;
   let client: Client;
   let session: Session;
 
-  beforeEach(() => {
-    getMockContext = () => ({
-      issuer: { tokenIssuer: MOCK_EC_TOKEN_ISSUER },
-      logger: winston,
+  beforeEach(async () => {
+    ctx = {
+      logger,
+      issuer: { tokenIssuer: getTestIssuer() },
       metadata: { deviceId: "deviceId" },
-      repository: getMockRepository(),
-    });
+      repository: await getGreyBoxRepository(),
+    };
 
-    account = new Account(MOCK_ACCOUNT_OPTIONS);
-    client = new Client(MOCK_CLIENT_OPTIONS);
-    session = new Session({
-      ...MOCK_SESSION_OPTIONS,
-      refreshId: "refreshId",
-      scope: `${Scope.DEFAULT} ${Scope.OPENID}`,
-    });
+    account = getTestAccount("email@lindorm.io");
+    client = getTestClient();
+    session = getTestSession(account, client, "codeChallenge", "codeMethod");
   });
 
   test("should return refresh token", () => {
     expect(
-      createTokens(getMockContext())({
+      createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,
@@ -67,7 +54,7 @@ describe("createTokens", () => {
 
   test("should return access token", () => {
     expect(
-      createTokens(getMockContext())({
+      createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,
@@ -80,7 +67,7 @@ describe("createTokens", () => {
 
   test("should return identity token", () => {
     expect(
-      createTokens(getMockContext())({
+      createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,
@@ -93,7 +80,7 @@ describe("createTokens", () => {
 
   test("should return all tokens", () => {
     expect(
-      createTokens(getMockContext())({
+      createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,

@@ -1,7 +1,5 @@
-import { MOCK_CLIENT_OPTIONS } from "../../test/mocks/repository";
-import { MOCK_LOGGER } from "../../test/mocks/logger";
 import { sendEmailLink, sendEmailOTP } from "./send-email";
-import { Client } from "@lindorm-io/koa-client";
+import { getTestClient, logger } from "../../test";
 
 const mockSend = jest.fn();
 jest.mock("../../class", () => ({
@@ -19,11 +17,8 @@ describe("sendEmail", () => {
 
   beforeEach(() => {
     getMockContext = () => ({
-      client: new Client({
-        ...MOCK_CLIENT_OPTIONS,
-        extra: { emailAuthorizationUri: "https://lindorm.io/" },
-      }),
-      logger: MOCK_LOGGER,
+      client: getTestClient(),
+      logger,
     });
   });
 

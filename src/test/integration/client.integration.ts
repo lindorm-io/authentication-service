@@ -3,7 +3,7 @@ import request from "supertest";
 import { Account } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
-import { encryptClientSecret } from "../../support/client";
+import { encryptClientSecret } from "../../support";
 import { getRandomValue } from "@lindorm-io/core";
 import { koa } from "../../server/koa";
 import { v4 as uuid } from "uuid";
@@ -12,7 +12,7 @@ import {
   TEST_CLIENT,
   TEST_CLIENT_REPOSITORY,
   getGreyBoxAccessToken,
-  getGreyBoxAccountAdmin,
+  getTestAccountAdmin,
   setupIntegration,
 } from "../grey-box";
 
@@ -28,7 +28,7 @@ describe("/client", () => {
   });
 
   beforeEach(async () => {
-    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccountAdmin("admin@lindorm.io"));
+    account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccountAdmin("admin@lindorm.io"));
     accessToken = getGreyBoxAccessToken(account);
   });
 
@@ -60,7 +60,7 @@ describe("/client", () => {
   test("PATCH /:id", async () => {
     const client = await TEST_CLIENT_REPOSITORY.create(
       new Client({
-        secret: await encryptClientSecret("secret"),
+        secret: { signature: await encryptClientSecret("secret"), updated: new Date() },
         approved: true,
         extra: { emailAuthorizationUri: "https://lindorm.io/" },
       }),
@@ -93,7 +93,7 @@ describe("/client", () => {
   test("DELETE /:id", async () => {
     const client = await TEST_CLIENT_REPOSITORY.create(
       new Client({
-        secret: await encryptClientSecret("secret"),
+        secret: { signature: await encryptClientSecret("secret"), updated: new Date() },
         approved: true,
         extra: { emailAuthorizationUri: "https://lindorm.io/" },
       }),

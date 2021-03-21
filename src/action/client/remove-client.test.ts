@@ -1,32 +1,44 @@
-import { Account } from "../../entity";
-import { getMockCache, MOCK_LOGGER, MOCK_UUID, getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { removeClient } from "./remove-client";
+import { Client } from "@lindorm-io/koa-client";
+import {
+  getGreyBoxCache,
+  getGreyBoxRepository,
+  getTestAccount,
+  inMemoryCache,
+  inMemoryStore,
+  logger,
+} from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../support", () => ({
-  assertAccountAdmin: jest.fn(() => () => undefined),
+  assertAccountAdmin: jest.fn(() => () => {}),
 }));
 
 describe("removeClient", () => {
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    getMockContext = () => ({
-      account: new Account(MOCK_ACCOUNT_OPTIONS),
-      cache: getMockCache(),
-      logger: MOCK_LOGGER,
-      repository: getMockRepository(),
-    });
+  beforeEach(async () => {
+    ctx = {
+      account: getTestAccount("email@lindorm.io"),
+      cache: await getGreyBoxCache(),
+      logger,
+      repository: await getGreyBoxRepository(),
+    };
+
+    const client = await ctx.repository.client.create(
+      new Client({
+        id: "0aa7b983-d62f-4778-ba90-36a3bda3ca0b",
+      }),
+    );
+    await ctx.cache.client.create(client);
   });
 
   test("should remove client", async () => {
-    const ctx = getMockContext();
+    await expect(removeClient(ctx)({ clientId: "0aa7b983-d62f-4778-ba90-36a3bda3ca0b" })).resolves.toBe(undefined);
 
-    await expect(removeClient(ctx)({ clientId: MOCK_UUID })).resolves.toBe(undefined);
-
-    expect(ctx.repository.client.remove).toHaveBeenCalled();
-    expect(ctx.cache.client.remove).toHaveBeenCalled();
+    expect(inMemoryCache).toMatchSnapshot();
+    expect(inMemoryStore).toMatchSnapshot();
   });
 });

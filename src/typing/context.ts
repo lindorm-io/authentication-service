@@ -1,12 +1,13 @@
 import { Account, RequestLimit } from "../entity";
-import { AccountRepository, KeyPairRepository, SessionRepository } from "../infrastructure";
+import { AccountRepository, SessionRepository } from "../infrastructure";
 import { Client, ClientCache, ClientRepository } from "@lindorm-io/koa-client";
 import { IKoaAppContext } from "@lindorm-io/koa";
 import { ITokenIssuerVerifyData, TokenIssuer } from "@lindorm-io/jwt";
-import { KeyPairCache, RequestLimitCache } from "../infrastructure";
+import { KeyPairCache, KeyPairRepository } from "@lindorm-io/koa-keystore";
 import { Keystore } from "@lindorm-io/key-pair";
 import { MongoConnection } from "@lindorm-io/mongo";
 import { RedisConnection } from "@lindorm-io/redis";
+import { RequestLimitCache } from "../infrastructure";
 import { TObject } from "@lindorm-io/core";
 
 export interface IKoaAuthContext extends IKoaAppContext {

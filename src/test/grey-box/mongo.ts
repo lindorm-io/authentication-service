@@ -1,5 +1,6 @@
-import { AccountRepository, KeyPairRepository, SessionRepository } from "../../infrastructure";
+import { AccountRepository, SessionRepository } from "../../infrastructure";
 import { ClientRepository } from "@lindorm-io/koa-client";
+import { KeyPairRepository } from "@lindorm-io/koa-keystore";
 import { MONGO_CONNECTION_OPTIONS } from "../../config";
 import { MongoConnection, MongoConnectionType } from "@lindorm-io/mongo";
 import { inMemoryStore } from "./in-memory";

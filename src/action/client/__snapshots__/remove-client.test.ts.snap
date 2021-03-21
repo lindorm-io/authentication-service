@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`removeClient should remove client 1`] = `
+Object {
+  "Client::0aa7b983-d62f-4778-ba90-36a3bda3ca0b": undefined,
+}
+`;
+
+exports[`removeClient should remove client 2`] = `
+Object {
+  "authentication": Object {
+    "client": Object {
+      "data": Array [],
+      "indices": Array [
+        Object {
+          "index": Object {
+            "id": 1,
+          },
+          "options": Object {
+            "unique": true,
+          },
+        },
+      ],
+    },
+  },
+}
+`;

@@ -1,21 +1,22 @@
 import MockDate from "mockdate";
-import { Account } from "../../entity";
-import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
-import { getRandomValue } from "@lindorm-io/core";
+import { baseHash } from "@lindorm-io/core";
 import { updateClient } from "./update-client";
-import { winston } from "../../logger";
-import { getGreyBoxCache, getGreyBoxRepository, inMemoryCache, inMemoryStore } from "../../test";
 import { Client } from "@lindorm-io/koa-client";
+import {
+  getTestAccount,
+  getGreyBoxCache,
+  getGreyBoxRepository,
+  inMemoryCache,
+  inMemoryStore,
+  logger,
+} from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../support", () => ({
-  assertAccountAdmin: jest.fn(() => () => undefined),
-  encryptClientSecret: jest.fn(
-    () =>
-      "VTJGc2RHVmtYMTlNcTVzT1hJMGlaUlZaMXZrQWZWWDVPcUpaY0tqT29hN05KR3h2VkplQko0M0JFNnVmbGVsVk1tMnI3RmlwNllPK05HQ2V1QnJZaWZabXJVbTMrVHRvSHFaM0xvOGNKM3l3NFNZdlg3U0VrUHA3MjdMQTdlVkg4czFaUzB6VTJzMTBra0Yxdko3RzgybENNd0k4T1hZU0ZOVkZwVkZ5SnhabUllSURLQlRmdDdZT1JLa2JsNzRhZUV5eDBSZ1BBeTFqYzR0d2w0NFYzUT09",
-  ),
+  assertAccountAdmin: jest.fn(() => () => {}),
+  encryptClientSecret: jest.fn((input) => baseHash(input)),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");
@@ -25,9 +26,9 @@ describe("updateClient", () => {
 
   beforeEach(async () => {
     ctx = {
-      account: new Account(MOCK_ACCOUNT_OPTIONS),
+      account: getTestAccount("email@lindorm.io"),
       cache: await getGreyBoxCache(),
-      logger: winston,
+      logger,
       repository: await getGreyBoxRepository(),
     };
 
@@ -52,7 +53,7 @@ describe("updateClient", () => {
         jwtMultiFactorTokenExpiry: "40 minutes",
         jwtRefreshTokenExpiry: "50 minutes",
         name: "name",
-        secret: getRandomValue(32),
+        secret: "45C409CEC3854E3E94500A55865370F5256AD872ED8A46FF8863AD87DB334EF8",
       }),
     ).resolves.toBe(undefined);
 

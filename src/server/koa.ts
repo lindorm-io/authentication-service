@@ -1,7 +1,22 @@
-import { CLIENT_CACHE_WORKER_OPTIONS, SERVER_PORT, TOKEN_ISSUER_MW_OPTIONS } from "../config";
 import { KoaApp } from "@lindorm-io/koa";
 import { NODE_ENVIRONMENT } from "../config";
 import { NodeEnvironment } from "@lindorm-io/core";
+import { SERVER_PORT } from "../config";
+import {
+  cacheMiddleware,
+  getMongoMiddleware,
+  getRedisMiddleware,
+  repositoryMiddleware,
+  tokenIssuerMiddleware,
+} from "../middleware";
+import { clientCacheMiddleware, clientRepositoryMiddleware } from "@lindorm-io/koa-client";
+import { clientCacheWorker, keyPairCacheWorker, sessionCleanupWorker } from "../worker";
+import { winston } from "../logger";
+import {
+  cachedKeystoreMiddleware,
+  keyPairCacheMiddleware,
+  keyPairRepositoryMiddleware,
+} from "@lindorm-io/koa-keystore";
 import {
   appRoute,
   accountRoute,
@@ -13,17 +28,6 @@ import {
   userInfoRoute,
   wellKnownRoute,
 } from "../route";
-import { clientCacheWorker } from "@lindorm-io/koa-client";
-import { keyPairCacheWorker, sessionCleanupWorker } from "../worker";
-import { tokenIssuerMiddleware } from "@lindorm-io/koa-jwt";
-import { winston } from "../logger";
-import {
-  cacheMiddleware,
-  getMongoMiddleware,
-  getRedisMiddleware,
-  keystoreMiddleware,
-  repositoryMiddleware,
-} from "../middleware";
 
 export const koa = new KoaApp({
   logger: winston,
@@ -32,10 +36,16 @@ export const koa = new KoaApp({
 
 koa.addMiddleware(getMongoMiddleware());
 koa.addMiddleware(repositoryMiddleware);
+koa.addMiddleware(clientRepositoryMiddleware);
+koa.addMiddleware(keyPairRepositoryMiddleware);
+
 koa.addMiddleware(getRedisMiddleware());
 koa.addMiddleware(cacheMiddleware);
-koa.addMiddleware(keystoreMiddleware);
-koa.addMiddleware(tokenIssuerMiddleware(TOKEN_ISSUER_MW_OPTIONS));
+koa.addMiddleware(clientCacheMiddleware);
+koa.addMiddleware(keyPairCacheMiddleware);
+
+koa.addMiddleware(cachedKeystoreMiddleware);
+koa.addMiddleware(tokenIssuerMiddleware);
 
 koa.addRoute("/", appRoute);
 koa.addRoute("/account", accountRoute);
@@ -48,12 +58,7 @@ koa.addRoute("/userinfo", userInfoRoute);
 koa.addRoute("/.well-known", wellKnownRoute);
 
 if (NODE_ENVIRONMENT !== NodeEnvironment.TEST) {
-  koa.addWorker(
-    clientCacheWorker({
-      ...CLIENT_CACHE_WORKER_OPTIONS,
-      logger: winston,
-    }),
-  );
+  koa.addWorker(clientCacheWorker);
   koa.addWorker(keyPairCacheWorker);
   koa.addWorker(sessionCleanupWorker);
 }

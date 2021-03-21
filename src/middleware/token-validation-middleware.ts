@@ -7,14 +7,14 @@ import { sanitiseToken } from "@lindorm-io/jwt";
 export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<any> => {
   const start = Date.now();
 
-  const { client, issuer, logger, metadata } = ctx;
+  const { issuer, logger, metadata } = ctx;
   const { tokenIssuer } = issuer;
   const { authorizationToken, multiFactorToken, refreshToken } = ctx.request.body;
 
   if (isString(authorizationToken)) {
     const verified = tokenIssuer.verify({
       audience: Audience.AUTHORIZATION,
-      clientId: client.id,
+      clientId: metadata.clientId,
       deviceId: metadata.deviceId,
       token: authorizationToken,
     });
@@ -28,7 +28,7 @@ export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TPro
   if (isString(multiFactorToken)) {
     const verified = tokenIssuer.verify({
       audience: Audience.MULTI_FACTOR,
-      clientId: client.id,
+      clientId: metadata.clientId,
       deviceId: metadata.deviceId,
       token: multiFactorToken,
     });
@@ -42,7 +42,7 @@ export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TPro
   if (isString(refreshToken)) {
     const verified = tokenIssuer.verify({
       audience: Audience.REFRESH,
-      clientId: client.id,
+      clientId: metadata.clientId,
       deviceId: metadata.deviceId,
       token: refreshToken,
     });

@@ -26,18 +26,18 @@ export const generateTestAccountOTP = (): IGenerateTestAccountOTPData => {
   };
 };
 
-export const getGreyBoxAccount = (email: string): Account =>
+export const getTestAccount = (email: string): Account =>
   new Account({
     email,
   });
 
-export const getGreyBoxAccountAdmin = (email: string): Account =>
+export const getTestAccountAdmin = (email: string): Account =>
   new Account({
     email,
     permission: Permission.ADMIN,
   });
 
-export const getGreyBoxAccountWithPassword = async (email: string): Promise<Account> =>
+export const getTestAccountWithPassword = async (email: string): Promise<Account> =>
   new Account({
     email,
     password: {
@@ -46,7 +46,7 @@ export const getGreyBoxAccountWithPassword = async (email: string): Promise<Acco
     },
   });
 
-export const getGreyBoxAccountWithOTP = async (email: string, otp: IAccountOTP): Promise<Account> =>
+export const getTestAccountWithOTP = async (email: string, otp: IAccountOTP): Promise<Account> =>
   new Account({
     email,
     password: {

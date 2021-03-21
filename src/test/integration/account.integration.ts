@@ -9,9 +9,9 @@ import {
   TEST_CLIENT,
   generateTestAccountOTP,
   getGreyBoxAccessToken,
-  getGreyBoxAccount,
-  getGreyBoxAccountAdmin,
-  getGreyBoxAccountWithOTP,
+  getTestAccount,
+  getTestAccountAdmin,
+  getTestAccountWithOTP,
   setupIntegration,
 } from "../grey-box";
 
@@ -32,7 +32,7 @@ describe("/account", () => {
     let accessToken: string;
 
     beforeEach(async () => {
-      account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccountAdmin("admin@lindorm.io"));
+      account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccountAdmin("admin@lindorm.io"));
       accessToken = getGreyBoxAccessToken(account);
     });
 
@@ -108,7 +108,7 @@ describe("/account", () => {
     let accessToken: string;
 
     beforeEach(async () => {
-      account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
+      account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
       accessToken = getGreyBoxAccessToken(account);
     });
 
@@ -134,7 +134,7 @@ describe("/account", () => {
     test("DELETE /:id/otp", async () => {
       const { otp, bindingCode } = generateTestAccountOTP();
 
-      account = await TEST_ACCOUNT_REPOSITORY.create(await getGreyBoxAccountWithOTP("test@lindorm.io", otp));
+      account = await TEST_ACCOUNT_REPOSITORY.create(await getTestAccountWithOTP("test@lindorm.io", otp));
       accessToken = getGreyBoxAccessToken(account);
 
       await request(koa.callback())

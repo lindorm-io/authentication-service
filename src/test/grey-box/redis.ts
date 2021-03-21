@@ -1,7 +1,8 @@
 import { ClientCache } from "@lindorm-io/koa-client";
-import { KeyPairCache, RequestLimitCache } from "../../infrastructure";
+import { KeyPairCache } from "@lindorm-io/koa-keystore";
 import { REDIS_CONNECTION_OPTIONS } from "../../config";
 import { RedisConnection, RedisConnectionType } from "@lindorm-io/redis";
+import { RequestLimitCache } from "../../infrastructure";
 import { inMemoryCache } from "./in-memory";
 import { winston } from "../../logger";
 

@@ -10,7 +10,7 @@ import {
   TEST_CLIENT,
   generateTestAccountOTP,
   generateTestOauthData,
-  getGreyBoxAccountWithOTP,
+  getTestAccountWithOTP,
   setupIntegration,
 } from "../grey-box";
 
@@ -29,7 +29,7 @@ describe("/oauth PASSWORD_OTP", () => {
 
   beforeEach(async () => {
     const { otp, bindingCode } = generateTestAccountOTP();
-    account = await TEST_ACCOUNT_REPOSITORY.create(await getGreyBoxAccountWithOTP("test@lindorm.io", otp));
+    account = await TEST_ACCOUNT_REPOSITORY.create(await getTestAccountWithOTP("test@lindorm.io", otp));
     otpCode = bindingCode;
   });
 
@@ -40,7 +40,7 @@ describe("/oauth PASSWORD_OTP", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         code_challenge: codeChallenge,
         code_method: codeMethod,
@@ -71,7 +71,7 @@ describe("/oauth PASSWORD_OTP", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         authorization_token: authorizationToken,
 
@@ -103,7 +103,7 @@ describe("/oauth PASSWORD_OTP", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         multi_factor_token: multiFactorToken,
 
@@ -124,7 +124,7 @@ describe("/oauth PASSWORD_OTP", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         multi_factor_token: multiFactorToken,
 

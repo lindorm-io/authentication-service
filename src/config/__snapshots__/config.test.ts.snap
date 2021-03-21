@@ -2,28 +2,9 @@
 
 exports[`config should provide configuration 1`] = `
 Object {
-  "BEARER_TOKEN_MW_OPTIONS": Object {
+  "BEARER_AUTH_MW_OPTIONS": Object {
     "audience": "access",
     "issuer": "https://test.authentication.lindorm.io",
-  },
-  "CLIENT_CACHE_WORKER_OPTIONS": Object {
-    "mongoConnectionOptions": Object {
-      "auth": Object {
-        "password": "example",
-        "user": "root",
-      },
-      "databaseName": "authentication",
-      "type": "STORAGE",
-      "url": Object {
-        "host": "localhost",
-        "port": 27017,
-      },
-    },
-    "redisConnectionOptions": Object {
-      "port": 6379,
-      "type": "CACHE",
-    },
-    "workerIntervalInMilliseconds": 600000,
   },
   "CRYPTO_PASSWORD_OPTIONS": Object {
     "aesSecret": "secret",

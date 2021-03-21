@@ -1,4 +1,4 @@
-import { KeyPairRepository } from "../infrastructure";
+import { KeyPairRepository } from "@lindorm-io/koa-keystore";
 import { KeyType } from "@lindorm-io/key-pair";
 import { MONGO_CONNECTION_OPTIONS } from "../config";
 import { MongoConnection } from "@lindorm-io/mongo";

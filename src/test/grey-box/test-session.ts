@@ -1,10 +1,10 @@
 import { Account, Session } from "../../entity";
+import { Client } from "@lindorm-io/koa-client";
 import { GrantType, ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
-import { TEST_CLIENT } from "./setup-integration";
 import { v4 as uuid } from "uuid";
 
-export const getGreyBoxSession = (account: Account, codeChallenge: string, codeMethod: string): Session =>
+export const getTestSession = (account: Account, client: Client, codeChallenge: string, codeMethod: string): Session =>
   new Session({
     accountId: account.id,
     authenticated: true,
@@ -16,7 +16,7 @@ export const getGreyBoxSession = (account: Account, codeChallenge: string, codeM
       redirectUri: "https://redirect.uri/",
       responseType: ResponseType.REFRESH,
     },
-    clientId: TEST_CLIENT.id,
+    clientId: client.id,
     expires: new Date("2099-01-01"),
     grantType: GrantType.EMAIL_OTP,
     refreshId: uuid(),

@@ -1,7 +1,5 @@
-import { ClientCache } from "@lindorm-io/koa-client";
-import { IKoaAuthContext } from "../typing";
-import { KeyPairCache, RequestLimitCache } from "../infrastructure";
-import { TPromise } from "@lindorm-io/core";
+import { IKoaAuthContext, TPromise } from "../typing";
+import { RequestLimitCache } from "../infrastructure";
 
 export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();
@@ -10,8 +8,7 @@ export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>
   const client = await redis.getClient();
 
   ctx.cache = {
-    client: new ClientCache({ client, logger }),
-    keyPair: new KeyPairCache({ client, logger }),
+    ...ctx.cache,
     requestLimit: new RequestLimitCache({ client, logger }),
   };
 

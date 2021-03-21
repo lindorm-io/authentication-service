@@ -9,7 +9,7 @@ import {
   TEST_CLIENT,
   TEST_KEY_PAIR_REPOSITORY,
   getGreyBoxAccessToken,
-  getGreyBoxAccountAdmin,
+  getTestAccountAdmin,
   setupIntegration,
 } from "../grey-box";
 
@@ -25,7 +25,7 @@ describe("/key-pair", () => {
   });
 
   beforeEach(async () => {
-    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccountAdmin("admin@lindorm.io"));
+    account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccountAdmin("admin@lindorm.io"));
     accessToken = getGreyBoxAccessToken(account);
   });
 

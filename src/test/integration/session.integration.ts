@@ -10,9 +10,9 @@ import {
   TEST_SESSION_REPOSITORY,
   generateTestOauthData,
   getGreyBoxAccessToken,
-  getGreyBoxAccount,
+  getTestAccount,
   getGreyBoxRefreshToken,
-  getGreyBoxSession,
+  getTestSession,
   setupIntegration,
 } from "../grey-box";
 
@@ -32,8 +32,8 @@ describe("/session", () => {
   });
 
   beforeEach(async () => {
-    account = await TEST_ACCOUNT_REPOSITORY.create(getGreyBoxAccount("test@lindorm.io"));
-    session = await TEST_SESSION_REPOSITORY.create(getGreyBoxSession(account, codeChallenge, codeMethod));
+    account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
+    session = await TEST_SESSION_REPOSITORY.create(getTestSession(account, TEST_CLIENT, codeChallenge, codeMethod));
     accessToken = getGreyBoxAccessToken(account);
     refreshToken = getGreyBoxRefreshToken(account, session);
   });
@@ -46,7 +46,7 @@ describe("/session", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
 
         refresh_token: refreshToken,
       })
@@ -65,7 +65,7 @@ describe("/session", () => {
       .set("X-Correlation-ID", uuid())
       .send({
         client_id: TEST_CLIENT.id,
-        client_secret: TEST_CLIENT.secret,
+        client_secret: "test_client_secret",
       })
       .expect(202);
 

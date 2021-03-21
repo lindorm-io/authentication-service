@@ -1,9 +1,8 @@
 import MockDate from "mockdate";
 import { Client } from "@lindorm-io/koa-client";
-import { MOCK_CLIENT_OPTIONS, MOCK_SESSION_OPTIONS, MOCK_EC_TOKEN_ISSUER } from "../../test/mocks";
 import { Session } from "../../entity";
 import { getMultiFactorToken } from "./multi-factor";
-import { winston } from "../../logger";
+import { getTestAccount, getTestClient, getTestIssuer, getTestSession, logger } from "../../test";
 
 jest.mock("jsonwebtoken", () => ({
   sign: (data: any) => data,
@@ -15,25 +14,24 @@ jest.mock("uuid", () => ({
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("getMultiFactorToken", () => {
-  let getMockContext: any;
-
+  let ctx: any;
   let client: Client;
   let session: Session;
 
   beforeEach(() => {
-    getMockContext = () => ({
-      logger: winston,
-      issuer: { tokenIssuer: MOCK_EC_TOKEN_ISSUER },
+    ctx = {
+      logger,
+      issuer: { tokenIssuer: getTestIssuer() },
       metadata: { deviceId: "deviceId" },
-    });
+    };
 
-    client = new Client(MOCK_CLIENT_OPTIONS);
-    session = new Session(MOCK_SESSION_OPTIONS);
+    client = getTestClient();
+    session = getTestSession(getTestAccount("email@lindorm.io"), client, "codeChallenge", "codeMethod");
   });
 
   test("should return a multi-factor token", () => {
     expect(
-      getMultiFactorToken(getMockContext())({
+      getMultiFactorToken(ctx)({
         authMethodsReference: "authMethodsReference",
         client,
         session,

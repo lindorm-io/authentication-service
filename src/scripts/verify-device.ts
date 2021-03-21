@@ -1,9 +1,10 @@
 import axios from "axios";
 import { Account, Session } from "../entity";
-import { AccountRepository, KeyPairRepository, SessionRepository } from "../infrastructure";
+import { AccountRepository, SessionRepository } from "../infrastructure";
 import { Audience, GrantType, ResponseType } from "../enum";
 import { DEVICE_SERVICE_BASE_URL, JWT_ISSUER, MONGO_CONNECTION_OPTIONS } from "../config";
 import { KeyPairHandler, Keystore } from "@lindorm-io/key-pair";
+import { KeyPairRepository } from "@lindorm-io/koa-keystore";
 import { MongoConnection } from "@lindorm-io/mongo";
 import { Permission, Scope, TokenIssuer } from "@lindorm-io/jwt";
 import { getKeyPairEC, getKeyPairRSA } from "../test";
