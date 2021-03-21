@@ -5,9 +5,9 @@ import { Keystore } from "@lindorm-io/key-pair";
 export const keystoreMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
   const start = Date.now();
 
-  const { logger, repository } = ctx;
+  const { cache, logger } = ctx;
 
-  const keys = await repository.keyPair.findMany({});
+  const keys = await cache.keyPair.findAll();
 
   ctx.keystore = new Keystore({ keys });
 
