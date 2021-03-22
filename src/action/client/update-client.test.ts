@@ -2,14 +2,7 @@ import MockDate from "mockdate";
 import { baseHash } from "@lindorm-io/core";
 import { updateClient } from "./update-client";
 import { Client } from "@lindorm-io/koa-client";
-import {
-  getTestAccount,
-  getGreyBoxCache,
-  getGreyBoxRepository,
-  inMemoryCache,
-  inMemoryStore,
-  logger,
-} from "../../test";
+import { getTestAccount, getTestCache, getTestRepository, inMemoryCache, inMemoryStore, logger } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -27,9 +20,9 @@ describe("updateClient", () => {
   beforeEach(async () => {
     ctx = {
       account: getTestAccount("email@lindorm.io"),
-      cache: await getGreyBoxCache(),
+      cache: await getTestCache(),
       logger,
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
     };
 
     const client = await ctx.repository.client.create(

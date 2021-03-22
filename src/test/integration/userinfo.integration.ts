@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 import {
   TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
-  getGreyBoxAccessToken,
+  generateAccessToken,
   getTestAccount,
   setupIntegration,
 } from "../grey-box";
@@ -24,7 +24,7 @@ describe("/user-info", () => {
 
   beforeEach(async () => {
     account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
-    accessToken = getGreyBoxAccessToken(account);
+    accessToken = generateAccessToken(account);
   });
 
   test("GET /", async () => {

@@ -2,7 +2,7 @@
 
 exports[`extendSession should extend session with refresh token 1`] = `
 Session {
-  "_accountId": null,
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_agent": Object {
     "browser": null,
     "geoIp": null,
@@ -11,21 +11,53 @@ Session {
     "source": null,
     "version": null,
   },
-  "_authenticated": false,
+  "_authenticated": true,
   "_authorization": Object {
     "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
     "codeMethod": "sha256",
     "deviceChallenge": null,
     "email": "email@lindorm.io",
-    "id": "authorizationId",
+    "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
     "otpCode": null,
-    "redirectUri": "redirectUri",
-    "responseType": "responseType",
+    "redirectUri": "https://redirect.uri/",
+    "responseType": "code",
   },
-  "_clientId": "clientId",
+  "_clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
   "_created": 2020-01-01T07:00:00.000Z,
-  "_deviceId": "deviceId",
+  "_deviceId": "11388709-2ced-4c53-8f17-7cf867c01432",
   "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "session_created",
+      "payload": Object {
+        "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "agent": Object {
+          "browser": null,
+          "geoIp": null,
+          "os": null,
+          "platform": null,
+          "source": null,
+          "version": null,
+        },
+        "authenticated": true,
+        "authorization": Object {
+          "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+          "codeMethod": "sha256",
+          "deviceChallenge": null,
+          "email": "email@lindorm.io",
+          "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "otpCode": null,
+          "redirectUri": "https://redirect.uri/",
+          "responseType": "code",
+        },
+        "clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+        "deviceId": "11388709-2ced-4c53-8f17-7cf867c01432",
+        "expires": 2099-01-01T00:00:00.000Z,
+        "grantType": "email_otp",
+        "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "scope": "default edit openid",
+      },
+    },
     Object {
       "date": 2020-01-01T07:00:00.000Z,
       "name": "session_expires_changed",
@@ -42,18 +74,119 @@ Session {
     },
   ],
   "_expires": 2020-01-01T07:00:00.000Z,
-  "_grantType": "grantType",
-  "_id": "sessionId",
+  "_grantType": "email_otp",
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_scope": "default edit openid",
   "_updated": 2020-01-01T07:00:00.000Z,
-  "_version": 0,
+  "_version": 1,
 }
 `;
 
-exports[`extendSession should succeed when device does not exist 1`] = `
+exports[`extendSession should extend session with refresh token 2`] = `
+Object {
+  "authentication": Object {
+    "session": Object {
+      "data": Array [
+        Object {
+          "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "agent": Object {
+            "browser": null,
+            "geoIp": null,
+            "os": null,
+            "platform": null,
+            "source": null,
+            "version": null,
+          },
+          "authenticated": true,
+          "authorization": Object {
+            "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+            "codeMethod": "sha256",
+            "deviceChallenge": null,
+            "email": "email@lindorm.io",
+            "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+            "otpCode": null,
+            "redirectUri": "https://redirect.uri/",
+            "responseType": "code",
+          },
+          "clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+          "created": 2020-01-01T07:00:00.000Z,
+          "deviceId": "11388709-2ced-4c53-8f17-7cf867c01432",
+          "events": Array [
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "session_created",
+              "payload": Object {
+                "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+                "agent": Object {
+                  "browser": null,
+                  "geoIp": null,
+                  "os": null,
+                  "platform": null,
+                  "source": null,
+                  "version": null,
+                },
+                "authenticated": true,
+                "authorization": Object {
+                  "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+                  "codeMethod": "sha256",
+                  "deviceChallenge": null,
+                  "email": "email@lindorm.io",
+                  "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+                  "otpCode": null,
+                  "redirectUri": "https://redirect.uri/",
+                  "responseType": "code",
+                },
+                "clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+                "deviceId": "11388709-2ced-4c53-8f17-7cf867c01432",
+                "expires": 2099-01-01T00:00:00.000Z,
+                "grantType": "email_otp",
+                "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+                "scope": "default edit openid",
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "session_expires_changed",
+              "payload": Object {
+                "expires": 2020-01-01T07:00:00.000Z,
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "session_refresh_id_changed",
+              "payload": Object {
+                "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+              },
+            },
+          ],
+          "expires": 2020-01-01T07:00:00.000Z,
+          "grantType": "email_otp",
+          "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "scope": "default edit openid",
+          "updated": 2020-01-01T07:00:00.000Z,
+          "version": 1,
+        },
+      ],
+      "indices": Array [
+        Object {
+          "index": Object {
+            "id": 1,
+          },
+          "options": Object {
+            "unique": true,
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`extendSession should skip deviceId when not set on session 1`] = `
 Session {
-  "_accountId": null,
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_agent": Object {
     "browser": null,
     "geoIp": null,
@@ -62,18 +195,18 @@ Session {
     "source": null,
     "version": null,
   },
-  "_authenticated": false,
+  "_authenticated": true,
   "_authorization": Object {
     "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
     "codeMethod": "sha256",
     "deviceChallenge": null,
     "email": "email@lindorm.io",
-    "id": "authorizationId",
+    "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
     "otpCode": null,
-    "redirectUri": "redirectUri",
-    "responseType": "responseType",
+    "redirectUri": "https://redirect.uri/",
+    "responseType": "code",
   },
-  "_clientId": "clientId",
+  "_clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
   "_created": 2020-01-01T07:00:00.000Z,
   "_deviceId": null,
   "_events": Array [
@@ -93,11 +226,80 @@ Session {
     },
   ],
   "_expires": 2020-01-01T07:00:00.000Z,
-  "_grantType": "grantType",
-  "_id": "sessionId",
+  "_grantType": "email_otp",
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_scope": "default edit openid",
   "_updated": 2020-01-01T07:00:00.000Z,
-  "_version": 0,
+  "_version": 2,
+}
+`;
+
+exports[`extendSession should skip deviceId when not set on session 2`] = `
+Object {
+  "authentication": Object {
+    "session": Object {
+      "data": Array [
+        Object {
+          "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "agent": Object {
+            "browser": null,
+            "geoIp": null,
+            "os": null,
+            "platform": null,
+            "source": null,
+            "version": null,
+          },
+          "authenticated": true,
+          "authorization": Object {
+            "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+            "codeMethod": "sha256",
+            "deviceChallenge": null,
+            "email": "email@lindorm.io",
+            "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+            "otpCode": null,
+            "redirectUri": "https://redirect.uri/",
+            "responseType": "code",
+          },
+          "clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+          "created": 2020-01-01T07:00:00.000Z,
+          "deviceId": null,
+          "events": Array [
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "session_expires_changed",
+              "payload": Object {
+                "expires": 2020-01-01T07:00:00.000Z,
+              },
+            },
+            Object {
+              "date": 2020-01-01T07:00:00.000Z,
+              "name": "session_refresh_id_changed",
+              "payload": Object {
+                "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+              },
+            },
+          ],
+          "expires": 2020-01-01T07:00:00.000Z,
+          "grantType": "email_otp",
+          "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "scope": "default edit openid",
+          "updated": 2020-01-01T07:00:00.000Z,
+          "version": 2,
+        },
+      ],
+      "indices": Array [
+        Object {
+          "index": Object {
+            "id": 1,
+          },
+          "options": Object {
+            "unique": true,
+          },
+        },
+      ],
+    },
+  },
 }
 `;

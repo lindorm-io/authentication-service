@@ -1,31 +1,35 @@
-import { MOCK_ACCOUNT_OPTIONS, MOCK_SESSION_OPTIONS, getMockRepository } from "../../../test/mocks";
 import { GrantType, ResponseType } from "../../../enum";
 import { Permission } from "@lindorm-io/jwt";
-import { Account, IAccountOptions, Session } from "../../../entity";
 import { performRefreshToken } from "./refresh-token";
 import { InvalidPermissionError, InvalidRefreshTokenError, InvalidSubjectError } from "../../../error";
+import { getTestRepository, getTestAccount, resetStore } from "../../../test";
 
+jest.mock("uuid", () => ({
+  v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
+}));
 jest.mock("../../../support", () => ({
   createTokens: jest.fn(() => () => "tokens"),
-  extendSession: jest.fn(() => () => new Session(MOCK_SESSION_OPTIONS)),
+  extendSession: jest.fn(() => () => ({ accountId: "be3a62d1-24a0-401c-96dd-3aff95356811" })),
 }));
 
 describe("performRefreshToken", () => {
-  let mockRepository: any;
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    mockRepository = getMockRepository();
-    getMockContext = () => ({
+  beforeEach(async () => {
+    ctx = {
       client: "client",
-      repository: mockRepository,
+      repository: await getTestRepository(),
       token: { refresh: { authMethodsReference: "authMethodsReference", permission: Permission.USER } },
-    });
+    };
+
+    await ctx.repository.account.create(getTestAccount("email@lindorm.io"));
   });
+
+  afterEach(resetStore);
 
   test("should return tokens", async () => {
     await expect(
-      performRefreshToken(getMockContext())({
+      performRefreshToken(ctx)({
         grantType: GrantType.REFRESH_TOKEN,
         responseType: ResponseType.REFRESH,
         subject: "email@lindorm.io",
@@ -34,22 +38,9 @@ describe("performRefreshToken", () => {
   });
 
   test("should throw error when account is locked", async () => {
-    const context = getMockContext();
-    const ctx = {
-      ...context,
-      repository: {
-        ...context.repository,
-        account: {
-          ...context.repository.account,
-          find: (filter: IAccountOptions) =>
-            new Account({
-              ...MOCK_ACCOUNT_OPTIONS,
-              permission: Permission.LOCKED,
-              ...filter,
-            }),
-        },
-      },
-    };
+    const account = await ctx.repository.account.find({ email: "email@lindorm.io" });
+    account.permission = Permission.LOCKED;
+    await ctx.repository.account.update(account);
 
     await expect(
       performRefreshToken(ctx)({
@@ -61,17 +52,7 @@ describe("performRefreshToken", () => {
   });
 
   test("should throw error when permission is mismatched", async () => {
-    const context = getMockContext();
-    const ctx = {
-      ...context,
-      token: {
-        ...context.token,
-        refresh: {
-          ...context.token.refresh,
-          permission: "permission",
-        },
-      },
-    };
+    ctx.token.refresh.permission = "permission";
 
     await expect(
       performRefreshToken(ctx)({
@@ -84,7 +65,7 @@ describe("performRefreshToken", () => {
 
   test("should throw error when email is mismatched", async () => {
     await expect(
-      performRefreshToken(getMockContext())({
+      performRefreshToken(ctx)({
         grantType: GrantType.REFRESH_TOKEN,
         responseType: ResponseType.REFRESH,
         subject: "wrong@lindorm.io",

@@ -1,9 +1,7 @@
 import { AccountRepository, SessionRepository } from "../../infrastructure";
 import { ClientRepository } from "@lindorm-io/koa-client";
 import { KeyPairRepository } from "@lindorm-io/koa-keystore";
-import { MONGO_CONNECTION_OPTIONS } from "../../config";
-import { MongoConnection, MongoConnectionType } from "@lindorm-io/mongo";
-import { inMemoryStore } from "./in-memory";
+import { getTestMongo } from "./test-mongo";
 import { winston } from "../../logger";
 
 export interface IGetGreyBoxRepository {
@@ -13,17 +11,11 @@ export interface IGetGreyBoxRepository {
   session: SessionRepository;
 }
 
-export const getGreyBoxRepository = async (): Promise<IGetGreyBoxRepository> => {
-  const mongo = new MongoConnection({
-    ...MONGO_CONNECTION_OPTIONS,
-    type: MongoConnectionType.MEMORY,
-    inMemoryStore,
-  });
+export const getTestRepository = async (): Promise<IGetGreyBoxRepository> => {
+  const mongo = await getTestMongo();
 
-  await mongo.connect();
-
-  const logger = winston;
   const db = mongo.getDatabase();
+  const logger = winston;
 
   return {
     account: new AccountRepository({ db, logger }),

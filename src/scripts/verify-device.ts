@@ -7,7 +7,7 @@ import { KeyPairHandler, Keystore } from "@lindorm-io/key-pair";
 import { KeyPairRepository } from "@lindorm-io/koa-keystore";
 import { MongoConnection } from "@lindorm-io/mongo";
 import { Permission, Scope, TokenIssuer } from "@lindorm-io/jwt";
-import { getKeyPairEC, getKeyPairRSA } from "../test";
+import { getTestKeyPairEC, getTestKeyPairRSA } from "../test";
 import { getRandomValue } from "@lindorm-io/core";
 import { getSessionExpires } from "../support";
 import { v4 as uuid } from "uuid";
@@ -17,12 +17,12 @@ import { winston } from "../logger";
 const keyPairHandler = new KeyPairHandler({
   algorithm: "RS512",
   passphrase: "",
-  privateKey: getKeyPairRSA().privateKey,
+  privateKey: getTestKeyPairRSA().privateKey,
   publicKey: null,
 });
 
 const createKeystore = async (mongo: MongoConnection): Promise<Keystore> => {
-  const keyPair = getKeyPairEC();
+  const keyPair = getTestKeyPairEC();
   const repository = new KeyPairRepository({ db: mongo.getDatabase(), logger: winston });
   await repository.create(keyPair);
 
@@ -90,7 +90,7 @@ const createDevice = async (accessToken: string) => {
     {
       name: "My iPhone",
       pin: "123456",
-      public_key: getKeyPairRSA().publicKey,
+      public_key: getTestKeyPairRSA().publicKey,
       secret: "long_device_secret",
     },
     {

@@ -21,17 +21,17 @@ jest.mock("@lindorm-io/core", () => ({
 }));
 
 describe("performEmailOTPInit", () => {
-  let getMockContext: any;
+  let ctx: any;
 
   beforeEach(() => {
-    getMockContext = () => ({
+    ctx = {
       client: "client",
-    });
+    };
   });
 
   test("should create a new session", async () => {
     await expect(
-      performEmailOTPInit(getMockContext())({
+      performEmailOTPInit(ctx)({
         codeChallenge: "Z1teIWMlf6xFacp4quXP3O0XI204ZT1b",
         codeMethod: "sha512",
         grantType: GrantType.DEVICE_PIN,

@@ -1,31 +1,39 @@
-import { Account, IAccountOptions, Session } from "../../../entity";
-import { MOCK_ACCOUNT_OPTIONS, MOCK_SESSION_OPTIONS, getMockRepository } from "../../../test/mocks";
-import { GrantType } from "../../../enum";
+import { GrantType, ResponseType } from "../../../enum";
 import { performPasswordToken } from "./password-token";
+import { getTestRepository, getTestAccountWithOTP, getTestAccountWithPassword, resetStore } from "../../../test";
+import { baseHash } from "@lindorm-io/core";
 
 jest.mock("../../../support", () => ({
-  assertAccountPassword: jest.fn(() => undefined),
+  assertAccountPassword: jest.fn(() => {}),
   authenticateSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
-  findValidSession: jest.fn(() => () => new Session(MOCK_SESSION_OPTIONS)),
+  encryptAccountPassword: jest.fn((input) => baseHash(input)),
   getMultiFactorToken: jest.fn(() => () => "multi-factor-token"),
+  findValidSession: jest.fn(() => () => ({
+    authorization: {
+      email: "email@lindorm.io",
+      responseType: ResponseType.REFRESH,
+    },
+  })),
 }));
 
 describe("performPasswordToken", () => {
-  let mockRepository: any;
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    mockRepository = getMockRepository();
-    getMockContext = () => ({
+  beforeEach(async () => {
+    ctx = {
       client: "client",
-      repository: mockRepository,
-    });
+      repository: await getTestRepository(),
+    };
   });
 
+  afterEach(resetStore);
+
   test("should return tokens", async () => {
+    await ctx.repository.account.create(await getTestAccountWithPassword("email@lindorm.io"));
+
     await expect(
-      performPasswordToken(getMockContext())({
+      performPasswordToken(ctx)({
         codeVerifier: "codeVerifier",
         grantType: GrantType.REFRESH_TOKEN,
         password: "password",
@@ -35,22 +43,9 @@ describe("performPasswordToken", () => {
   });
 
   test("should return multi-factor token", async () => {
-    const context = getMockContext();
-    const ctx = {
-      ...context,
-      repository: {
-        ...context.repository,
-        account: {
-          ...context.repository.account,
-          find: (filter: IAccountOptions) =>
-            new Account({
-              ...MOCK_ACCOUNT_OPTIONS,
-              otp: { signature: "signature", uri: "uri" },
-              ...filter,
-            }),
-        },
-      },
-    };
+    await ctx.repository.account.create(
+      await getTestAccountWithOTP("email@lindorm.io", { signature: baseHash("signature"), uri: "https://lindorm.io/" }),
+    );
 
     await expect(
       performPasswordToken(ctx)({

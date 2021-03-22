@@ -11,7 +11,7 @@ import {
   TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   TEST_CLIENT_REPOSITORY,
-  getGreyBoxAccessToken,
+  generateAccessToken,
   getTestAccountAdmin,
   setupIntegration,
 } from "../grey-box";
@@ -29,7 +29,7 @@ describe("/client", () => {
 
   beforeEach(async () => {
     account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccountAdmin("admin@lindorm.io"));
-    accessToken = getGreyBoxAccessToken(account);
+    accessToken = generateAccessToken(account);
   });
 
   test("POST /", async () => {

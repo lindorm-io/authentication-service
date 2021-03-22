@@ -4,8 +4,6 @@ import { IDENTITY_SERVICE_BASIC_AUTH, IDENTITY_SERVICE_BASE_URL } from "../confi
 export const ensureIdentity = async (id: string): Promise<any> => {
   const url = new URL(`/headless/${id}`, IDENTITY_SERVICE_BASE_URL);
 
-  console.log("URL", url.toString());
-
   const response = await axios.post(url.toString(), null, {
     auth: IDENTITY_SERVICE_BASIC_AUTH,
   });

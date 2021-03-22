@@ -1,13 +1,16 @@
-import { Account, Session } from "../../../entity";
-import { GrantType } from "../../../enum";
-import { MOCK_SESSION_OPTIONS } from "../../../test/mocks";
-import { getGreyBoxRepository, resetStore } from "../../../test";
+import { GrantType, ResponseType } from "../../../enum";
+import { getTestRepository, getTestAccount, resetStore } from "../../../test";
 import { performDevicePINToken } from "./device-pin-token";
 
 jest.mock("../../../support", () => ({
   authenticateSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
-  findValidSession: jest.fn(() => () => new Session(MOCK_SESSION_OPTIONS)),
+  findValidSession: jest.fn(() => () => ({
+    authorization: {
+      email: "email@lindorm.io",
+      responseType: ResponseType.REFRESH,
+    },
+  })),
 }));
 jest.mock("../../../axios", () => ({
   verifyDevicePIN: jest.fn(),
@@ -22,14 +25,10 @@ describe("performDevicePINToken", () => {
       metadata: {
         deviceId: "deb1abb0-a747-451e-bd82-7a2d89f950ac",
       },
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
     };
 
-    await ctx.repository.account.create(
-      new Account({
-        email: "email@lindorm.io",
-      }),
-    );
+    await ctx.repository.account.create(getTestAccount("email@lindorm.io"));
   });
 
   afterEach(resetStore);

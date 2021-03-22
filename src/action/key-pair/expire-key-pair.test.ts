@@ -1,10 +1,16 @@
 import MockDate from "mockdate";
 import { InvalidExpiryString } from "../../error";
 import { KeyPair } from "@lindorm-io/key-pair";
-import { MOCK_KEY_PAIR_OPTIONS } from "../../test/mocks";
 import { expireKeyPair } from "./expire-key-pair";
-import { getGreyBoxCache, getGreyBoxRepository, inMemoryCache, inMemoryStore, resetStore } from "../../test";
-import { winston } from "../../logger";
+import {
+  getTestCache,
+  getTestRepository,
+  getTestKeyPairEC,
+  inMemoryCache,
+  inMemoryStore,
+  resetStore,
+  logger,
+} from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -21,11 +27,11 @@ describe("createKeyPair", () => {
 
   beforeEach(async () => {
     ctx = {
-      cache: await getGreyBoxCache(),
-      logger: winston,
-      repository: await getGreyBoxRepository(),
+      cache: await getTestCache(),
+      logger,
+      repository: await getTestRepository(),
     };
-    keyPair = await ctx.repository.keyPair.create(new KeyPair(MOCK_KEY_PAIR_OPTIONS));
+    keyPair = await ctx.repository.keyPair.create(getTestKeyPairEC());
   });
 
   afterEach(resetStore);

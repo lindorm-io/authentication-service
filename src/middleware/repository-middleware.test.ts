@@ -1,24 +1,21 @@
 import MockDate from "mockdate";
-import { MOCK_LOGGER } from "../test/mocks";
 import { repositoryMiddleware } from "./repository-middleware";
 import { AccountRepository, SessionRepository } from "../infrastructure";
+import { logger } from "../test";
+import { getTestMongo } from "../test/grey-box/test-mongo";
 
 MockDate.set("2020-01-01 08:00:00.000");
 
+const next = jest.fn();
+
 describe("repositoryMiddleware", () => {
   let ctx: any;
-  let next: any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     ctx = {
-      logger: MOCK_LOGGER,
-      mongo: {
-        getDatabase: jest.fn(() => ({
-          databaseName: "databaseName",
-        })),
-      },
+      logger,
+      mongo: await getTestMongo(),
     };
-    next = () => Promise.resolve();
   });
 
   test("should successfully set repositories on ctx", async () => {

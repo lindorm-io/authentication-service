@@ -1,7 +1,9 @@
 import MockDate from "mockdate";
-import { getMockRepository } from "../../test/mocks";
+import { GrantType, ResponseType } from "../../enum";
+import { Scope } from "@lindorm-io/jwt";
+import { baseHash } from "@lindorm-io/core";
 import { createSession } from "./create-session";
-import { Client } from "@lindorm-io/koa-client";
+import { getTestRepository, getTestClient, inMemoryStore, resetStore } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -16,53 +18,59 @@ jest.mock("./expires", () => ({
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("createSession", () => {
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    getMockContext = () => ({
-      client: new Client({ id: "client-id" }),
-      metadata: { deviceId: "deviceId" },
+  beforeEach(async () => {
+    ctx = {
+      client: getTestClient(),
+      metadata: { deviceId: "2122b49f-3dc0-46c2-9a8b-6cec5e26a389" },
       userAgent: {
         browser: "browser",
-        geoIp: "geoIp",
+        geoIp: { ip: "geo" },
         os: "os",
         platform: "platform",
         source: "source",
         version: "version",
       },
-      repository: getMockRepository(),
-    });
+      repository: await getTestRepository(),
+    };
   });
+
+  afterEach(resetStore);
 
   test("should create a new session", async () => {
     await expect(
-      createSession(getMockContext())({
-        codeChallenge: "codeChallenge",
-        codeMethod: "codeMethod",
-        grantType: "grantType",
-        redirectUri: "redirectUri",
-        responseType: "responseType",
-        deviceChallenge: "deviceChallenge",
+      createSession(ctx)({
+        codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+        codeMethod: "sha256",
+        grantType: GrantType.DEVICE_PIN,
+        redirectUri: "https://lindorm.io",
+        responseType: ResponseType.ACCESS,
+        deviceChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
         otpCode: "otpCode",
-        scope: "scope",
-        state: "state",
-        subject: "subject",
+        scope: Scope.DEFAULT,
+        state: baseHash("state"),
+        subject: "email@lindorm.io",
       }),
     ).resolves.toMatchSnapshot();
+
+    expect(inMemoryStore).toMatchSnapshot();
   });
 
   test("should create a new session without optional values", async () => {
     await expect(
-      createSession(getMockContext())({
-        codeChallenge: "codeChallenge",
-        codeMethod: "codeMethod",
-        grantType: "grantType",
-        redirectUri: "redirectUri",
-        responseType: "responseType",
-        scope: "scope",
-        state: "state",
-        subject: "subject",
+      createSession(ctx)({
+        codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+        codeMethod: "sha256",
+        grantType: GrantType.DEVICE_PIN,
+        redirectUri: "https://lindorm.io",
+        responseType: ResponseType.REFRESH,
+        scope: [Scope.DEFAULT, Scope.EDIT].join(" "),
+        state: baseHash("other_state"),
+        subject: "other@lindorm.io",
       }),
     ).resolves.toMatchSnapshot();
+
+    expect(inMemoryStore).toMatchSnapshot();
   });
 });

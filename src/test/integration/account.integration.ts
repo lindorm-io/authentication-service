@@ -8,7 +8,7 @@ import {
   TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   generateTestAccountOTP,
-  getGreyBoxAccessToken,
+  generateAccessToken,
   getTestAccount,
   getTestAccountAdmin,
   getTestAccountWithOTP,
@@ -33,7 +33,7 @@ describe("/account", () => {
 
     beforeEach(async () => {
       account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccountAdmin("admin@lindorm.io"));
-      accessToken = getGreyBoxAccessToken(account);
+      accessToken = generateAccessToken(account);
     });
 
     test("POST /", async () => {
@@ -109,7 +109,7 @@ describe("/account", () => {
 
     beforeEach(async () => {
       account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
-      accessToken = getGreyBoxAccessToken(account);
+      accessToken = generateAccessToken(account);
     });
 
     test("GET /:id", async () => {
@@ -135,7 +135,7 @@ describe("/account", () => {
       const { otp, bindingCode } = generateTestAccountOTP();
 
       account = await TEST_ACCOUNT_REPOSITORY.create(await getTestAccountWithOTP("test@lindorm.io", otp));
-      accessToken = getGreyBoxAccessToken(account);
+      accessToken = generateAccessToken(account);
 
       await request(koa.callback())
         .delete(`/account/${account.id}/otp`)

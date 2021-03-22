@@ -1,19 +1,18 @@
-import { MOCK_LOGGER } from "../test/mocks";
 import { RequestLimitCache } from "../infrastructure";
 import { cacheMiddleware } from "./cache-middleware";
+import { logger } from "../test";
+import { getTestRedis } from "../test/grey-box/test-redis";
+
+const next = jest.fn();
 
 describe("cacheMiddleware", () => {
   let ctx: any;
-  let next: any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     ctx = {
-      logger: MOCK_LOGGER,
-      redis: {
-        getClient: jest.fn(() => "client"),
-      },
+      logger,
+      redis: await getTestRedis(),
     };
-    next = () => Promise.resolve();
   });
 
   test("should successfully set cache on ctx", async () => {

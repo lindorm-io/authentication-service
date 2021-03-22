@@ -5,5 +5,5 @@ export const logger = {
   verbose: jest.fn(),
   debug: jest.fn(),
   silly: jest.fn(),
-  createChildLogger: () => logger,
+  createChildLogger: (): any => logger,
 };

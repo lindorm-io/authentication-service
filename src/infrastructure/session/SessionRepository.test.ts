@@ -1,11 +1,10 @@
 import MockDate from "mockdate";
 import { GrantType, ResponseType } from "../../enum";
 import { Scope } from "@lindorm-io/jwt";
-import { MOCK_CODE_CHALLENGE, MOCK_CODE_METHOD, MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
-import { MOCK_LOGGER } from "../../test/mocks/logger";
-import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
+import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { Session } from "../../entity";
 import { SessionRepository } from "./SessionRepository";
+import { getTestRepository, resetStore } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -18,17 +17,12 @@ describe("SessionRepository", () => {
   let session: Session;
 
   beforeEach(async () => {
-    const mongo = new MongoConnection(MOCK_MONGO_OPTIONS);
-    await mongo.connect();
+    ({ session: repository } = await getTestRepository());
 
-    repository = new SessionRepository({
-      db: mongo.getDatabase(),
-      logger: MOCK_LOGGER,
-    });
     session = new Session({
-      id: MOCK_UUID,
+      id: "be3a62d1-24a0-401c-96dd-3aff95356811",
 
-      accountId: MOCK_UUID,
+      accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
       agent: {
         browser: "browser",
         geoIp: { geoIp: "geoIp" },
@@ -39,23 +33,25 @@ describe("SessionRepository", () => {
       },
       authenticated: false,
       authorization: {
-        codeChallenge: MOCK_CODE_CHALLENGE,
-        codeMethod: MOCK_CODE_METHOD,
-        deviceChallenge: MOCK_CODE_CHALLENGE,
+        codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+        codeMethod: "sha256",
+        deviceChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
         email: "email@lindorm.io",
-        id: MOCK_UUID,
+        id: "be3a62d1-24a0-401c-96dd-3aff95356811",
         otpCode: "otpCode",
         redirectUri: "https://lindorm.io/",
         responseType: [ResponseType.REFRESH, ResponseType.ACCESS, ResponseType.IDENTITY].join(" "),
       },
-      clientId: MOCK_UUID,
-      deviceId: MOCK_UUID,
+      clientId: "be3a62d1-24a0-401c-96dd-3aff95356811",
+      deviceId: "be3a62d1-24a0-401c-96dd-3aff95356811",
       expires: new Date(),
       grantType: GrantType.EMAIL_OTP,
-      refreshId: MOCK_UUID,
+      refreshId: "be3a62d1-24a0-401c-96dd-3aff95356811",
       scope: Scope.DEFAULT,
     });
   });
+
+  afterEach(resetStore);
 
   test("should create", async () => {
     await expect(repository.create(session)).resolves.toMatchSnapshot();
@@ -70,32 +66,32 @@ describe("SessionRepository", () => {
   test("should find", async () => {
     await repository.create(session);
 
-    await expect(repository.find({ accountId: MOCK_UUID })).resolves.toMatchSnapshot();
+    await expect(repository.find({ accountId: "be3a62d1-24a0-401c-96dd-3aff95356811" })).resolves.toMatchSnapshot();
   });
 
   test("should find many", async () => {
     await repository.create(session);
     await repository.create(
       new Session({
-        accountId: MOCK_UUID,
+        accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
         authorization: {
-          codeChallenge: MOCK_CODE_CHALLENGE,
-          codeMethod: MOCK_CODE_METHOD,
-          deviceChallenge: MOCK_CODE_CHALLENGE,
+          codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+          codeMethod: "sha256",
+          deviceChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
           email: "email@lindorm.io",
-          id: MOCK_UUID,
+          id: "be3a62d1-24a0-401c-96dd-3aff95356811",
           otpCode: "otpCode",
           redirectUri: "https://lindorm.io/",
           responseType: [ResponseType.REFRESH, ResponseType.ACCESS, ResponseType.IDENTITY].join(" "),
         },
-        clientId: MOCK_UUID,
+        clientId: "be3a62d1-24a0-401c-96dd-3aff95356811",
         expires: new Date(),
         grantType: GrantType.EMAIL_LINK,
         scope: Scope.DEFAULT,
       }),
     );
 
-    await expect(repository.findMany({ accountId: MOCK_UUID })).resolves.toMatchSnapshot();
+    await expect(repository.findMany({ accountId: "be3a62d1-24a0-401c-96dd-3aff95356811" })).resolves.toMatchSnapshot();
   });
 
   test("should remove", async () => {

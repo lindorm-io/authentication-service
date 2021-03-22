@@ -4,7 +4,7 @@ import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
 import { Scope } from "@lindorm-io/jwt";
 import { TEST_CLIENT, TEST_TOKEN_ISSUER } from "./setup-integration";
 
-export const getGreyBoxAccessToken = (account: Account): string => {
+export const generateAccessToken = (account: Account): string => {
   const { token } = TEST_TOKEN_ISSUER.sign({
     audience: Audience.ACCESS,
     clientId: TEST_CLIENT.id,
@@ -16,7 +16,7 @@ export const getGreyBoxAccessToken = (account: Account): string => {
   return token;
 };
 
-export const getGreyBoxRefreshToken = (account: Account, session: Session): string => {
+export const generateRefreshToken = (account: Account, session: Session): string => {
   const { token } = TEST_TOKEN_ISSUER.sign({
     audience: Audience.REFRESH,
     authMethodsReference: "email",

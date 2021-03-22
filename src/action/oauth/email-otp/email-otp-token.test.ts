@@ -1,6 +1,4 @@
-import { MOCK_SESSION_OPTIONS } from "../../../test/mocks";
-import { GrantType } from "../../../enum";
-import { Session } from "../../../entity";
+import { GrantType, ResponseType } from "../../../enum";
 import { performEmailOTPToken } from "./email-otp-token";
 
 jest.mock("../../../support", () => ({
@@ -8,21 +6,26 @@ jest.mock("../../../support", () => ({
   authenticateSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
   findOrCreateAccount: jest.fn(() => () => "account"),
-  findValidSession: jest.fn(() => () => new Session(MOCK_SESSION_OPTIONS)),
+  findValidSession: jest.fn(() => () => ({
+    authorization: {
+      email: "email@lindorm.io",
+      responseType: ResponseType.REFRESH,
+    },
+  })),
 }));
 
 describe("performEmailOTPToken", () => {
-  let getMockContext: any;
+  let ctx: any;
 
   beforeEach(() => {
-    getMockContext = () => ({
+    ctx = {
       client: "client",
-    });
+    };
   });
 
   test("should return tokens", async () => {
     await expect(
-      performEmailOTPToken(getMockContext())({
+      performEmailOTPToken(ctx)({
         codeVerifier: "codeVerifier",
         grantType: GrantType.REFRESH_TOKEN,
         otpCode: "otpCode",

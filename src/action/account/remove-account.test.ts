@@ -1,7 +1,5 @@
-import { Account } from "../../entity";
-import { MOCK_LOGGER, MOCK_UUID } from "../../test/mocks";
-import { getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { removeAccount } from "./remove-account";
+import { getTestRepository, getTestAccount, inMemoryStore, logger, resetStore } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -11,25 +9,25 @@ jest.mock("../../support", () => ({
 }));
 
 describe("removeAccount", () => {
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    getMockContext = () => ({
-      account: new Account(MOCK_ACCOUNT_OPTIONS),
-      logger: MOCK_LOGGER,
-      repository: getMockRepository(),
-    });
+  beforeEach(async () => {
+    ctx = {
+      account: getTestAccount("email@lindorm.io"),
+      logger,
+      repository: await getTestRepository(),
+    };
+    await ctx.repository.account.create(ctx.account);
   });
 
-  test("should remove account", async () => {
-    const ctx = getMockContext();
+  afterEach(resetStore);
 
+  test("should remove account", async () => {
     await expect(
       removeAccount(ctx)({
-        accountId: MOCK_UUID,
+        accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
       }),
     ).resolves.toBe(undefined);
-
-    expect(ctx.repository.account.remove).toHaveBeenCalled();
+    expect(inMemoryStore).toMatchSnapshot();
   });
 });

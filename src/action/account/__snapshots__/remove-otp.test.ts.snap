@@ -1,12 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`addAccountOTP should update account otp 1`] = `
-Object {
-  "uri": "uri",
-}
-`;
-
-exports[`addAccountOTP should update account otp 2`] = `
+exports[`removeAccountOTP should remove account otp 1`] = `
 Object {
   "authentication": Object {
     "account": Object {
@@ -17,29 +11,11 @@ Object {
           "events": Array [
             Object {
               "date": 2020-01-01T07:00:00.000Z,
-              "name": "account_created",
-              "payload": Object {
-                "created": 2020-01-01T07:00:00.000Z,
-                "email": "email@lindorm.io",
-                "otp": Object {
-                  "signature": null,
-                  "uri": null,
-                },
-                "password": Object {
-                  "signature": null,
-                  "updated": null,
-                },
-                "permission": "user",
-                "updated": 2020-01-01T07:00:00.000Z,
-              },
-            },
-            Object {
-              "date": 2020-01-01T07:00:00.000Z,
               "name": "account_otp_changed",
               "payload": Object {
                 "otp": Object {
-                  "signature": "signature",
-                  "uri": "uri",
+                  "signature": null,
+                  "uri": null,
                 },
               },
             },
@@ -47,8 +23,8 @@ Object {
           "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
           "identityLinked": false,
           "otp": Object {
-            "signature": "signature",
-            "uri": "uri",
+            "signature": null,
+            "uri": null,
           },
           "password": Object {
             "signature": null,

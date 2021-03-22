@@ -13,20 +13,20 @@ jest.mock("../../class", () => ({
 }));
 
 describe("sendEmail", () => {
-  let getMockContext: any;
+  let ctx: any;
 
   beforeEach(() => {
-    getMockContext = () => ({
+    ctx = {
       client: getTestClient(),
       logger,
-    });
+    };
   });
 
   afterEach(jest.resetAllMocks);
 
   test("sendEmailLink should resolve", async () => {
     await expect(
-      sendEmailLink(getMockContext())({
+      sendEmailLink(ctx)({
         grantType: "grantType",
         redirectUri: "redirectUri",
         state: "state",
@@ -44,7 +44,7 @@ describe("sendEmail", () => {
 
   test("sendEmailOTP should resolve", async () => {
     await expect(
-      sendEmailOTP(getMockContext())({
+      sendEmailOTP(ctx)({
         otpCode: "otpCode",
         subject: "subject",
       }),

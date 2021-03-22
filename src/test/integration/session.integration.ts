@@ -9,9 +9,9 @@ import {
   TEST_CLIENT,
   TEST_SESSION_REPOSITORY,
   generateTestOauthData,
-  getGreyBoxAccessToken,
+  generateAccessToken,
   getTestAccount,
-  getGreyBoxRefreshToken,
+  generateRefreshToken,
   getTestSession,
   setupIntegration,
 } from "../grey-box";
@@ -34,8 +34,8 @@ describe("/session", () => {
   beforeEach(async () => {
     account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
     session = await TEST_SESSION_REPOSITORY.create(getTestSession(account, TEST_CLIENT, codeChallenge, codeMethod));
-    accessToken = getGreyBoxAccessToken(account);
-    refreshToken = getGreyBoxRefreshToken(account, session);
+    accessToken = generateAccessToken(account);
+    refreshToken = generateRefreshToken(account, session);
   });
 
   test("POST /logout", async () => {

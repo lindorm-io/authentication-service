@@ -1,14 +1,15 @@
 import MockDate from "mockdate";
-import { MOCK_SESSION_OPTIONS } from "../../test/mocks";
 import { ExpiredSessionError } from "../../error";
 import { JWT_AUTHORIZATION_TOKEN_EXPIRY, JWT_REFRESH_TOKEN_EXPIRY } from "../../config";
 import { Session } from "../../entity";
 import { assertSessionIsNotExpired, getSessionExpires } from "./expires";
+import { getTestAccount, getTestClient, getTestSession } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../config", () => ({
+  ...jest.requireActual("../../config"),
   JWT_AUTHORIZATION_TOKEN_EXPIRY: "15 minutes",
   JWT_REFRESH_TOKEN_EXPIRY: "14 days",
 }));
@@ -29,7 +30,12 @@ describe("assertSessionIsNotExpired", () => {
   let session: Session;
 
   beforeEach(() => {
-    session = new Session(MOCK_SESSION_OPTIONS);
+    session = getTestSession(
+      getTestAccount("email@lindorm.io"),
+      getTestClient(),
+      "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+      "sha256",
+    );
   });
 
   test("should succeed when date is before", () => {

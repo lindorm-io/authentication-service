@@ -1,12 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createAccount should create account 1`] = `
-Object {
-  "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-}
-`;
-
-exports[`createAccount should create account 2`] = `
+exports[`updateAccountPermission should update account permission 1`] = `
 Object {
   "authentication": Object {
     "account": Object {
@@ -33,41 +27,11 @@ Object {
                 "updated": 2020-01-01T07:00:00.000Z,
               },
             },
-          ],
-          "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
-          "identityLinked": false,
-          "otp": Object {
-            "signature": null,
-            "uri": null,
-          },
-          "password": Object {
-            "signature": null,
-            "updated": null,
-          },
-          "permission": "user",
-          "updated": 2020-01-01T07:00:00.000Z,
-          "version": 0,
-        },
-        Object {
-          "created": 2020-01-01T07:00:00.000Z,
-          "email": "lindorm@lindorm.io",
-          "events": Array [
             Object {
               "date": 2020-01-01T07:00:00.000Z,
-              "name": "account_created",
+              "name": "account_permission_changed",
               "payload": Object {
-                "created": 2020-01-01T07:00:00.000Z,
-                "email": "lindorm@lindorm.io",
-                "otp": Object {
-                  "signature": null,
-                  "uri": null,
-                },
-                "password": Object {
-                  "signature": null,
-                  "updated": null,
-                },
                 "permission": "locked",
-                "updated": 2020-01-01T07:00:00.000Z,
               },
             },
           ],
@@ -83,7 +47,7 @@ Object {
           },
           "permission": "locked",
           "updated": 2020-01-01T07:00:00.000Z,
-          "version": 0,
+          "version": 1,
         },
       ],
       "indices": Array [

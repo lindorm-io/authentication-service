@@ -3,7 +3,7 @@ import { Account, Session } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
 import { ResponseType } from "../../enum";
 import { createTokens } from "./create-tokens";
-import { getGreyBoxRepository, getTestAccount, getTestClient, getTestIssuer, getTestSession, logger } from "../../test";
+import { getTestRepository, getTestAccount, getTestClient, getTestIssuer, getTestSession, logger } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -31,7 +31,7 @@ describe("createTokens", () => {
       logger,
       issuer: { tokenIssuer: getTestIssuer() },
       metadata: { deviceId: "deviceId" },
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
     };
 
     account = getTestAccount("email@lindorm.io");

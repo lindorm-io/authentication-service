@@ -1,11 +1,10 @@
 import MockDate from "mockdate";
 import { Account } from "../../entity";
 import { AccountRepository } from "./AccountRepository";
-import { MOCK_LOGGER } from "../../test/mocks/logger";
-import { MOCK_MONGO_OPTIONS, MOCK_UUID } from "../../test/mocks/data";
-import { MongoConnection, RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { Permission } from "@lindorm-io/jwt";
+import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
 import { baseHash } from "@lindorm-io/core";
+import { getTestRepository, resetStore } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -18,15 +17,10 @@ describe("AccountRepository", () => {
   let account: Account;
 
   beforeEach(async () => {
-    const mongo = new MongoConnection(MOCK_MONGO_OPTIONS);
-    await mongo.connect();
+    ({ account: repository } = await getTestRepository());
 
-    repository = new AccountRepository({
-      db: mongo.getDatabase(),
-      logger: MOCK_LOGGER,
-    });
     account = new Account({
-      id: MOCK_UUID,
+      id: "be3a62d1-24a0-401c-96dd-3aff95356811",
 
       email: "email@lindorm.io",
       identityLinked: false,
@@ -41,6 +35,8 @@ describe("AccountRepository", () => {
       permission: Permission.LOCKED,
     });
   });
+
+  afterEach(resetStore);
 
   test("should create", async () => {
     await expect(repository.create(account)).resolves.toMatchSnapshot();

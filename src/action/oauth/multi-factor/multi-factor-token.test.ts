@@ -4,7 +4,7 @@ import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { Permission, Scope } from "@lindorm-io/jwt";
 import { Session } from "../../../entity";
 import { baseHash } from "@lindorm-io/core";
-import { getGreyBoxRepository, getTestAccount, getTestClient, resetStore } from "../../../test";
+import { getTestRepository, getTestAccount, getTestClient, resetStore } from "../../../test";
 import { performMultiFactorToken } from "./multi-factor-token";
 
 jest.mock("uuid", () => ({
@@ -24,7 +24,7 @@ describe("performMultiFactorToken", () => {
   beforeEach(async () => {
     ctx = {
       client: getTestClient(),
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
       token: {
         multiFactor: {
           authMethodsReference: "pwd",

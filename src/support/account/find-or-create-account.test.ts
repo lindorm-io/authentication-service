@@ -4,7 +4,7 @@ import { InvalidPermissionError } from "../../error";
 import { Permission } from "@lindorm-io/jwt";
 import { ensureIdentity } from "../../axios";
 import { findOrCreateAccount } from "./find-or-create-account";
-import { getGreyBoxRepository, resetStore } from "../../test";
+import { getTestRepository, resetStore } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -21,7 +21,7 @@ describe("findOrCreateAccount", () => {
 
   beforeEach(async () => {
     ctx = {
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
     };
     account = await ctx.repository.account.create(
       new Account({

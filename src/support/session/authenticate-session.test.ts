@@ -3,7 +3,7 @@ import { Account, Session } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
 import { InvalidAuthorizationTokenError } from "../../error";
 import { authenticateSession } from "./authenticate-session";
-import { getGreyBoxRepository, getTestAccount, getTestClient, getTestSession, inMemoryStore } from "../../test";
+import { getTestRepository, getTestAccount, getTestClient, getTestSession, inMemoryStore } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -26,7 +26,7 @@ describe("authenticateSession", () => {
 
     ctx = {
       client,
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
     };
 
     account = getTestAccount("email@lindorm.io");

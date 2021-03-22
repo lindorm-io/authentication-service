@@ -1,10 +1,9 @@
-import { Account } from "../../entity";
 import { CryptoAES } from "@lindorm-io/crypto";
-import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { OTP_HANDLER_OPTIONS } from "../../config";
 import { assertAccountOTP, generateAccountOTP } from "./otp";
 import { authenticator } from "otplib";
 import { baseParse } from "@lindorm-io/core";
+import { getTestAccountWithOTP } from "../../test";
 
 describe("generateAccountOTP", () => {
   test("should resolve", () => {
@@ -16,14 +15,11 @@ describe("generateAccountOTP", () => {
 });
 
 describe("assertAccountOTP", () => {
-  test("should resolve", () => {
+  test("should resolve", async () => {
     const aes = new CryptoAES({
       secret: OTP_HANDLER_OPTIONS.secret,
     });
-    const account = new Account({
-      ...MOCK_ACCOUNT_OPTIONS,
-      otp: generateAccountOTP(),
-    });
+    const account = await getTestAccountWithOTP("email@lindorm.io", generateAccountOTP());
     const code = authenticator.generate(aes.decrypt(baseParse(account.otp.signature)));
     expect(assertAccountOTP(account, code)).toBe(undefined);
   });

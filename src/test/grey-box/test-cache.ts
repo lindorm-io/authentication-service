@@ -1,9 +1,7 @@
 import { ClientCache } from "@lindorm-io/koa-client";
 import { KeyPairCache } from "@lindorm-io/koa-keystore";
-import { REDIS_CONNECTION_OPTIONS } from "../../config";
-import { RedisConnection, RedisConnectionType } from "@lindorm-io/redis";
 import { RequestLimitCache } from "../../infrastructure";
-import { inMemoryCache } from "./in-memory";
+import { getTestRedis } from "./test-redis";
 import { winston } from "../../logger";
 
 export interface IGetGreyBoxCache {
@@ -12,17 +10,11 @@ export interface IGetGreyBoxCache {
   requestLimit: RequestLimitCache;
 }
 
-export const getGreyBoxCache = async (): Promise<IGetGreyBoxCache> => {
-  const redis = new RedisConnection({
-    ...REDIS_CONNECTION_OPTIONS,
-    type: RedisConnectionType.MEMORY,
-    inMemoryCache,
-  });
+export const getTestCache = async (): Promise<IGetGreyBoxCache> => {
+  const redis = await getTestRedis();
 
-  await redis.connect();
-
-  const logger = winston;
   const client = redis.getClient();
+  const logger = winston;
 
   return {
     client: new ClientCache({ client, logger }),

@@ -1,18 +1,19 @@
 import { tokenValidationMiddleware } from "./token-validation-middleware";
-import { winston } from "../logger";
+import { logger } from "../test";
+
+const next = jest.fn();
 
 describe("tokenValidationMiddleware", () => {
-  let getMockContext: any;
-  let next: any;
+  let ctx: any;
 
   beforeEach(() => {
-    getMockContext = () => ({
+    ctx = {
       issuer: {
         tokenIssuer: {
           verify: (input: any) => input,
         },
       },
-      logger: winston,
+      logger,
       metadata: {
         clientId: "clientId",
         deviceId: "deviceId",
@@ -24,13 +25,10 @@ describe("tokenValidationMiddleware", () => {
           refreshToken: "refreshToken",
         },
       },
-    });
-    next = () => Promise.resolve();
+    };
   });
 
   test("should successfully set tokens on ctx", async () => {
-    const ctx = getMockContext();
-
     await expect(tokenValidationMiddleware(ctx, next)).resolves.toBe(undefined);
 
     expect(ctx.token).toMatchSnapshot();

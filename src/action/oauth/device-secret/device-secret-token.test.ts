@@ -1,13 +1,17 @@
-import { Account, Session } from "../../../entity";
-import { GrantType } from "../../../enum";
-import { MOCK_SESSION_OPTIONS } from "../../../test/mocks";
-import { getGreyBoxRepository, resetStore } from "../../../test";
+import { Account } from "../../../entity";
+import { GrantType, ResponseType } from "../../../enum";
+import { getTestRepository, resetStore } from "../../../test";
 import { performDeviceSecretToken } from "./device-secret-token";
 
 jest.mock("../../../support", () => ({
   authenticateSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
-  findValidSession: jest.fn(() => () => new Session(MOCK_SESSION_OPTIONS)),
+  findValidSession: jest.fn(() => () => ({
+    authorization: {
+      email: "email@lindorm.io",
+      responseType: ResponseType.REFRESH,
+    },
+  })),
 }));
 jest.mock("../../../axios", () => ({
   verifyDeviceSecret: jest.fn(),
@@ -22,7 +26,7 @@ describe("performDeviceSecretToken", () => {
       metadata: {
         deviceId: "96fd2bc9-90d7-41c1-a595-e3a3efe6fb3c",
       },
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
     };
 
     await ctx.repository.account.create(

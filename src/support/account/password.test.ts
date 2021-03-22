@@ -1,6 +1,5 @@
 import { assertAccountPassword, encryptAccountPassword } from "./password";
-import { Account } from "../../entity";
-import { MOCK_ACCOUNT_OPTIONS } from "../../test/mocks/repository";
+import { getTestAccountWithPassword } from "../../test";
 
 describe("encryptAccountPassword", () => {
   test("should resolve", async () => {
@@ -10,13 +9,8 @@ describe("encryptAccountPassword", () => {
 
 describe("assertAccountPassword", () => {
   test("should resolve", async () => {
-    const account = new Account({
-      ...MOCK_ACCOUNT_OPTIONS,
-      password: {
-        signature: await encryptAccountPassword("password"),
-        updated: new Date(),
-      },
-    });
-    await expect(assertAccountPassword(account, "password")).resolves.toBe(undefined);
+    const account = await getTestAccountWithPassword("email@lindorm.io");
+
+    await expect(assertAccountPassword(account, "test_account_password")).resolves.toBe(undefined);
   });
 });

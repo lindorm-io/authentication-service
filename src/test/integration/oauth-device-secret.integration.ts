@@ -15,7 +15,7 @@ import {
 } from "../grey-box";
 
 jest.mock("../../axios", () => ({
-  verifyDeviceSecret: jest.fn(() => {}),
+  verifyDeviceSecret: jest.fn(),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");

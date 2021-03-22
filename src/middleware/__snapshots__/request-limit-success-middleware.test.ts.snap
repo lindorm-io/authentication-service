@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`requestLimitSuccessMiddleware should clear limit on successful request 1`] = `
+Object {
+  "RequestLimit::email_link::other@lindorm.io": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"e3926ddb-ecaf-4f66-855a-d143af54953c\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"backOffUntil\\":\\"null\\",\\"failedTries\\":\\"1\\",\\"grantType\\":\\"email_link\\",\\"subject\\":\\"other@lindorm.io\\"},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"backOffUntil\\":\\"null\\",\\"failedTries\\":\\"number\\",\\"grantType\\":\\"string\\",\\"subject\\":\\"string\\"}}",
+    "expiresInSeconds": null,
+  },
+  "RequestLimit::pin_code::subject@lindorm.io": undefined,
+}
+`;

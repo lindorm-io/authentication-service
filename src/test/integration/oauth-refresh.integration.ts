@@ -10,7 +10,7 @@ import {
   TEST_SESSION_REPOSITORY,
   generateTestOauthData,
   getTestAccount,
-  getGreyBoxRefreshToken,
+  generateRefreshToken,
   getTestSession,
   setupIntegration,
 } from "../grey-box";
@@ -32,7 +32,7 @@ describe("/oauth REFRESH_TOKEN", () => {
   beforeEach(async () => {
     account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
     session = await TEST_SESSION_REPOSITORY.create(getTestSession(account, TEST_CLIENT, codeChallenge, codeMethod));
-    refreshToken = getGreyBoxRefreshToken(account, session);
+    refreshToken = generateRefreshToken(account, session);
   });
 
   test("should resolve", async () => {

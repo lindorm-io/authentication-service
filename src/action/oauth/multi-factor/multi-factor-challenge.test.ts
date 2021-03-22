@@ -4,7 +4,7 @@ import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { Permission, Scope } from "@lindorm-io/jwt";
 import { Session } from "../../../entity";
 import { baseHash } from "@lindorm-io/core";
-import { getGreyBoxRepository, getTestAccount, getTestClient, resetStore } from "../../../test";
+import { getTestRepository, getTestAccount, getTestClient, resetStore } from "../../../test";
 import { performMultiFactorChallenge } from "./multi-factor-challenge";
 
 jest.mock("uuid", () => ({
@@ -21,7 +21,7 @@ describe("performMultiFactorChallenge", () => {
   beforeEach(async () => {
     ctx = {
       client: getTestClient(),
-      repository: await getGreyBoxRepository(),
+      repository: await getTestRepository(),
       token: {
         multiFactor: { subject: "d22a19de-8d33-4dd2-8712-58af46490184" },
       },

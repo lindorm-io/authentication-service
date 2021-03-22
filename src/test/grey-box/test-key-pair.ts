@@ -1,6 +1,6 @@
 import { Algorithm, KeyPair, KeyType } from "@lindorm-io/key-pair";
 
-export const getTestKeyPairEC = () =>
+export const getTestKeyPairEC = (): KeyPair =>
   new KeyPair({
     algorithm: Algorithm.ES512,
     privateKey:
@@ -22,7 +22,7 @@ export const getTestKeyPairEC = () =>
     type: KeyType.EC,
   });
 
-export const getTestKeyPairRSA = () =>
+export const getTestKeyPairRSA = (): KeyPair =>
   new KeyPair({
     algorithm: Algorithm.RS512,
     privateKey:

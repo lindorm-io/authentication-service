@@ -1,53 +1,39 @@
 import MockDate from "mockdate";
-import { Account } from "../../entity";
-import { MOCK_LOGGER, MOCK_UUID } from "../../test/mocks";
-import { getMockRepository, MOCK_ACCOUNT_OPTIONS } from "../../test/mocks";
 import { removeAccountOTP } from "./remove-otp";
+import { getTestRepository, getTestAccount, inMemoryStore, logger, resetStore } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../support", () => ({
-  assertAccountOTP: jest.fn(() => undefined),
-  assertBearerTokenScope: jest.fn(() => () => undefined),
-  getAccount: jest.fn(() => () => new Account(MOCK_ACCOUNT_OPTIONS)),
+  assertAccountOTP: jest.fn(() => {}),
+  assertBearerTokenScope: jest.fn(() => () => {}),
+  getAccount: jest.fn(() => () => getTestAccount("email@lindorm.io")),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");
-const date = new Date("2020-01-01 08:00:00.000");
 
 describe("removeAccountOTP", () => {
-  let getMockContext: any;
+  let ctx: any;
 
-  beforeEach(() => {
-    getMockContext = () => ({
-      account: new Account(MOCK_ACCOUNT_OPTIONS),
-      logger: MOCK_LOGGER,
-      repository: getMockRepository(),
-    });
+  beforeEach(async () => {
+    ctx = {
+      account: getTestAccount("email@lindorm.io"),
+      logger,
+      repository: await getTestRepository(),
+    };
+    await ctx.repository.account.create(ctx.account);
   });
 
-  test("should remove account", async () => {
-    const ctx = getMockContext();
+  afterEach(resetStore);
 
+  test("should remove account otp", async () => {
     await expect(
       removeAccountOTP(ctx)({
-        accountId: MOCK_UUID,
+        accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
         bindingCode: "123456",
       }),
     ).resolves.toBe(undefined);
-
-    expect(ctx.repository.account.update).toHaveBeenCalledWith({
-      _created: date,
-      _email: "email@lindorm.io",
-      _events: [{ date: date, name: "account_otp_changed", payload: { otp: { signature: null, uri: null } } }],
-      _id: "be3a62d1-24a0-401c-96dd-3aff95356811",
-      _identityLinked: false,
-      _otp: { signature: null, uri: null },
-      _password: { signature: null, updated: null },
-      _permission: "user",
-      _updated: date,
-      _version: 0,
-    });
+    expect(inMemoryStore).toMatchSnapshot();
   });
 });
