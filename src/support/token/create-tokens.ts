@@ -2,7 +2,6 @@ import { Account, Session } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
 import { IKoaAuthContext, ICreateTokensData } from "../../typing";
 import { ResponseType } from "../../enum";
-import { TObject } from "@lindorm-io/core";
 import { assertValidResponseTypeInput, isResponseType } from "../../util";
 import { getAccessToken } from "./access";
 import { getIdentityToken } from "./identity";
@@ -13,7 +12,7 @@ export interface ICreateTokensOptions {
   account: Account;
   authMethodsReference: string;
   client: Client;
-  payload?: TObject<any>;
+  payload?: Record<string, any>;
   responseType: string;
   session: Session;
 }

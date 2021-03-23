@@ -8,7 +8,6 @@ import { Keystore } from "@lindorm-io/key-pair";
 import { MongoConnection } from "@lindorm-io/mongo";
 import { RedisConnection } from "@lindorm-io/redis";
 import { RequestLimitCache } from "../infrastructure";
-import { TObject } from "@lindorm-io/core";
 
 export interface IKoaAuthContext extends IKoaAppContext {
   account: Account;
@@ -40,7 +39,7 @@ export interface IKoaAuthContext extends IKoaAppContext {
   };
   userAgent: {
     browser: string;
-    geoIp: TObject<any>;
+    geoIp: Record<string, any>;
     os: string;
     platform: string;
     source: string;

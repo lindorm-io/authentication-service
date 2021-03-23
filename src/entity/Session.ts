@@ -1,9 +1,9 @@
-import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions, TObject } from "@lindorm-io/core";
+import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
 import { SessionEvent } from "../enum";
 
 export interface ISessionAgent {
   browser: string;
-  geoIp: TObject<any>;
+  geoIp: Record<string, any>;
   os: string;
   platform: string;
   source: string;
@@ -38,7 +38,7 @@ export interface ISessionOptions extends IEntityBaseOptions {
   accountId?: string;
   agent?: {
     browser?: string;
-    geoIp?: TObject<any>;
+    geoIp?: Record<string, any>;
     os?: string;
     platform?: string;
     source?: string;

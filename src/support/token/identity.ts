@@ -4,12 +4,11 @@ import { Client } from "@lindorm-io/koa-client";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 import { JWT_IDENTITY_TOKEN_EXPIRY } from "../../config";
-import { TObject } from "@lindorm-io/core";
 
 export interface IGetIdentityTokenOptions {
   account: Account;
   client: Client;
-  payload: TObject<any>;
+  payload: Record<string, any>;
 }
 
 export const getIdentityToken = (ctx: IKoaAuthContext) => (options: IGetIdentityTokenOptions): ITokenIssuerSignData => {

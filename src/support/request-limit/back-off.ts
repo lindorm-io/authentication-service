@@ -1,9 +1,9 @@
 import { GrantType } from "../../enum";
 import { RequestLimit } from "../../entity";
 import { add } from "date-fns";
-import { stringToDurationObject, TObject } from "@lindorm-io/core";
+import { stringToDurationObject } from "@lindorm-io/core";
 
-const maxFailed: TObject<number> = {
+const maxFailed: Record<string, number> = {
   [GrantType.DEVICE_PIN]: 3,
   [GrantType.DEVICE_SECRET]: 3,
   [GrantType.EMAIL_LINK]: 3,
