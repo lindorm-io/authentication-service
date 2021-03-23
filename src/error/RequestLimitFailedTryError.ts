@@ -1,4 +1,5 @@
-import { APIError, ExtendableError, HttpStatus } from "@lindorm-io/core";
+import { APIError, ExtendableError } from "@lindorm-io/errors";
+import { HttpStatus } from "@lindorm-io/core";
 import { RequestLimit } from "../entity";
 
 export class RequestLimitFailedTryError extends APIError {

@@ -1,5 +1,5 @@
 import mailgunJs, { Mailgun, messages } from "mailgun-js";
-import { NodeEnvironment } from "@lindorm-io/core";
+import { NodeEnvironment } from "@lindorm-io/koa-config";
 
 export interface IMailHandlerOptions {
   apiKey: string;

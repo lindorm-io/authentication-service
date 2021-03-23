@@ -1,6 +1,6 @@
 import { KoaApp } from "@lindorm-io/koa";
 import { NODE_ENVIRONMENT } from "../config";
-import { NodeEnvironment } from "@lindorm-io/core";
+import { NodeEnvironment } from "@lindorm-io/koa-config";
 import { SERVER_PORT } from "../config";
 import {
   cacheMiddleware,

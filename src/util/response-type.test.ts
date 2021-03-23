@@ -1,6 +1,6 @@
 import { assertValidResponseTypeInput, isResponseType } from "./response-type";
 import { ResponseType } from "../enum";
-import { APIError } from "@lindorm-io/core";
+import { APIError } from "@lindorm-io/errors";
 
 describe("assertResponseType", () => {
   test("should succeed on ACCESS", () => {

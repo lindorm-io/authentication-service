@@ -1,5 +1,5 @@
 import { AccountEvent } from "../enum";
-import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
+import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions } from "@lindorm-io/entity";
 import { Permission } from "@lindorm-io/jwt";
 
 export interface IAccountOTP {

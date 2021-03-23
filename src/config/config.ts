@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { Audience } from "../enum";
 import { ConfigHandler } from "./ConfigHandler";
 import { MongoConnectionType } from "@lindorm-io/mongo";
-import { NodeEnvironment } from "@lindorm-io/core";
+import { NodeEnvironment } from "@lindorm-io/koa-config";
 import { RedisConnectionType } from "@lindorm-io/redis";
 import { developmentConfig, environmentConfig, productionConfig, stagingConfig, testConfig } from "./files";
 

@@ -1,4 +1,4 @@
-import { EntityBase, IEntity, IEntityBaseOptions } from "@lindorm-io/core";
+import { EntityBase, IEntity, IEntityBaseOptions } from "@lindorm-io/entity";
 import { GrantType } from "../enum";
 
 export interface IRequestLimit extends IEntity {

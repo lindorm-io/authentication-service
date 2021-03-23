@@ -1,5 +1,6 @@
 import Joi from "@hapi/joi";
-import { APIError, HttpStatus } from "@lindorm-io/core";
+import { APIError } from "@lindorm-io/errors";
+import { HttpStatus } from "@lindorm-io/core";
 import { IKoaAuthContext } from "../../../typing";
 import { InvalidClientError } from "@lindorm-io/koa-client";
 import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
