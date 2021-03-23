@@ -1,7 +1,7 @@
 import { AccountRepository, SessionRepository } from "../infrastructure";
-import { IKoaAuthContext, TPromise } from "../typing";
+import { IKoaAuthContext, TNext } from "../typing";
 
-export const repositoryMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
+export const repositoryMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<void> => {
   const start = Date.now();
 
   const { logger, mongo } = ctx;

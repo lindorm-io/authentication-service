@@ -1,7 +1,7 @@
-import { IKoaAuthContext, TPromise } from "../typing";
+import { IKoaAuthContext, TNext } from "../typing";
 import { RequestLimitCache } from "../infrastructure";
 
-export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
+export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<void> => {
   const start = Date.now();
 
   const { redis, logger } = ctx;

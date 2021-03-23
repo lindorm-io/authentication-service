@@ -1,10 +1,9 @@
 import Joi from "@hapi/joi";
 import { CacheEntityNotFoundError } from "@lindorm-io/redis";
-import { IKoaAuthContext } from "../typing";
+import { IKoaAuthContext, TNext } from "../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../constant";
 import { RequestLimitCache } from "../infrastructure";
 import { RequestLimitFailedTryError } from "../error";
-import { TPromise } from "@lindorm-io/core";
 import { createOrUpdateRequestLimit, validateRequestLimitBackOff } from "../support";
 
 const schema = Joi.object({
@@ -12,7 +11,7 @@ const schema = Joi.object({
   subject: JOI_EMAIL,
 });
 
-export const requestLimitMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
+export const requestLimitMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<void> => {
   const start = Date.now();
 
   const { cache, logger } = ctx;

@@ -1,7 +1,6 @@
-import { IKoaAuthContext } from "../typing";
-import { TPromise } from "@lindorm-io/core";
+import { IKoaAuthContext, TNext } from "../typing";
 
-export const requestLimitSuccessMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
+export const requestLimitSuccessMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<void> => {
   const { cache } = ctx;
 
   await next();

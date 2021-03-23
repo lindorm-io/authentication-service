@@ -9,6 +9,7 @@ import { getTestClient } from "./test-client";
 import { getTestKeyPairEC, getTestKeyPairRSA } from "./test-key-pair";
 import { getTestRepository } from "./test-repository";
 import { winston } from "../../logger";
+import { inMemoryKeys } from "./in-memory";
 
 export let TEST_ACCOUNT_REPOSITORY: AccountRepository;
 export let TEST_CLIENT_REPOSITORY: ClientRepository;
@@ -19,10 +20,10 @@ export let TEST_CLIENT_CACHE: ClientCache;
 export let TEST_KEY_PAIR_CACHE: KeyPairCache;
 export let TEST_REQUEST_LIMIT_CACHE: RequestLimitCache;
 
-export let TEST_CLIENT: Client;
-
 export let TEST_TOKEN_ISSUER: TokenIssuer;
 export let TEST_KEY_PAIR_HANDLER: KeyPairHandler;
+
+export let TEST_CLIENT: Client;
 
 export const setupIntegration = async (): Promise<void> => {
   const { account, client, keyPair, session } = await getTestRepository();
@@ -40,10 +41,12 @@ export const setupIntegration = async (): Promise<void> => {
   TEST_KEY_PAIR_CACHE = keyPairCache;
   TEST_REQUEST_LIMIT_CACHE = requestLimit;
 
+  inMemoryKeys.push(keyPairEC);
+
   TEST_TOKEN_ISSUER = new TokenIssuer({
     issuer: JWT_ISSUER,
     logger: winston,
-    keystore: new Keystore({ keys: [keyPairEC] }),
+    keystore: new Keystore({ keys: inMemoryKeys }),
   });
   TEST_KEY_PAIR_HANDLER = new KeyPairHandler(keyPairRSA);
 

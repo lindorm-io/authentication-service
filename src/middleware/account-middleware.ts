@@ -1,8 +1,8 @@
-import { IKoaAuthContext, TPromise } from "../typing";
+import { IKoaAuthContext, TNext } from "../typing";
 import { InvalidPermissionError, InvalidScopeError, LockedAccountError } from "../error";
 import { Scope, isLocked, isScope } from "@lindorm-io/jwt";
 
-export const accountMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<void> => {
+export const accountMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<void> => {
   const start = Date.now();
 
   const { logger, repository, token } = ctx;

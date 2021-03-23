@@ -8,7 +8,7 @@ export const productionConfig: IConfigurationData = {
   JWT_ISSUER: "https://authentication.lindorm.io",
   JWT_ACCESS_TOKEN_EXPIRY: "3 minutes",
   JWT_AUTHORIZATION_TOKEN_EXPIRY: "15 minutes",
-  JWT_IDENTITY_TOKEN_EXPIRY: "7 days",
+  JWT_IDENTITY_TOKEN_EXPIRY: "12 hours",
   JWT_MULTI_FACTOR_TOKEN_EXPIRY: "5 minutes",
   JWT_REFRESH_TOKEN_EXPIRY: "7 days",
 

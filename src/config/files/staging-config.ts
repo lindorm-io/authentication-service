@@ -1,15 +1,14 @@
 import { IConfigurationData } from "../ConfigHandler";
-import { NodeEnvironment } from "@lindorm-io/core";
 
 export const stagingConfig: IConfigurationData = {
-  NODE_ENVIRONMENT: NodeEnvironment.STAGING,
+  NODE_ENVIRONMENT: process.env.NODE_ENV,
   SERVER_PORT: 3000,
   HOST: "https://staging.authentication.lindorm.io",
 
   JWT_ISSUER: "https://staging.authentication.lindorm.io",
   JWT_ACCESS_TOKEN_EXPIRY: "3 minutes",
   JWT_AUTHORIZATION_TOKEN_EXPIRY: "15 minutes",
-  JWT_IDENTITY_TOKEN_EXPIRY: "7 days",
+  JWT_IDENTITY_TOKEN_EXPIRY: "12 hours",
   JWT_MULTI_FACTOR_TOKEN_EXPIRY: "5 minutes",
   JWT_REFRESH_TOKEN_EXPIRY: "7 days",
 

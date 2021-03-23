@@ -1,8 +1,7 @@
 import { IConfigurationData } from "../ConfigHandler";
-import { NodeEnvironment } from "@lindorm-io/core";
 
 export const testConfig: IConfigurationData = {
-  NODE_ENVIRONMENT: NodeEnvironment.TEST,
+  NODE_ENVIRONMENT: process.env.NODE_ENV,
   SERVER_PORT: 3000,
   HOST: "https://test.authentication.lindorm.io",
 

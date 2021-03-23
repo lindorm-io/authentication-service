@@ -1,10 +1,9 @@
 import { Audience } from "../enum";
-import { IKoaAuthContext } from "../typing";
-import { TPromise } from "@lindorm-io/core";
+import { IKoaAuthContext, TNext } from "../typing";
 import { isString } from "lodash";
 import { sanitiseToken } from "@lindorm-io/jwt";
 
-export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TPromise<void>): Promise<any> => {
+export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<any> => {
   const start = Date.now();
 
   const { issuer, logger, metadata } = ctx;
