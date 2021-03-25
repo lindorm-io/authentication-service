@@ -1,29 +1,25 @@
 import axios from "axios";
+import { Account } from "../entity";
 import { IDENTITY_SERVICE_BASIC_AUTH, IDENTITY_SERVICE_BASE_URL } from "../config";
+import { IOpenIdClaims } from "../typing";
 
-export const ensureIdentity = async (id: string): Promise<any> => {
-  const url = new URL(`/headless/${id}`, IDENTITY_SERVICE_BASE_URL);
+export interface IEnsureIdentityData {
+  created: string;
+  updated: string;
+}
 
-  const response = await axios.post(url.toString(), null, {
-    auth: IDENTITY_SERVICE_BASIC_AUTH,
-  });
+export const ensureIdentity = async (account: Account): Promise<IEnsureIdentityData> => {
+  const url = new URL(`/headless/create/${account.id}`, IDENTITY_SERVICE_BASE_URL);
 
-  const { created, updated } = response?.data;
+  const response = await axios.post(url.toString(), null, { auth: IDENTITY_SERVICE_BASIC_AUTH });
 
-  return {
-    created,
-    updated,
-  };
+  return response?.data as IEnsureIdentityData;
 };
 
-export const getOpenIdClaims = async (id: string, accessToken: string): Promise<any> => {
-  const url = new URL(`/open-id/${id}`, IDENTITY_SERVICE_BASE_URL);
+export const getOpenIdClaims = async (account: Account, scope: string): Promise<any> => {
+  const url = new URL(`/headless/open-id/${account.id}`, IDENTITY_SERVICE_BASE_URL);
 
-  const response = await axios.get(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await axios.post(url.toString(), { scope }, { auth: IDENTITY_SERVICE_BASIC_AUTH });
 
-  return response?.data;
+  return response?.data as IOpenIdClaims;
 };

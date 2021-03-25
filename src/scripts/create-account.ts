@@ -22,7 +22,7 @@ import { ensureIdentity } from "../axios";
 
     winston.info("account created", { email: account.email });
 
-    const data = await ensureIdentity(account.id);
+    const data = await ensureIdentity(account);
 
     winston.info("identity created", data);
   } catch (err) {

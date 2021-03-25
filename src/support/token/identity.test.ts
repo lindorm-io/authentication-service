@@ -10,6 +10,12 @@ jest.mock("jsonwebtoken", () => ({
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
+jest.mock("../../axios", () => ({
+  getOpenIdClaims: jest.fn(() => ({
+    claim1: "claim1",
+    claim2: "claim2",
+  })),
+}));
 
 MockDate.set("2020-01-01 08:00:00.000");
 
@@ -29,13 +35,13 @@ describe("getIdentityToken", () => {
     client = getTestClient();
   });
 
-  test("should return an identity token", () => {
-    expect(
+  test("should return an identity token", async () => {
+    await expect(
       getIdentityToken(ctx)({
         account,
         client,
-        payload: { data: true },
+        scope: "scope",
       }),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 });

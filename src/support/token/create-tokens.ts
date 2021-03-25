@@ -12,13 +12,14 @@ export interface ICreateTokensOptions {
   account: Account;
   authMethodsReference: string;
   client: Client;
-  payload?: Record<string, any>;
   responseType: string;
   session: Session;
 }
 
-export const createTokens = (ctx: IKoaAuthContext) => (options: ICreateTokensOptions): ICreateTokensData => {
-  const { account, authMethodsReference, client, payload, responseType, session } = options;
+export const createTokens = (ctx: IKoaAuthContext) => async (
+  options: ICreateTokensOptions,
+): Promise<ICreateTokensData> => {
+  const { account, authMethodsReference, client, responseType, session } = options;
   const { scope } = session;
 
   assertValidResponseTypeInput(responseType);
@@ -45,10 +46,10 @@ export const createTokens = (ctx: IKoaAuthContext) => (options: ICreateTokensOpt
   }
 
   if (isResponseType(responseType, ResponseType.IDENTITY) && isScope(scope, Scope.OPENID)) {
-    result.identityToken = getIdentityToken(ctx)({
+    result.identityToken = await getIdentityToken(ctx)({
       account,
       client,
-      payload,
+      scope,
     });
   }
 

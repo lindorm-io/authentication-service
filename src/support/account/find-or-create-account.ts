@@ -14,7 +14,7 @@ export const findOrCreateAccount = (ctx: IKoaAuthContext) => async (email: strin
   }
 
   if (!account.identityLinked) {
-    await ensureIdentity(account.id);
+    await ensureIdentity(account);
 
     account.identityLinked = true;
 

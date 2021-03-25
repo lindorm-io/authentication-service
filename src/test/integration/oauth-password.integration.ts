@@ -13,6 +13,10 @@ import {
   setupIntegration,
 } from "../grey-box";
 
+jest.mock("../../axios", () => ({
+  getOpenIdClaims: jest.fn(() => ({ claim: "claim" })),
+}));
+
 MockDate.set("2020-01-01 08:00:00.000");
 
 describe("/oauth PASSWORD", () => {

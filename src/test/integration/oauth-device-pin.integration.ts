@@ -16,6 +16,7 @@ import {
 
 jest.mock("../../axios", () => ({
   verifyDevicePIN: jest.fn(),
+  getOpenIdClaims: jest.fn(() => ({ claim: "claim" })),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");

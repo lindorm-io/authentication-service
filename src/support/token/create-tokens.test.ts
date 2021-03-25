@@ -39,55 +39,51 @@ describe("createTokens", () => {
     session = getTestSession(account, client, "codeChallenge", "codeMethod");
   });
 
-  test("should return refresh token", () => {
-    expect(
+  test("should return refresh token", async () => {
+    await expect(
       createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        payload: {},
         responseType: ResponseType.REFRESH,
         session,
       }),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  test("should return access token", () => {
-    expect(
+  test("should return access token", async () => {
+    await expect(
       createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        payload: {},
         responseType: ResponseType.ACCESS,
         session,
       }),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  test("should return identity token", () => {
-    expect(
+  test("should return identity token", async () => {
+    await expect(
       createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        payload: {},
         responseType: ResponseType.IDENTITY,
         session,
       }),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 
-  test("should return all tokens", () => {
-    expect(
+  test("should return all tokens", async () => {
+    await expect(
       createTokens(ctx)({
         account,
         authMethodsReference: "authMethodsReference",
         client,
-        payload: {},
         responseType: `${ResponseType.REFRESH} ${ResponseType.ACCESS} ${ResponseType.IDENTITY}`,
         session,
       }),
-    ).toMatchSnapshot();
+    ).resolves.toMatchSnapshot();
   });
 });
