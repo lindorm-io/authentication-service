@@ -1,7 +1,7 @@
 import { Account } from "../../entity";
 import { IKoaAuthContext } from "../../typing";
 import { InvalidPermissionError } from "../../error";
-import { ensureIdentity } from "../../axios";
+import { requestEnsureIdentity } from "../../axios";
 import { isLocked } from "@lindorm-io/jwt";
 
 export const findOrCreateAccount = (ctx: IKoaAuthContext) => async (email: string): Promise<Account> => {
@@ -14,7 +14,7 @@ export const findOrCreateAccount = (ctx: IKoaAuthContext) => async (email: strin
   }
 
   if (!account.identityLinked) {
-    await ensureIdentity(account);
+    await requestEnsureIdentity(account);
 
     account.identityLinked = true;
 

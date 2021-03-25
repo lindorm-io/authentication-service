@@ -4,7 +4,7 @@ import { InvalidDeviceError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import { authenticateSession, createTokens, findValidSession } from "../../../support";
 import { stringComparison } from "@lindorm-io/core";
-import { verifyDeviceSecret } from "../../../axios";
+import { requestVerifyDeviceSecret } from "../../../axios";
 
 export interface IPerformDeviceSecretTokenOptions {
   codeVerifier: string;
@@ -45,7 +45,7 @@ export const performDeviceSecretToken = (ctx: IKoaAuthContext) => async (
 
   const account = await repository.account.find({ email: session.authorization.email });
 
-  await verifyDeviceSecret({
+  await requestVerifyDeviceSecret({
     account,
     deviceVerifier,
     secret,

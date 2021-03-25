@@ -15,8 +15,8 @@ import {
 } from "../grey-box";
 
 jest.mock("../../axios", () => ({
-  ensureIdentity: jest.fn(() => ({})),
-  getOpenIdClaims: jest.fn(() => ({ claim: "claim" })),
+  requestEnsureIdentity: jest.fn(() => ({})),
+  requestOpenIdClaims: jest.fn(() => ({ claim: "claim" })),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");

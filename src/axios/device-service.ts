@@ -9,7 +9,7 @@ export interface IVerifyDevicePINOptions {
   session: Session;
 }
 
-export const verifyDevicePIN = async (options: IVerifyDevicePINOptions): Promise<void> => {
+export const requestVerifyDevicePIN = async (options: IVerifyDevicePINOptions): Promise<void> => {
   const url = new URL(`/headless/verify-pin`, DEVICE_SERVICE_BASE_URL);
   const { account, deviceVerifier, pin, session } = options;
 
@@ -35,7 +35,7 @@ export interface IVerifyDeviceSecretOptions {
   session: Session;
 }
 
-export const verifyDeviceSecret = async (options: IVerifyDeviceSecretOptions): Promise<void> => {
+export const requestVerifyDeviceSecret = async (options: IVerifyDeviceSecretOptions): Promise<void> => {
   const url = new URL(`/headless/verify-secret`, DEVICE_SERVICE_BASE_URL);
   const { account, deviceVerifier, secret, session } = options;
 

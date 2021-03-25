@@ -4,7 +4,7 @@ import { MongoConnection } from "@lindorm-io/mongo";
 import { winston } from "../logger";
 import { Account } from "../entity";
 import { getRandomValue } from "@lindorm-io/core";
-import { ensureIdentity } from "../axios";
+import { requestEnsureIdentity } from "../axios";
 
 (async () => {
   const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
@@ -22,7 +22,7 @@ import { ensureIdentity } from "../axios";
 
     winston.info("account created", { email: account.email });
 
-    const data = await ensureIdentity(account);
+    const data = await requestEnsureIdentity(account);
 
     winston.info("identity created", data);
   } catch (err) {

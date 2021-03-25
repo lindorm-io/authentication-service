@@ -13,7 +13,7 @@ jest.mock("../../../support", () => ({
   })),
 }));
 jest.mock("../../../axios", () => ({
-  verifyDevicePIN: jest.fn(),
+  requestVerifyDevicePIN: jest.fn(),
 }));
 
 describe("performDevicePINToken", () => {

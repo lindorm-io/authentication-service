@@ -3,7 +3,7 @@ import { Account } from "../../entity";
 import { IKoaAuthContext } from "../../typing";
 import { JOI_EMAIL, JOI_PERMISSION } from "../../constant";
 import { assertAccountAdmin } from "../../support";
-import { ensureIdentity } from "../../axios";
+import { requestEnsureIdentity } from "../../axios";
 
 export interface ICreateAccountOptions {
   email: string;
@@ -41,7 +41,7 @@ export const createAccount = (ctx: IKoaAuthContext) => async (
     accountId: account.id,
   });
 
-  const { created, updated } = await ensureIdentity(account);
+  const { created, updated } = await requestEnsureIdentity(account);
 
   logger.debug("identity created", { created, updated });
 

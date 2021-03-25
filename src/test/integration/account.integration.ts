@@ -16,7 +16,7 @@ import {
 } from "../grey-box";
 
 jest.mock("../../axios", () => ({
-  ensureIdentity: jest.fn(() => ({})),
+  requestEnsureIdentity: jest.fn(() => ({})),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");

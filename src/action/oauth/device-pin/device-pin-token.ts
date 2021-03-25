@@ -4,7 +4,7 @@ import { InvalidDeviceError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import { authenticateSession, createTokens, findValidSession } from "../../../support";
 import { stringComparison } from "@lindorm-io/core";
-import { verifyDevicePIN } from "../../../axios";
+import { requestVerifyDevicePIN } from "../../../axios";
 
 export interface IPerformDevicePINTokenOptions {
   codeVerifier: string;
@@ -44,7 +44,7 @@ export const performDevicePINToken = (ctx: IKoaAuthContext) => {
 
     const account = await repository.account.find({ email: session.authorization.email });
 
-    await verifyDevicePIN({
+    await requestVerifyDevicePIN({
       account,
       deviceVerifier,
       pin,

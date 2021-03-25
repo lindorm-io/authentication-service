@@ -4,7 +4,7 @@ import { Client } from "@lindorm-io/koa-client";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 import { JWT_IDENTITY_TOKEN_EXPIRY } from "../../config";
-import { getOpenIdClaims } from "../../axios";
+import { requestOpenIdClaims } from "../../axios";
 
 export interface IGetIdentityTokenOptions {
   account: Account;
@@ -25,7 +25,7 @@ export const getIdentityToken = (ctx: IKoaAuthContext) => async (
     account: account.id,
   });
 
-  const payload = await getOpenIdClaims(account, scope);
+  const payload = await requestOpenIdClaims(account, scope);
 
   return tokenIssuer.sign({
     audience: Audience.IDENTITY,

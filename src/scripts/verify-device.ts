@@ -11,7 +11,7 @@ import { getTestKeyPairEC, getTestKeyPairRSA } from "../test";
 import { getRandomValue } from "@lindorm-io/core";
 import { getSessionExpires } from "../support";
 import { v4 as uuid } from "uuid";
-import { verifyDevicePIN, verifyDeviceSecret } from "../axios";
+import { requestVerifyDevicePIN, requestVerifyDeviceSecret } from "../axios";
 import { winston } from "../logger";
 
 const keyPairHandler = new KeyPairHandler({
@@ -116,14 +116,14 @@ const createDevice = async (accessToken: string) => {
     const { device_id: deviceId } = await createDevice(accessToken);
     const session = await createSession(mongo, account, deviceId);
 
-    await verifyDevicePIN({
+    await requestVerifyDevicePIN({
       account,
       deviceVerifier: keyPairHandler.sign("long_device_challenge"),
       pin: "123456",
       session,
     });
 
-    await verifyDeviceSecret({
+    await requestVerifyDeviceSecret({
       account,
       deviceVerifier: keyPairHandler.sign("long_device_challenge"),
       secret: "long_device_secret",
