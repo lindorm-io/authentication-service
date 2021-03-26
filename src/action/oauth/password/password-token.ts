@@ -30,7 +30,7 @@ export const performPasswordToken = (ctx: IKoaAuthContext) => async (
 
   const { client, repository } = ctx;
   const { codeVerifier, grantType, password, subject } = options;
-  const authMethodsReference = "password";
+  const authMethodsReference = ["password"];
 
   const session = await findValidSession(ctx)({
     codeVerifier,

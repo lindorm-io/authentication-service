@@ -30,7 +30,7 @@ export const performDevicePINToken = (ctx: IKoaAuthContext) => {
 
     const { client, metadata, repository } = ctx;
     const { codeVerifier, deviceId, deviceVerifier, grantType, pin, subject } = options;
-    const authMethodsReference = "pin";
+    const authMethodsReference = ["pin"];
 
     if (!stringComparison(deviceId, metadata.deviceId)) {
       throw new InvalidDeviceError(deviceId);

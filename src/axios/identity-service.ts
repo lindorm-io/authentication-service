@@ -16,7 +16,7 @@ export const requestEnsureIdentity = async (account: Account): Promise<IEnsureId
   return response?.data as IEnsureIdentityData;
 };
 
-export const requestOpenIdClaims = async (account: Account, scope: string): Promise<IOpenIdClaims> => {
+export const requestOpenIdClaims = async (account: Account, scope: Array<string>): Promise<IOpenIdClaims> => {
   const url = new URL(`/headless/open-id/${account.id}`, IDENTITY_SERVICE_BASE_URL);
 
   const response = await axios.post(url.toString(), { scope }, { auth: IDENTITY_SERVICE_BASIC_AUTH });

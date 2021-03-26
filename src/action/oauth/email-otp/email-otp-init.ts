@@ -41,7 +41,8 @@ export const performEmailOTPInit = (ctx: IKoaAuthContext) => async (
   await schema.validateAsync(options);
 
   const { client } = ctx;
-  const { codeChallenge, codeMethod, grantType, redirectUri, responseType, scope, state, subject } = options;
+  const { codeChallenge, codeMethod, grantType, redirectUri, responseType, state, subject } = options;
+  const scope = options.scope.split(" ");
 
   assertValidResponseTypeInput(responseType);
   assertValidScopeInput(scope);

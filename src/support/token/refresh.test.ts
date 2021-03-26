@@ -35,9 +35,9 @@ describe("getRefreshToken", () => {
     expect(
       getRefreshToken(ctx)({
         account,
-        authMethodsReference: "authMethodsReference",
+        authMethodsReference: ["authMethodsReference"],
         client,
-        scope: "scope",
+        scope: ["scope"],
         session,
       }),
     ).toMatchSnapshot();

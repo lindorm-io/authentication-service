@@ -33,7 +33,9 @@ Array [
       "expires": 2020-01-01T07:00:00.000Z,
       "grantType": "grantType",
       "refreshId": "refreshId",
-      "scope": "scope",
+      "scope": Array [
+        "scope",
+      ],
     },
   },
 ]
@@ -65,7 +67,21 @@ Object {
 }
 `;
 
-exports[`Session.ts should get/set accountId 1`] = `
+exports[`Session.ts should get clientId 1`] = `"clientId"`;
+
+exports[`Session.ts should get grantType 1`] = `"grantType"`;
+
+exports[`Session.ts should get scope 1`] = `
+Array [
+  "scope",
+]
+`;
+
+exports[`Session.ts should get/set accountId 1`] = `"accountId"`;
+
+exports[`Session.ts should get/set accountId 2`] = `"new-accountId"`;
+
+exports[`Session.ts should get/set accountId 3`] = `
 Array [
   Object {
     "date": 2020-01-01T07:00:00.000Z,
@@ -77,7 +93,11 @@ Array [
 ]
 `;
 
-exports[`Session.ts should get/set authenticated 1`] = `
+exports[`Session.ts should get/set authenticated 1`] = `true`;
+
+exports[`Session.ts should get/set authenticated 2`] = `false`;
+
+exports[`Session.ts should get/set authenticated 3`] = `
 Array [
   Object {
     "date": 2020-01-01T07:00:00.000Z,
@@ -89,7 +109,11 @@ Array [
 ]
 `;
 
-exports[`Session.ts should get/set expires 1`] = `
+exports[`Session.ts should get/set expires 1`] = `2020-01-01T07:00:00.000Z`;
+
+exports[`Session.ts should get/set expires 2`] = `2020-12-31T23:00:01.000Z`;
+
+exports[`Session.ts should get/set expires 3`] = `
 Array [
   Object {
     "date": 2020-01-01T07:00:00.000Z,
@@ -101,7 +125,11 @@ Array [
 ]
 `;
 
-exports[`Session.ts should get/set refreshId 1`] = `
+exports[`Session.ts should get/set refreshId 1`] = `"refreshId"`;
+
+exports[`Session.ts should get/set refreshId 2`] = `"new-refreshId"`;
+
+exports[`Session.ts should get/set refreshId 3`] = `
 Array [
   Object {
     "date": 2020-01-01T07:00:00.000Z,
@@ -145,7 +173,9 @@ Session {
   "_grantType": "grantType",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": "refreshId",
-  "_scope": "scope",
+  "_scope": Array [
+    "scope",
+  ],
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }
@@ -181,7 +211,9 @@ Session {
   "_grantType": "grantType",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": null,
-  "_scope": "scope",
+  "_scope": Array [
+    "scope",
+  ],
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }

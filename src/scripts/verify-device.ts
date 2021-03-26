@@ -40,10 +40,10 @@ const createIssuer = (keystore: Keystore): TokenIssuer => {
 const createAccessToken = (issuer: TokenIssuer, account: Account): string => {
   const data = issuer.sign({
     audience: Audience.ACCESS,
-    authMethodsReference: "email",
+    authMethodsReference: ["email"],
     expiry: "2 minutes",
     permission: Permission.USER,
-    scope: [Scope.DEFAULT, Scope.EDIT].join(" "),
+    scope: [Scope.DEFAULT, Scope.EDIT],
     subject: account.id,
   });
 
@@ -77,7 +77,7 @@ const createSession = async (mongo: MongoConnection, account: Account, deviceId:
       deviceId,
       expires: getSessionExpires("2 minutes"),
       grantType: GrantType.EMAIL_LINK,
-      scope: [Scope.DEFAULT, Scope.EDIT].join(" "),
+      scope: [Scope.DEFAULT, Scope.EDIT],
     }),
   );
 };

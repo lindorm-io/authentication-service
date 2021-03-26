@@ -40,7 +40,7 @@ describe("getIdentityToken", () => {
       getIdentityToken(ctx)({
         account,
         client,
-        scope: "scope",
+        scope: ["scope"],
       }),
     ).resolves.toMatchSnapshot();
   });

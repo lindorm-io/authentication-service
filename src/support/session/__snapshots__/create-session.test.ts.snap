@@ -59,7 +59,9 @@ Session {
         "expires": 2020-01-01T07:00:00.000Z,
         "grantType": "pin_code",
         "refreshId": null,
-        "scope": "default",
+        "scope": Array [
+          "default",
+        ],
       },
     },
   ],
@@ -67,7 +69,9 @@ Session {
   "_grantType": "pin_code",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": null,
-  "_scope": "default",
+  "_scope": Array [
+    "default",
+  ],
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }
@@ -136,7 +140,9 @@ Object {
                 "expires": 2020-01-01T07:00:00.000Z,
                 "grantType": "pin_code",
                 "refreshId": null,
-                "scope": "default",
+                "scope": Array [
+                  "default",
+                ],
               },
             },
           ],
@@ -144,7 +150,9 @@ Object {
           "grantType": "pin_code",
           "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
           "refreshId": null,
-          "scope": "default",
+          "scope": Array [
+            "default",
+          ],
           "updated": 2020-01-01T07:00:00.000Z,
           "version": 0,
         },
@@ -223,7 +231,10 @@ Session {
         "expires": 2020-01-01T07:00:00.000Z,
         "grantType": "pin_code",
         "refreshId": null,
-        "scope": "default edit",
+        "scope": Array [
+          "default",
+          "edit",
+        ],
       },
     },
   ],
@@ -231,7 +242,10 @@ Session {
   "_grantType": "pin_code",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": null,
-  "_scope": "default edit",
+  "_scope": Array [
+    "default",
+    "edit",
+  ],
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }
@@ -300,7 +314,10 @@ Object {
                 "expires": 2020-01-01T07:00:00.000Z,
                 "grantType": "pin_code",
                 "refreshId": null,
-                "scope": "default edit",
+                "scope": Array [
+                  "default",
+                  "edit",
+                ],
               },
             },
           ],
@@ -308,7 +325,10 @@ Object {
           "grantType": "pin_code",
           "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
           "refreshId": null,
-          "scope": "default edit",
+          "scope": Array [
+            "default",
+            "edit",
+          ],
           "updated": 2020-01-01T07:00:00.000Z,
           "version": 0,
         },

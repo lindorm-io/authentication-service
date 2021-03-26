@@ -29,6 +29,8 @@ export const performMultiFactorToken = (ctx: IKoaAuthContext) => async (
     multiFactor: { authMethodsReference, subject: sessionId },
   } = token;
 
+  authMethodsReference.push("otp");
+
   const session = await repository.session.find({ id: sessionId });
 
   assertSessionIsNotExpired(session);
@@ -56,7 +58,7 @@ export const performMultiFactorToken = (ctx: IKoaAuthContext) => async (
 
   return createTokens(ctx)({
     account,
-    authMethodsReference: `${authMethodsReference} otp`,
+    authMethodsReference,
     client,
     responseType: session.authorization.responseType,
     session: authenticated,

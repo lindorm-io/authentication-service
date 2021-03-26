@@ -29,7 +29,7 @@ describe("assertSessionOTP", () => {
       expires: new Date("2099-01-01"),
       grantType: GrantType.EMAIL_OTP,
       refreshId: uuid(),
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
+      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
     });
 
     expect(assertSessionOTP(session, "code")).toBe(undefined);

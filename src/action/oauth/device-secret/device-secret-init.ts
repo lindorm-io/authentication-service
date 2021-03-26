@@ -45,7 +45,8 @@ export const performDeviceSecretInit = (ctx: IKoaAuthContext) => async (
   await schema.validateAsync(options);
 
   const { client, metadata } = ctx;
-  const { codeChallenge, codeMethod, deviceId, grantType, redirectUri, responseType, scope, state, subject } = options;
+  const { codeChallenge, codeMethod, deviceId, grantType, redirectUri, responseType, state, subject } = options;
+  const scope = options.scope.split(" ");
 
   if (!stringComparison(deviceId, metadata.deviceId)) {
     throw new InvalidDeviceError(deviceId);

@@ -7,9 +7,9 @@ import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
 
 export interface IGetAccessTokenOptions {
   account: Account;
-  authMethodsReference: string;
+  authMethodsReference: Array<string>;
   client: Client;
-  scope: string;
+  scope: Array<string>;
 }
 
 export const getAccessToken = (ctx: IKoaAuthContext) => (options: IGetAccessTokenOptions): ITokenIssuerSignData => {

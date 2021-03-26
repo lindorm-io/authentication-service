@@ -59,7 +59,9 @@ Session {
         "expires": 2020-01-01T07:00:00.000Z,
         "grantType": "email_otp",
         "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-        "scope": "default",
+        "scope": Array [
+          "default",
+        ],
       },
     },
   ],
@@ -67,7 +69,9 @@ Session {
   "_grantType": "email_otp",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-  "_scope": "default",
+  "_scope": Array [
+    "default",
+  ],
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }
@@ -132,7 +136,9 @@ Session {
         "expires": 2020-01-01T07:00:00.000Z,
         "grantType": "email_otp",
         "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-        "scope": "default",
+        "scope": Array [
+          "default",
+        ],
       },
     },
   ],
@@ -140,7 +146,9 @@ Session {
   "_grantType": "email_otp",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-  "_scope": "default",
+  "_scope": Array [
+    "default",
+  ],
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 0,
 }
@@ -206,7 +214,9 @@ Array [
           "expires": 2020-01-01T07:00:00.000Z,
           "grantType": "email_otp",
           "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-          "scope": "default",
+          "scope": Array [
+            "default",
+          ],
         },
       },
     ],
@@ -214,7 +224,9 @@ Array [
     "_grantType": "email_otp",
     "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
     "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-    "_scope": "default",
+    "_scope": Array [
+      "default",
+    ],
     "_updated": 2020-01-01T07:00:00.000Z,
     "_version": 0,
   },
@@ -272,7 +284,9 @@ Array [
           "expires": 2020-01-01T07:00:00.000Z,
           "grantType": "email_link",
           "refreshId": null,
-          "scope": "default",
+          "scope": Array [
+            "default",
+          ],
         },
       },
     ],
@@ -280,7 +294,9 @@ Array [
     "_grantType": "email_link",
     "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
     "_refreshId": null,
-    "_scope": "default",
+    "_scope": Array [
+      "default",
+    ],
     "_updated": 2020-01-01T07:00:00.000Z,
     "_version": 0,
   },
@@ -346,7 +362,9 @@ Session {
         "expires": 2020-01-01T07:00:00.000Z,
         "grantType": "email_otp",
         "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-        "scope": "default",
+        "scope": Array [
+          "default",
+        ],
       },
     },
   ],
@@ -354,7 +372,9 @@ Session {
   "_grantType": "email_otp",
   "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
   "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
-  "_scope": "default",
+  "_scope": Array [
+    "default",
+  ],
   "_updated": 2020-01-01T07:00:00.000Z,
   "_version": 1,
 }

@@ -10,7 +10,7 @@ import { isScope, Scope } from "@lindorm-io/jwt";
 
 export interface ICreateTokensOptions {
   account: Account;
-  authMethodsReference: string;
+  authMethodsReference: Array<string>;
   client: Client;
   responseType: string;
   session: Session;

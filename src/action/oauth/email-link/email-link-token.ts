@@ -22,7 +22,7 @@ export const performEmailLinkToken = (ctx: IKoaAuthContext) => async (
 
   const { client } = ctx;
   const { codeVerifier, grantType, subject } = options;
-  const authMethodsReference = "email";
+  const authMethodsReference = ["email"];
 
   const session = await findValidSession(ctx)({
     codeVerifier,

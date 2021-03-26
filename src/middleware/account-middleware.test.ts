@@ -23,7 +23,7 @@ describe("accountMiddleware", () => {
         bearer: {
           subject: "be3a62d1-24a0-401c-96dd-3aff95356811",
           permission: Permission.USER,
-          scope: [Scope.DEFAULT, Scope.OPENID].join(" "),
+          scope: [Scope.DEFAULT, Scope.OPENID],
         },
       },
     };

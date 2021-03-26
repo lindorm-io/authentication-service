@@ -7,7 +7,7 @@ export interface IGetAccountSessionsData {
   created: Date;
   expires: Date;
   id: string;
-  scope: string;
+  scope: Array<string>;
   updated: Date;
 }
 

@@ -42,7 +42,7 @@ describe("performMultiFactorChallenge", () => {
         clientId: ctx.client.id,
         expires: new Date("2999-12-12 12:12:12.000"),
         grantType: GrantType.PASSWORD,
-        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
       }),
     );
   });

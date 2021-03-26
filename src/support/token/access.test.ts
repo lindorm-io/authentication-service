@@ -33,9 +33,9 @@ describe("getAccessToken", () => {
     expect(
       getAccessToken(ctx)({
         account,
-        authMethodsReference: "authMethodsReference",
+        authMethodsReference: ["authMethodsReference"],
         client,
-        scope: "scope",
+        scope: ["scope"],
       }),
     ).toMatchSnapshot();
   });

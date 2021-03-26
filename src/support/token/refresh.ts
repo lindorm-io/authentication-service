@@ -6,9 +6,9 @@ import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 
 export interface IGetRefreshTokenOptions {
   account: Account;
-  authMethodsReference: string;
+  authMethodsReference: Array<string>;
   client: Client;
-  scope: string;
+  scope: Array<string>;
   session: Session;
 }
 

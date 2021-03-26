@@ -43,7 +43,7 @@ describe("createTokens", () => {
     await expect(
       createTokens(ctx)({
         account,
-        authMethodsReference: "authMethodsReference",
+        authMethodsReference: ["authMethodsReference"],
         client,
         responseType: ResponseType.REFRESH,
         session,
@@ -55,7 +55,7 @@ describe("createTokens", () => {
     await expect(
       createTokens(ctx)({
         account,
-        authMethodsReference: "authMethodsReference",
+        authMethodsReference: ["authMethodsReference"],
         client,
         responseType: ResponseType.ACCESS,
         session,
@@ -67,7 +67,7 @@ describe("createTokens", () => {
     await expect(
       createTokens(ctx)({
         account,
-        authMethodsReference: "authMethodsReference",
+        authMethodsReference: ["authMethodsReference"],
         client,
         responseType: ResponseType.IDENTITY,
         session,
@@ -79,7 +79,7 @@ describe("createTokens", () => {
     await expect(
       createTokens(ctx)({
         account,
-        authMethodsReference: "authMethodsReference",
+        authMethodsReference: ["authMethodsReference"],
         client,
         responseType: `${ResponseType.REFRESH} ${ResponseType.ACCESS} ${ResponseType.IDENTITY}`,
         session,

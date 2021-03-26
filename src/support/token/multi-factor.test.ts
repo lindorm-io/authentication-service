@@ -32,7 +32,7 @@ describe("getMultiFactorToken", () => {
   test("should return a multi-factor token", () => {
     expect(
       getMultiFactorToken(ctx)({
-        authMethodsReference: "authMethodsReference",
+        authMethodsReference: ["authMethodsReference"],
         client,
         session,
       }),

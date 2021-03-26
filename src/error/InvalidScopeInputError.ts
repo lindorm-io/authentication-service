@@ -3,7 +3,7 @@ import { HttpStatus } from "@lindorm-io/core";
 import { Scope } from "@lindorm-io/jwt";
 
 export class InvalidScopeInputError extends APIError {
-  constructor(scope: string) {
+  constructor(scope: Array<string>) {
     super("Invalid Scope Input", {
       debug: { scope },
       details: "Scope input does not match the expected array of values",

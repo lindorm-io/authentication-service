@@ -33,5 +33,5 @@ export const schema = Joi.object({
   expires: Joi.date().required(),
   grantType: JOI_GRANT_TYPE,
   refreshId: Joi.string().guid().allow(null).required(),
-  scope: Joi.string().required(),
+  scope: Joi.array().required(),
 });

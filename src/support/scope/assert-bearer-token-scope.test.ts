@@ -7,7 +7,7 @@ describe("assertBearerTokenScope", () => {
     const ctx: any = {
       token: {
         bearer: {
-          scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
+          scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
         },
       },
     };

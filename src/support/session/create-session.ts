@@ -13,7 +13,7 @@ export interface ICreateSessionOptions {
   responseType: string;
   deviceChallenge?: string;
   otpCode?: string;
-  scope: string;
+  scope: Array<string>;
   state: string;
   subject: string;
 }

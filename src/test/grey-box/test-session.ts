@@ -20,5 +20,5 @@ export const getTestSession = (account: Account, client: Client, codeChallenge: 
     expires: new Date("2099-01-01"),
     grantType: GrantType.EMAIL_OTP,
     refreshId: uuid(),
-    scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
+    scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
   });

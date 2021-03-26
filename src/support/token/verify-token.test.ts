@@ -35,21 +35,23 @@ describe("verifyToken", () => {
   });
 
   test("should verify token", () => {
-    expect(
-      verifyToken(ctx)({
-        audience: "audience",
-        client,
-        token: signData.token,
-      }),
-    ).toMatchSnapshot();
+    const result = verifyToken(ctx)({
+      audience: "audience",
+      client,
+      token: signData.token,
+    });
+    const { token, ...verify } = result;
+    expect(verify).toMatchSnapshot();
+    expect(token.length).toBeGreaterThan(200);
   });
 
   test("should verify token without client", () => {
-    expect(
-      verifyToken(ctx)({
-        audience: "audience",
-        token: signData.token,
-      }),
-    ).toMatchSnapshot();
+    const result = verifyToken(ctx)({
+      audience: "audience",
+      token: signData.token,
+    });
+    const { token, ...verify } = result;
+    expect(verify).toMatchSnapshot();
+    expect(token.length).toBeGreaterThan(200);
   });
 });

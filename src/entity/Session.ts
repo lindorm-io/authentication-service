@@ -31,7 +31,7 @@ export interface ISession extends IEntity {
   expires: Date;
   grantType: string;
   refreshId: string;
-  scope: string;
+  scope: Array<string>;
 }
 
 export interface ISessionOptions extends IEntityBaseOptions {
@@ -60,7 +60,7 @@ export interface ISessionOptions extends IEntityBaseOptions {
   expires: Date;
   grantType: string;
   refreshId?: string;
-  scope: string;
+  scope: Array<string>;
 }
 
 export class Session extends EntityBase implements ISession {
@@ -73,7 +73,7 @@ export class Session extends EntityBase implements ISession {
   private _expires: Date;
   private _grantType: string;
   private _refreshId: string;
-  private _scope: string;
+  private _scope: Array<string>;
 
   constructor(options: ISessionOptions) {
     super(options);
@@ -158,7 +158,7 @@ export class Session extends EntityBase implements ISession {
     this.addEvent(SessionEvent.REFRESH_ID_CHANGED, { refreshId: this._refreshId });
   }
 
-  public get scope(): string {
+  public get scope(): Array<string> {
     return this._scope;
   }
 

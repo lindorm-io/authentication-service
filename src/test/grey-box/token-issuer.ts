@@ -10,7 +10,7 @@ export const generateAccessToken = (account: Account): string => {
     clientId: TEST_CLIENT.id,
     expiry: JWT_ACCESS_TOKEN_EXPIRY,
     permission: account.permission,
-    scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
+    scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
     subject: account.id,
   });
   return token;
@@ -19,12 +19,12 @@ export const generateAccessToken = (account: Account): string => {
 export const generateRefreshToken = (account: Account, session: Session): string => {
   const { token } = TEST_TOKEN_ISSUER.sign({
     audience: Audience.REFRESH,
-    authMethodsReference: "email",
+    authMethodsReference: ["email"],
     clientId: TEST_CLIENT.id,
     expiry: session.expires,
     id: session.refreshId,
     permission: account.permission,
-    scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
+    scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
     subject: session.id,
   });
   return token;

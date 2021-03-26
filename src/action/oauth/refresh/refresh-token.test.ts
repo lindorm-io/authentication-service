@@ -19,7 +19,7 @@ describe("performRefreshToken", () => {
     ctx = {
       client: "client",
       repository: await getTestRepository(),
-      token: { refresh: { authMethodsReference: "authMethodsReference", permission: Permission.USER } },
+      token: { refresh: { authMethodsReference: ["authMethodsReference"], permission: Permission.USER } },
     };
 
     await ctx.repository.account.create(getTestAccount("email@lindorm.io"));

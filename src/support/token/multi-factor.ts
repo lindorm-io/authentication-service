@@ -6,7 +6,7 @@ import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 import { JWT_MULTI_FACTOR_TOKEN_EXPIRY } from "../../config";
 
 export interface IGetMultiFactorTokenOptions {
-  authMethodsReference: string;
+  authMethodsReference: Array<string>;
   client: Client;
   session: Session;
 }

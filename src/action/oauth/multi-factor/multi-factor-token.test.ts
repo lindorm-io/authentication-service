@@ -27,7 +27,7 @@ describe("performMultiFactorToken", () => {
       repository: await getTestRepository(),
       token: {
         multiFactor: {
-          authMethodsReference: "pwd",
+          authMethodsReference: ["pwd"],
           subject: "d22a19de-8d33-4dd2-8712-58af46490184",
         },
       },
@@ -48,7 +48,7 @@ describe("performMultiFactorToken", () => {
         clientId: ctx.client.id,
         expires: new Date("2999-12-12 12:12:12.000"),
         grantType: GrantType.PASSWORD,
-        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID].join(" "),
+        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
       }),
     );
   });

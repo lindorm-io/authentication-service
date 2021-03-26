@@ -38,7 +38,7 @@ describe("Session.ts", () => {
       expires: date,
       grantType: "grantType",
       refreshId: "refreshId",
-      scope: "scope",
+      scope: ["scope"],
     });
   });
 
@@ -59,7 +59,7 @@ describe("Session.ts", () => {
       clientId: "clientId",
       expires: date,
       grantType: "grantType",
-      scope: "scope",
+      scope: ["scope"],
     });
 
     expect(session).toMatchSnapshot();
@@ -71,11 +71,11 @@ describe("Session.ts", () => {
   });
 
   test("should get/set accountId", () => {
-    expect(session.accountId).toBe("accountId");
+    expect(session.accountId).toMatchSnapshot();
 
     session.accountId = "new-accountId";
 
-    expect(session.accountId).toBe("new-accountId");
+    expect(session.accountId).toMatchSnapshot();
     expect(session.events).toMatchSnapshot();
   });
 
@@ -84,11 +84,11 @@ describe("Session.ts", () => {
   });
 
   test("should get/set authenticated", () => {
-    expect(session.authenticated).toBe(true);
+    expect(session.authenticated).toMatchSnapshot();
 
     session.authenticated = false;
 
-    expect(session.authenticated).toBe(false);
+    expect(session.authenticated).toMatchSnapshot();
     expect(session.events).toMatchSnapshot();
   });
 
@@ -97,33 +97,32 @@ describe("Session.ts", () => {
   });
 
   test("should get clientId", () => {
-    expect(session.clientId).toBe("clientId");
+    expect(session.clientId).toMatchSnapshot();
   });
 
   test("should get/set expires", () => {
-    expect(session.expires).toBe(date);
+    expect(session.expires).toMatchSnapshot();
 
-    const expires = new Date("2021-01-01 00:00:01");
-    session.expires = expires;
+    session.expires = new Date("2021-01-01 00:00:01");
 
-    expect(session.expires).toBe(expires);
+    expect(session.expires).toMatchSnapshot();
     expect(session.events).toMatchSnapshot();
   });
 
   test("should get grantType", () => {
-    expect(session.grantType).toBe("grantType");
+    expect(session.grantType).toMatchSnapshot();
   });
 
   test("should get/set refreshId", () => {
-    expect(session.refreshId).toBe("refreshId");
+    expect(session.refreshId).toMatchSnapshot();
 
     session.refreshId = "new-refreshId";
 
-    expect(session.refreshId).toBe("new-refreshId");
+    expect(session.refreshId).toMatchSnapshot();
     expect(session.events).toMatchSnapshot();
   });
 
   test("should get scope", () => {
-    expect(session.scope).toBe("scope");
+    expect(session.scope).toMatchSnapshot();
   });
 });

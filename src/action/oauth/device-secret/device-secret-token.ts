@@ -31,7 +31,7 @@ export const performDeviceSecretToken = (ctx: IKoaAuthContext) => async (
 
   const { client, metadata, repository } = ctx;
   const { codeVerifier, deviceId, deviceVerifier, grantType, secret, subject } = options;
-  const authMethodsReference = "biometrics";
+  const authMethodsReference = ["biometrics"];
 
   if (!stringComparison(deviceId, metadata.deviceId)) {
     throw new InvalidDeviceError(deviceId);

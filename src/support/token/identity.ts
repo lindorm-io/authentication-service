@@ -9,7 +9,7 @@ import { requestOpenIdClaims } from "../../axios";
 export interface IGetIdentityTokenOptions {
   account: Account;
   client: Client;
-  scope: string;
+  scope: Array<string>;
 }
 
 export const getIdentityToken = (ctx: IKoaAuthContext) => async (

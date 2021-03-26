@@ -30,7 +30,7 @@ export const performEmailOTPToken = (ctx: IKoaAuthContext) => async (
 
   const { client } = ctx;
   const { codeVerifier, grantType, otpCode, subject } = options;
-  const authMethodsReference = "email otp";
+  const authMethodsReference = ["email", "otp"];
 
   const session = await findValidSession(ctx)({
     codeVerifier,

@@ -47,7 +47,7 @@ describe("SessionRepository", () => {
       expires: new Date(),
       grantType: GrantType.EMAIL_OTP,
       refreshId: "be3a62d1-24a0-401c-96dd-3aff95356811",
-      scope: Scope.DEFAULT,
+      scope: [Scope.DEFAULT],
     });
   });
 
@@ -87,7 +87,7 @@ describe("SessionRepository", () => {
         clientId: "be3a62d1-24a0-401c-96dd-3aff95356811",
         expires: new Date(),
         grantType: GrantType.EMAIL_LINK,
-        scope: Scope.DEFAULT,
+        scope: [Scope.DEFAULT],
       }),
     );
 
