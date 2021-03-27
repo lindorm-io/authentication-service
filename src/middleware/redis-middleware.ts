@@ -1,8 +1,8 @@
-import { RedisConnectionType } from "@lindorm-io/redis";
 import { IS_TEST, REDIS_CONNECTION_OPTIONS } from "../config";
+import { Middleware } from "koa";
+import { RedisConnectionType } from "@lindorm-io/redis";
 import { inMemoryCache } from "../test";
 import { redisMiddleware } from "@lindorm-io/koa-redis";
-import { Middleware } from "koa";
 
 export const getRedisMiddleware = (): Middleware =>
   redisMiddleware({

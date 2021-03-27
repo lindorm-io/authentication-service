@@ -2,23 +2,23 @@ import Joi from "@hapi/joi";
 import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { InvalidDeviceError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { authenticateSession, createTokens, findValidSession } from "../../../support";
+import { createSession, createTokens, validateAuthorization } from "../../../support";
 import { stringComparison } from "@lindorm-io/core";
 import { requestVerifyDevicePIN } from "../../../axios";
 
 export interface IPerformDevicePINTokenOptions {
+  certificateVerifier: string;
   codeVerifier: string;
   deviceId: string;
-  deviceVerifier: string;
   grantType: string;
   pin: string;
   subject: string;
 }
 
 const schema = Joi.object({
+  certificateVerifier: Joi.string().required(),
   codeVerifier: Joi.string().required(),
   deviceId: Joi.string().guid().required(),
-  deviceVerifier: Joi.string().required(),
   grantType: JOI_GRANT_TYPE,
   pin: Joi.string().required(),
   subject: JOI_EMAIL,
@@ -29,39 +29,39 @@ export const performDevicePINToken = (ctx: IKoaAuthContext) => {
     await schema.validateAsync(options);
 
     const { client, metadata, repository } = ctx;
-    const { codeVerifier, deviceId, deviceVerifier, grantType, pin, subject } = options;
+    const { certificateVerifier, codeVerifier, deviceId, grantType, pin, subject } = options;
     const authMethodsReference = ["pin"];
 
     if (!stringComparison(deviceId, metadata.deviceId)) {
       throw new InvalidDeviceError(deviceId);
     }
 
-    const session = await findValidSession(ctx)({
+    const authorization = await validateAuthorization(ctx)({
       codeVerifier,
+      email: subject,
       grantType,
-      subject,
     });
 
-    const account = await repository.account.find({ email: session.authorization.email });
+    const account = await repository.account.find({ email: subject });
 
     await requestVerifyDevicePIN({
       account,
-      deviceVerifier,
+      authorization,
+      certificateVerifier,
       pin,
-      session,
     });
 
-    const authenticated = await authenticateSession(ctx)({
+    const session = await createSession(ctx)({
       account,
-      session,
+      authorization,
     });
 
     return createTokens(ctx)({
       account,
       authMethodsReference,
       client,
-      responseType: session.authorization.responseType,
-      session: authenticated,
+      responseType: authorization.responseType,
+      session,
     });
   };
 };

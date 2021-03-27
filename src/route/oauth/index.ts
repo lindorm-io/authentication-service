@@ -2,7 +2,7 @@ import { HttpStatus } from "@lindorm-io/core";
 import { IKoaAuthContext } from "../../typing";
 import { Router } from "@lindorm-io/koa";
 import { clientMiddleware, requestLimitMiddleware } from "../../middleware";
-import { router as authorizationRoute } from "./authorization";
+import { router as authorizeRoute } from "./authorize";
 import { router as tokenRoute } from "./token";
 
 export const router = new Router();
@@ -10,7 +10,7 @@ export const router = new Router();
 router.use(requestLimitMiddleware);
 router.use(clientMiddleware);
 
-router.use("/authorization", authorizationRoute.routes(), authorizationRoute.allowedMethods());
+router.use("/authorize", authorizeRoute.routes(), authorizeRoute.allowedMethods());
 router.use("/token", tokenRoute.routes(), tokenRoute.allowedMethods());
 
 router.get(

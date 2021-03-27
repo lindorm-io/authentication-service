@@ -15,6 +15,10 @@ import {
 } from "../grey-box";
 
 jest.mock("../../axios", () => ({
+  requestCertificateChallenge: jest.fn(() => ({
+    challengeId: "3588b6f3-d9cb-40d4-a885-bc5f4c762284",
+    certificateChallenge: "CE9B988A76BB44ED8BD31F91FE016647",
+  })),
   requestVerifyDeviceSecret: jest.fn(),
   requestOpenIdClaims: jest.fn(() => ({ claim: "claim" })),
 }));
@@ -37,7 +41,7 @@ describe("/oauth DEVICE_SECRET", () => {
 
   test("should resolve", async () => {
     const initResponse = await request(koa.callback())
-      .post("/oauth/authorization")
+      .post("/oauth/authorize")
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .set("X-Device-ID", "6c13e4ce-ec2e-40bf-addb-241a0c914295")
@@ -58,7 +62,7 @@ describe("/oauth DEVICE_SECRET", () => {
       .expect(200);
 
     expect(initResponse.body).toStrictEqual({
-      device_challenge: expect.any(String),
+      certificate_challenge: expect.any(String),
       expires: 1577864700,
       expires_in: 2700,
       redirect_uri: "https://redirect.uri/",
@@ -67,10 +71,10 @@ describe("/oauth DEVICE_SECRET", () => {
     });
 
     const {
-      body: { device_challenge: deviceChallenge, token },
+      body: { certificate_challenge: certificateChallenge, token },
     } = initResponse;
 
-    const deviceVerifier = TEST_KEY_PAIR_HANDLER.sign(deviceChallenge);
+    const certificateVerifier = TEST_KEY_PAIR_HANDLER.sign(certificateChallenge);
 
     const tokenResponse = await request(koa.callback())
       .post("/oauth/token")
@@ -82,10 +86,9 @@ describe("/oauth DEVICE_SECRET", () => {
         client_secret: "test_client_secret",
 
         authorization_token: token,
-
+        certificate_verifier: certificateVerifier,
         code_verifier: codeVerifier,
         device_id: "6c13e4ce-ec2e-40bf-addb-241a0c914295",
-        device_verifier: deviceVerifier,
         grant_type: GrantType.DEVICE_SECRET,
         secret: "test_device_secret",
         subject: account.email,

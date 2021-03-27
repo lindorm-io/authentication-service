@@ -1,4 +1,6 @@
 import MockDate from "mockdate";
+import { GrantType } from "../enum";
+import { Scope } from "@lindorm-io/jwt";
 import { Session } from "./Session";
 
 jest.mock("uuid", () => ({
@@ -6,39 +8,19 @@ jest.mock("uuid", () => ({
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");
-const date = new Date("2020-01-01 08:00:00.000");
 
 describe("Session.ts", () => {
   let session: Session;
 
   beforeEach(() => {
     session = new Session({
-      accountId: "accountId",
-      agent: {
-        browser: "browser",
-        geoIp: { geoIp: "geoIp" },
-        os: "os",
-        platform: "platform",
-        source: "source",
-        version: "version",
-      },
-      authenticated: true,
-      authorization: {
-        codeChallenge: "codeChallenge",
-        codeMethod: "codeMethod",
-        deviceChallenge: "deviceChallenge",
-        email: "email@lindorm.io",
-        id: "id",
-        otpCode: "otpCode",
-        redirectUri: "redirectUri",
-        responseType: "responseType",
-      },
-      clientId: "clientId",
-      deviceId: "deviceId",
-      expires: date,
-      grantType: "grantType",
-      refreshId: "refreshId",
-      scope: ["scope"],
+      accountId: "eb1fc7a5-e141-4be4-9e91-d0fec8ee5c12",
+      clientId: "852a0686-a203-4645-a890-fb0710d22638",
+      deviceId: "22c42ad2-7f93-4173-9204-8ad100eb2b57",
+      expires: new Date("2020-01-01 08:00:00.000"),
+      grantType: GrantType.PASSWORD,
+      refreshId: "a63e8289-6ee3-4b26-b92b-e8604f51d338",
+      scope: [Scope.DEFAULT, Scope.EMAIL, Scope.OPENID, Scope.EMAIL],
     });
   });
 
@@ -48,18 +30,12 @@ describe("Session.ts", () => {
 
   test("should have optional data", () => {
     session = new Session({
-      authorization: {
-        codeChallenge: "codeChallenge",
-        codeMethod: "codeMethod",
-        email: "email@lindorm.io",
-        id: "id",
-        redirectUri: "redirectUri",
-        responseType: "responseType",
-      },
-      clientId: "clientId",
-      expires: date,
-      grantType: "grantType",
-      scope: ["scope"],
+      accountId: "eb1fc7a5-e141-4be4-9e91-d0fec8ee5c12",
+      clientId: "852a0686-a203-4645-a890-fb0710d22638",
+      expires: new Date("2020-01-01 08:00:00.000"),
+      grantType: GrantType.PASSWORD,
+      refreshId: "a63e8289-6ee3-4b26-b92b-e8604f51d338",
+      scope: [Scope.DEFAULT, Scope.EMAIL, Scope.OPENID, Scope.EMAIL],
     });
 
     expect(session).toMatchSnapshot();
@@ -70,30 +46,8 @@ describe("Session.ts", () => {
     expect(session.events).toMatchSnapshot();
   });
 
-  test("should get/set accountId", () => {
+  test("should get accountId", () => {
     expect(session.accountId).toMatchSnapshot();
-
-    session.accountId = "new-accountId";
-
-    expect(session.accountId).toMatchSnapshot();
-    expect(session.events).toMatchSnapshot();
-  });
-
-  test("should get agent", () => {
-    expect(session.agent).toMatchSnapshot();
-  });
-
-  test("should get/set authenticated", () => {
-    expect(session.authenticated).toMatchSnapshot();
-
-    session.authenticated = false;
-
-    expect(session.authenticated).toMatchSnapshot();
-    expect(session.events).toMatchSnapshot();
-  });
-
-  test("should get authorization", () => {
-    expect(session.authorization).toMatchSnapshot();
   });
 
   test("should get clientId", () => {
@@ -102,9 +56,7 @@ describe("Session.ts", () => {
 
   test("should get/set expires", () => {
     expect(session.expires).toMatchSnapshot();
-
     session.expires = new Date("2021-01-01 00:00:01");
-
     expect(session.expires).toMatchSnapshot();
     expect(session.events).toMatchSnapshot();
   });
@@ -115,9 +67,7 @@ describe("Session.ts", () => {
 
   test("should get/set refreshId", () => {
     expect(session.refreshId).toMatchSnapshot();
-
-    session.refreshId = "new-refreshId";
-
+    session.refreshId = "cf588ada-db91-4c05-b758-30b21d44b4b5";
     expect(session.refreshId).toMatchSnapshot();
     expect(session.events).toMatchSnapshot();
   });

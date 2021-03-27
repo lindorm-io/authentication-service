@@ -13,7 +13,7 @@ router.get(
   async (ctx: IKoaAuthContext): Promise<void> => {
     ctx.body = {
       issuer: JWT_ISSUER,
-      authorization_endpoint: new URL("/oauth/authorization", HOST).toString(),
+      authorization_endpoint: new URL("/oauth/authorize", HOST).toString(),
       token_endpoint: new URL("/oauth/token", HOST).toString(),
       userinfo_endpoint: new URL("/userinfo", HOST).toString(),
       jwks_uri: new URL("/.well-known/jwks", HOST).toString(),

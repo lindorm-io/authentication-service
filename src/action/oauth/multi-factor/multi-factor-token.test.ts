@@ -1,21 +1,26 @@
 import { Client, InvalidClientError } from "@lindorm-io/koa-client";
-import { GrantType, ResponseType } from "../../../enum";
+import { GrantType } from "../../../enum";
 import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
-import { Permission, Scope } from "@lindorm-io/jwt";
-import { Session } from "../../../entity";
-import { baseHash } from "@lindorm-io/core";
-import { getTestRepository, getTestAccount, getTestClient, resetStore } from "../../../test";
+import { Permission } from "@lindorm-io/jwt";
 import { performMultiFactorToken } from "./multi-factor-token";
+import {
+  getTestRepository,
+  getTestAccount,
+  getTestClient,
+  resetStore,
+  getTestCache,
+  getTestAuthorization,
+  resetCache,
+} from "../../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../../support", () => ({
-  assertSessionIsNotExpired: jest.fn(),
   assertAccountOTP: jest.fn(),
-  authenticateSession: jest.fn(() => () => "session"),
+  assertAuthorizationIsNotExpired: jest.fn(),
+  createSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
-  encryptClientSecret: jest.fn((input) => baseHash(input)),
 }));
 
 describe("performMultiFactorToken", () => {
@@ -23,37 +28,29 @@ describe("performMultiFactorToken", () => {
 
   beforeEach(async () => {
     ctx = {
-      client: getTestClient(),
+      cache: await getTestCache(),
+      client: getTestClient(false),
       repository: await getTestRepository(),
       token: {
         multiFactor: {
           authMethodsReference: ["pwd"],
-          subject: "d22a19de-8d33-4dd2-8712-58af46490184",
+          subject: "4923fabc-aab2-4804-b92b-2aa96c4999a1",
         },
       },
     };
 
     await ctx.repository.account.create(getTestAccount("email@lindorm.io"));
-    await ctx.repository.session.create(
-      new Session({
-        id: "d22a19de-8d33-4dd2-8712-58af46490184",
-        authorization: {
-          codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-          codeMethod: "sha256",
-          email: "email@lindorm.io",
-          id: "73b5a544-f0c6-429a-a327-6f1847f956e5",
-          redirectUri: "https://lindorm.io",
-          responseType: ResponseType.ACCESS,
-        },
-        clientId: ctx.client.id,
-        expires: new Date("2999-12-12 12:12:12.000"),
-        grantType: GrantType.PASSWORD,
-        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
+    await ctx.cache.authorization.create(
+      getTestAuthorization({
+        client: ctx.client,
       }),
     );
   });
 
-  afterEach(resetStore);
+  afterEach(() => {
+    resetCache();
+    resetStore();
+  });
 
   test("should return tokens", async () => {
     await expect(

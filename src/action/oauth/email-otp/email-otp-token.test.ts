@@ -1,16 +1,13 @@
-import { GrantType, ResponseType } from "../../../enum";
+import { GrantType } from "../../../enum";
 import { performEmailOTPToken } from "./email-otp-token";
 
 jest.mock("../../../support", () => ({
-  assertSessionOTP: jest.fn(() => undefined),
-  authenticateSession: jest.fn(() => () => "session"),
+  assertAuthorizationOTP: jest.fn(),
+  createSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
   findOrCreateAccount: jest.fn(() => () => "account"),
-  findValidSession: jest.fn(() => () => ({
-    authorization: {
-      email: "email@lindorm.io",
-      responseType: ResponseType.REFRESH,
-    },
+  validateAuthorization: jest.fn(() => () => ({
+    responseType: "responseType",
   })),
 }));
 

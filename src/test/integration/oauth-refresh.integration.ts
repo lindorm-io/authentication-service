@@ -8,9 +8,8 @@ import {
   TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   TEST_SESSION_REPOSITORY,
-  generateTestOauthData,
-  getTestAccount,
   generateRefreshToken,
+  getTestAccount,
   getTestSession,
   setupIntegration,
 } from "../grey-box";
@@ -26,8 +25,6 @@ describe("/oauth REFRESH_TOKEN", () => {
   let session: Session;
   let refreshToken: string;
 
-  const { codeMethod, codeChallenge } = generateTestOauthData();
-
   beforeAll(async () => {
     await setupIntegration();
     koa.load();
@@ -35,7 +32,12 @@ describe("/oauth REFRESH_TOKEN", () => {
 
   beforeEach(async () => {
     account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
-    session = await TEST_SESSION_REPOSITORY.create(getTestSession(account, TEST_CLIENT, codeChallenge, codeMethod));
+    session = await TEST_SESSION_REPOSITORY.create(
+      getTestSession({
+        account,
+        client: TEST_CLIENT,
+      }),
+    );
     refreshToken = generateRefreshToken(account, session);
   });
 
@@ -44,6 +46,7 @@ describe("/oauth REFRESH_TOKEN", () => {
       .post("/oauth/token")
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
+      .set("X-Device-ID", "22c42ad2-7f93-4173-9204-8ad100eb2b57")
       .send({
         client_id: TEST_CLIENT.id,
         client_secret: "test_client_secret",

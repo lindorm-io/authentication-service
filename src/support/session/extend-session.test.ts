@@ -1,18 +1,22 @@
 import MockDate from "mockdate";
 import { Account, Session } from "../../entity";
-import { extendSession } from "./extend-session";
-import { InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
 import { Client, InvalidClientError } from "@lindorm-io/koa-client";
-import { getTestRepository, getTestAccount, getTestClient, inMemoryStore, resetStore } from "../../test";
-import { v4 as uuid } from "uuid";
-import { GrantType, ResponseType } from "../../enum";
-import { Scope } from "@lindorm-io/jwt";
+import { InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
+import { extendSession } from "./extend-session";
+import {
+  getTestAccount,
+  getTestClient,
+  getTestRepository,
+  getTestSession,
+  inMemoryStore,
+  resetStore,
+} from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("./expires", () => ({
-  assertSessionIsNotExpired: jest.fn(() => undefined),
+  assertSessionIsNotExpired: jest.fn(),
   getSessionExpires: jest.fn(() => new Date()),
 }));
 
@@ -27,24 +31,7 @@ describe("extendSession", () => {
   beforeEach(async () => {
     account = getTestAccount("email@lindorm.io");
     client = getTestClient();
-    session = new Session({
-      accountId: account.id,
-      authenticated: true,
-      authorization: {
-        codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        codeMethod: "sha256",
-        email: account.email,
-        id: uuid(),
-        redirectUri: "https://redirect.uri/",
-        responseType: ResponseType.REFRESH,
-      },
-      clientId: client.id,
-      deviceId: "11388709-2ced-4c53-8f17-7cf867c01432",
-      expires: new Date("2099-01-01"),
-      grantType: GrantType.EMAIL_OTP,
-      refreshId: uuid(),
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
-    });
+    session = getTestSession({ account, client });
 
     ctx = {
       client: client,
@@ -65,25 +52,8 @@ describe("extendSession", () => {
   });
 
   test("should skip deviceId when not set on session", async () => {
-    session = new Session({
-      accountId: account.id,
-      authenticated: true,
-      authorization: {
-        codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        codeMethod: "sha256",
-        email: account.email,
-        id: uuid(),
-        redirectUri: "https://redirect.uri/",
-        responseType: ResponseType.REFRESH,
-      },
-      clientId: client.id,
-      expires: new Date("2099-01-01"),
-      grantType: GrantType.EMAIL_OTP,
-      refreshId: uuid(),
-      scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
-    });
-    await ctx.repository.session.update(session);
-    ctx.metadata.deviceId = "wrong";
+    await ctx.repository.session.update(getTestSession({ deviceId: null }));
+    ctx.metadata.deviceId = "e3585508-1355-4561-9548-da8a9f73480b";
 
     await expect(extendSession(ctx)()).resolves.toMatchSnapshot();
 
@@ -91,19 +61,19 @@ describe("extendSession", () => {
   });
 
   test("should throw error when refreshId is wrong", async () => {
-    ctx.token.refresh.id = "wrong";
+    ctx.token.refresh.id = "dd0a68cf-7f8c-4b3a-908a-35c5452421ae";
 
     await expect(extendSession(ctx)()).rejects.toStrictEqual(expect.any(InvalidRefreshTokenError));
   });
 
   test("should throw error when clientId is wrong", async () => {
-    ctx.client = new Client({ id: "wrong" });
+    ctx.client = new Client({ id: "87e7c9a4-3c3b-4543-90c5-99254cfe342b" });
 
     await expect(extendSession(ctx)()).rejects.toStrictEqual(expect.any(InvalidClientError));
   });
 
   test("should throw error when deviceId is wrong", async () => {
-    ctx.metadata.deviceId = "wrong";
+    ctx.metadata.deviceId = "a4bcc8d9-ba46-4faf-99fc-bc1a40a6b2db";
 
     await expect(extendSession(ctx)()).rejects.toStrictEqual(expect.any(InvalidDeviceError));
   });

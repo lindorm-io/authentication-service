@@ -8,10 +8,9 @@ import {
   TEST_ACCOUNT_REPOSITORY,
   TEST_CLIENT,
   TEST_SESSION_REPOSITORY,
-  generateTestOauthData,
   generateAccessToken,
-  getTestAccount,
   generateRefreshToken,
+  getTestAccount,
   getTestSession,
   setupIntegration,
 } from "../grey-box";
@@ -24,8 +23,6 @@ describe("/session", () => {
   let accessToken: string;
   let refreshToken: string;
 
-  const { codeMethod, codeChallenge } = generateTestOauthData();
-
   beforeAll(async () => {
     await setupIntegration();
     koa.load();
@@ -33,7 +30,12 @@ describe("/session", () => {
 
   beforeEach(async () => {
     account = await TEST_ACCOUNT_REPOSITORY.create(getTestAccount("test@lindorm.io"));
-    session = await TEST_SESSION_REPOSITORY.create(getTestSession(account, TEST_CLIENT, codeChallenge, codeMethod));
+    session = await TEST_SESSION_REPOSITORY.create(
+      getTestSession({
+        account,
+        client: TEST_CLIENT,
+      }),
+    );
     accessToken = generateAccessToken(account);
     refreshToken = generateRefreshToken(account, session);
   });

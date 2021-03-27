@@ -3,11 +3,11 @@ import { Scope } from "@lindorm-io/jwt";
 import { performPasswordInit } from "./password-init";
 
 jest.mock("../../../util", () => ({
-  assertValidResponseTypeInput: jest.fn(() => undefined),
-  assertValidScopeInput: jest.fn(() => undefined),
+  assertValidResponseTypeInput: jest.fn(),
+  assertValidScopeInput: jest.fn(),
 }));
 jest.mock("../../../support", () => ({
-  createSession: jest.fn(() => () => "session"),
+  createAuthorization: jest.fn(() => () => "createAuthorization"),
   getAuthorizationToken: jest.fn(() => () => ({
     expires: "expires",
     expiresIn: "expiresIn",

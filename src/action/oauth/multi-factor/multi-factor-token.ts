@@ -3,7 +3,7 @@ import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { InvalidClientError } from "@lindorm-io/koa-client";
 import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { assertAccountOTP, assertSessionIsNotExpired, authenticateSession, createTokens } from "../../../support";
+import { assertAccountOTP, assertAuthorizationIsNotExpired, createSession, createTokens } from "../../../support";
 import { isLocked } from "@lindorm-io/jwt";
 
 export interface IPerformMultiFactorTokenOptions {
@@ -23,23 +23,23 @@ export const performMultiFactorToken = (ctx: IKoaAuthContext) => async (
 ): Promise<ICreateTokensData> => {
   await schema.validateAsync(options);
 
-  const { client, repository, token } = ctx;
+  const { cache, client, repository, token } = ctx;
   const { bindingCode, subject } = options;
   const {
-    multiFactor: { authMethodsReference, subject: sessionId },
+    multiFactor: { authMethodsReference, subject: authorizationId },
   } = token;
 
   authMethodsReference.push("otp");
 
-  const session = await repository.session.find({ id: sessionId });
+  const authorization = await cache.authorization.find(authorizationId);
 
-  assertSessionIsNotExpired(session);
+  assertAuthorizationIsNotExpired(authorization);
 
-  if (session.clientId !== client.id) {
+  if (authorization.clientId !== client.id) {
     throw new InvalidClientError(client.id);
   }
 
-  if (session.authorization.email !== subject) {
+  if (authorization.email !== subject) {
     throw new InvalidSubjectError(subject);
   }
 
@@ -51,16 +51,16 @@ export const performMultiFactorToken = (ctx: IKoaAuthContext) => async (
 
   await assertAccountOTP(account, bindingCode);
 
-  const authenticated = await authenticateSession(ctx)({
+  const session = await createSession(ctx)({
     account,
-    session,
+    authorization,
   });
 
   return createTokens(ctx)({
     account,
     authMethodsReference,
     client,
-    responseType: session.authorization.responseType,
-    session: authenticated,
+    responseType: authorization.responseType,
+    session,
   });
 };

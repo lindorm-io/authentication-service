@@ -1,133 +1,50 @@
 import { EntityBase, EntityCreationError, IEntity, IEntityBaseOptions } from "@lindorm-io/entity";
-import { SessionEvent } from "../enum";
-
-export interface ISessionAgent {
-  browser: string;
-  geoIp: Record<string, any>;
-  os: string;
-  platform: string;
-  source: string;
-  version: string;
-}
-
-export interface ISessionAuthorization {
-  codeChallenge: string;
-  codeMethod: string;
-  deviceChallenge: string;
-  email: string;
-  id: string;
-  otpCode: string;
-  redirectUri: string;
-  responseType: string;
-}
+import { GrantType, SessionEvent } from "../enum";
+import { Scope } from "@lindorm-io/jwt";
 
 export interface ISession extends IEntity {
   accountId: string;
-  agent: ISessionAgent;
-  authenticated: boolean;
-  authorization: ISessionAuthorization;
   clientId: string;
   deviceId: string;
   expires: Date;
-  grantType: string;
+  grantType: GrantType;
   refreshId: string;
-  scope: Array<string>;
+  scope: Array<Scope>;
 }
 
 export interface ISessionOptions extends IEntityBaseOptions {
-  accountId?: string;
-  agent?: {
-    browser?: string;
-    geoIp?: Record<string, any>;
-    os?: string;
-    platform?: string;
-    source?: string;
-    version?: string;
-  };
-  authenticated?: boolean;
-  authorization: {
-    codeChallenge: string;
-    codeMethod: string;
-    deviceChallenge?: string;
-    email: string;
-    id: string;
-    otpCode?: string;
-    redirectUri: string;
-    responseType: string;
-  };
+  accountId: string;
   clientId: string;
   deviceId?: string;
   expires: Date;
-  grantType: string;
-  refreshId?: string;
-  scope: Array<string>;
+  grantType: GrantType;
+  refreshId: string;
+  scope: Array<Scope>;
 }
 
 export class Session extends EntityBase implements ISession {
   private _accountId: string;
-  private _agent: ISessionAgent;
-  private _authenticated: boolean;
-  private _authorization: ISessionAuthorization;
   private _clientId: string;
   private _deviceId: string;
   private _expires: Date;
-  private _grantType: string;
+  private _grantType: GrantType;
   private _refreshId: string;
-  private _scope: Array<string>;
+  private _scope: Array<Scope>;
 
   constructor(options: ISessionOptions) {
     super(options);
 
-    this._accountId = options.accountId || null;
-    this._agent = {
-      browser: options.agent?.browser || null,
-      geoIp: options.agent?.geoIp || null,
-      os: options.agent?.os || null,
-      platform: options.agent?.platform || null,
-      source: options.agent?.source || null,
-      version: options.agent?.version || null,
-    };
-    this._authenticated = options.authenticated || false;
-    this._authorization = {
-      codeChallenge: options.authorization.codeChallenge,
-      codeMethod: options.authorization.codeMethod,
-      deviceChallenge: options.authorization.deviceChallenge || null,
-      email: options.authorization.email,
-      id: options.authorization.id,
-      otpCode: options.authorization.otpCode || null,
-      redirectUri: options.authorization.redirectUri,
-      responseType: options.authorization.responseType,
-    };
+    this._accountId = options.accountId;
     this._clientId = options.clientId;
     this._deviceId = options.deviceId || null;
     this._expires = options.expires;
     this._grantType = options.grantType;
-    this._refreshId = options.refreshId || null;
+    this._refreshId = options.refreshId;
     this._scope = options.scope;
   }
 
   public get accountId(): string {
     return this._accountId;
-  }
-  public set accountId(accountId: string) {
-    this._accountId = accountId;
-    this.addEvent(SessionEvent.ACCOUNT_ID_CHANGED, { accountId: this._accountId });
-  }
-
-  public get agent(): ISessionAgent {
-    return this._agent;
-  }
-
-  public get authenticated(): boolean {
-    return this._authenticated;
-  }
-  public set authenticated(authenticated: boolean) {
-    this._authenticated = authenticated;
-    this.addEvent(SessionEvent.AUTHENTICATED_CHANGED, { authenticated: this._authenticated });
-  }
-
-  public get authorization(): ISessionAuthorization {
-    return this._authorization;
   }
 
   public get clientId(): string {
@@ -146,7 +63,7 @@ export class Session extends EntityBase implements ISession {
     this.addEvent(SessionEvent.EXPIRES_CHANGED, { expires: this._expires });
   }
 
-  public get grantType(): string {
+  public get grantType(): GrantType {
     return this._grantType;
   }
 
@@ -158,7 +75,7 @@ export class Session extends EntityBase implements ISession {
     this.addEvent(SessionEvent.REFRESH_ID_CHANGED, { refreshId: this._refreshId });
   }
 
-  public get scope(): Array<string> {
+  public get scope(): Array<Scope> {
     return this._scope;
   }
 
@@ -170,9 +87,6 @@ export class Session extends EntityBase implements ISession {
 
     this.addEvent(SessionEvent.CREATED, {
       accountId: this._accountId,
-      agent: this._agent,
-      authenticated: this._authenticated,
-      authorization: this._authorization,
       clientId: this._clientId,
       deviceId: this._deviceId,
       expires: this._expires,

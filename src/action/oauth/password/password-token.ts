@@ -3,10 +3,10 @@ import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import {
   assertAccountPassword,
-  authenticateSession,
+  createSession,
   createTokens,
-  findValidSession,
   getMultiFactorToken,
+  validateAuthorization,
 } from "../../../support";
 
 export interface IPerformPasswordTokenOptions {
@@ -32,10 +32,10 @@ export const performPasswordToken = (ctx: IKoaAuthContext) => async (
   const { codeVerifier, grantType, password, subject } = options;
   const authMethodsReference = ["password"];
 
-  const session = await findValidSession(ctx)({
+  const authorization = await validateAuthorization(ctx)({
     codeVerifier,
+    email: subject,
     grantType,
-    subject,
   });
 
   const account = await repository.account.find({ email: subject });
@@ -45,23 +45,23 @@ export const performPasswordToken = (ctx: IKoaAuthContext) => async (
   if (account.otp.signature) {
     const multiFactorToken = getMultiFactorToken(ctx)({
       authMethodsReference,
+      authorization,
       client,
-      session,
     });
 
     return { multiFactorToken };
   }
 
-  const authenticated = await authenticateSession(ctx)({
+  const session = await createSession(ctx)({
     account,
-    session,
+    authorization,
   });
 
   return createTokens(ctx)({
     account,
     authMethodsReference,
     client,
-    responseType: session.authorization.responseType,
-    session: authenticated,
+    responseType: authorization.responseType,
+    session,
   });
 };

@@ -1,8 +1,8 @@
 import MockDate from "mockdate";
 import { Client } from "@lindorm-io/koa-client";
-import { Session } from "../../entity";
+import { Authorization } from "../../entity";
 import { getAuthorizationToken } from "./authorization";
-import { getTestAccount, getTestClient, getTestIssuer, getTestSession, logger } from "../../test";
+import { getTestClient, getTestIssuer, getTestAuthorization, logger } from "../../test";
 
 jest.mock("jsonwebtoken", () => ({
   sign: (data: any) => data,
@@ -16,7 +16,7 @@ MockDate.set("2020-01-01 08:00:00.000");
 describe("getAuthorizationToken", () => {
   let ctx: any;
   let client: Client;
-  let session: Session;
+  let authorization: Authorization;
 
   beforeEach(() => {
     ctx = {
@@ -26,14 +26,19 @@ describe("getAuthorizationToken", () => {
     };
 
     client = getTestClient();
-    session = getTestSession(getTestAccount("email@lindorm.io"), client, "codeChallenge", "codeMethod");
+    authorization = getTestAuthorization({
+      client,
+      codeChallenge: "codeChallenge",
+      codeMethod: "codeMethod",
+      email: "email@lindorm.io",
+    });
   });
 
   test("should return an authorization token", () => {
     expect(
       getAuthorizationToken(ctx)({
+        authorization,
         client,
-        session,
       }),
     ).toMatchSnapshot();
   });

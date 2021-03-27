@@ -2,18 +2,12 @@ import axios from "axios";
 import { Account } from "../entity";
 import { IDENTITY_SERVICE_BASIC_AUTH, IDENTITY_SERVICE_BASE_URL } from "../config";
 import { IOpenIdClaims } from "../typing";
+import { camelKeys } from "@lindorm-io/core";
 
-export interface IEnsureIdentityData {
-  created: string;
-  updated: string;
-}
-
-export const requestEnsureIdentity = async (account: Account): Promise<IEnsureIdentityData> => {
+export const requestEnsureIdentity = async (account: Account): Promise<void> => {
   const url = new URL(`/headless/create/${account.id}`, IDENTITY_SERVICE_BASE_URL);
 
-  const response = await axios.post(url.toString(), null, { auth: IDENTITY_SERVICE_BASIC_AUTH });
-
-  return response?.data as IEnsureIdentityData;
+  await axios.post(url.toString(), null, { auth: IDENTITY_SERVICE_BASIC_AUTH });
 };
 
 export const requestOpenIdClaims = async (account: Account, scope: Array<string>): Promise<IOpenIdClaims> => {
@@ -21,7 +15,7 @@ export const requestOpenIdClaims = async (account: Account, scope: Array<string>
 
   const response = await axios.post(url.toString(), { scope }, { auth: IDENTITY_SERVICE_BASIC_AUTH });
 
-  return response?.data as IOpenIdClaims;
+  return camelKeys(response?.data || {}) as IOpenIdClaims;
 };
 
 export const requestOpenIdInformation = async (accessToken: string): Promise<IOpenIdClaims> => {
@@ -31,5 +25,5 @@ export const requestOpenIdInformation = async (accessToken: string): Promise<IOp
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 
-  return response?.data as IOpenIdClaims;
+  return camelKeys(response?.data || {}) as IOpenIdClaims;
 };

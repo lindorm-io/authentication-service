@@ -1,7 +1,7 @@
 import MockDate from "mockdate";
-import { GrantType, ResponseType } from "../../enum";
-import { Scope } from "@lindorm-io/jwt";
+import { GrantType } from "../../enum";
 import { RepositoryEntityNotFoundError } from "@lindorm-io/mongo";
+import { Scope } from "@lindorm-io/jwt";
 import { Session } from "../../entity";
 import { SessionRepository } from "./SessionRepository";
 import { getTestRepository, resetStore } from "../../test";
@@ -21,27 +21,7 @@ describe("SessionRepository", () => {
 
     session = new Session({
       id: "be3a62d1-24a0-401c-96dd-3aff95356811",
-
       accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
-      agent: {
-        browser: "browser",
-        geoIp: { geoIp: "geoIp" },
-        os: "os",
-        platform: "platform",
-        source: "source",
-        version: "version",
-      },
-      authenticated: false,
-      authorization: {
-        codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        codeMethod: "sha256",
-        deviceChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-        email: "email@lindorm.io",
-        id: "be3a62d1-24a0-401c-96dd-3aff95356811",
-        otpCode: "otpCode",
-        redirectUri: "https://lindorm.io/",
-        responseType: [ResponseType.REFRESH, ResponseType.ACCESS, ResponseType.IDENTITY].join(" "),
-      },
       clientId: "be3a62d1-24a0-401c-96dd-3aff95356811",
       deviceId: "be3a62d1-24a0-401c-96dd-3aff95356811",
       expires: new Date(),
@@ -74,19 +54,10 @@ describe("SessionRepository", () => {
     await repository.create(
       new Session({
         accountId: "be3a62d1-24a0-401c-96dd-3aff95356811",
-        authorization: {
-          codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-          codeMethod: "sha256",
-          deviceChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-          email: "email@lindorm.io",
-          id: "be3a62d1-24a0-401c-96dd-3aff95356811",
-          otpCode: "otpCode",
-          redirectUri: "https://lindorm.io/",
-          responseType: [ResponseType.REFRESH, ResponseType.ACCESS, ResponseType.IDENTITY].join(" "),
-        },
         clientId: "be3a62d1-24a0-401c-96dd-3aff95356811",
         expires: new Date(),
         grantType: GrantType.EMAIL_LINK,
+        refreshId: "74e8763a-84f4-4b83-ac1a-3b6cad63b110",
         scope: [Scope.DEFAULT],
       }),
     );

@@ -20,10 +20,11 @@ const getBackOffDuration = (entity: RequestLimit): string => {
   if (failedTries === maxFailed[grantType]) return "1 minutes";
   if (failedTries === maxFailed[grantType] + 1) return "3 minutes";
   if (failedTries === maxFailed[grantType] + 2) return "5 minutes";
-  if (failedTries === maxFailed[grantType] + 3) return "15 minutes";
-  if (failedTries === maxFailed[grantType] + 4) return "30 minutes";
-  if (failedTries === maxFailed[grantType] + 5) return "1 hours";
-  if (failedTries >= maxFailed[grantType] + 6) return "2 hours";
+  if (failedTries === maxFailed[grantType] + 3) return "10 minutes";
+  if (failedTries === maxFailed[grantType] + 4) return "15 minutes";
+  if (failedTries === maxFailed[grantType] + 5) return "30 minutes";
+  if (failedTries === maxFailed[grantType] + 6) return "60 minutes";
+  if (failedTries >= maxFailed[grantType] + 7) return "90 minutes";
 };
 
 export const getBackOffDate = (entity: RequestLimit): Date => {

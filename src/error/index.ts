@@ -3,6 +3,7 @@ export * from "./AssertCodeChallengeError";
 export * from "./AssertDeviceChallengeError";
 export * from "./AssertOTPError";
 export * from "./DeviceNotFoundError";
+export * from "./ExpiredAuthorizationError";
 export * from "./ExpiredSessionError";
 export * from "./InvalidAuthorizationError";
 export * from "./InvalidAuthorizationTokenError";

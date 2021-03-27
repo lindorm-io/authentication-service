@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { authenticateSession, createTokens, findOrCreateAccount, findValidSession } from "../../../support";
+import { createSession, createTokens, findOrCreateAccount, validateAuthorization } from "../../../support";
 
 export interface IPerformEmailLinkTokenOptions {
   codeVerifier: string;
@@ -24,24 +24,24 @@ export const performEmailLinkToken = (ctx: IKoaAuthContext) => async (
   const { codeVerifier, grantType, subject } = options;
   const authMethodsReference = ["email"];
 
-  const session = await findValidSession(ctx)({
+  const authorization = await validateAuthorization(ctx)({
     codeVerifier,
+    email: subject,
     grantType,
-    subject,
   });
 
-  const account = await findOrCreateAccount(ctx)(session.authorization.email);
+  const account = await findOrCreateAccount(ctx)(subject);
 
-  const authenticated = await authenticateSession(ctx)({
+  const session = await createSession(ctx)({
     account,
-    session,
+    authorization,
   });
 
   return createTokens(ctx)({
     account,
     authMethodsReference,
     client,
-    responseType: session.authorization.responseType,
-    session: authenticated,
+    responseType: authorization.responseType,
+    session,
   });
 };

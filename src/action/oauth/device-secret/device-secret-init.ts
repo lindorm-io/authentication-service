@@ -1,16 +1,18 @@
 import Joi from "@hapi/joi";
+import { ChallengeStrategy, GrantType } from "../../../enum";
 import { IKoaAuthContext } from "../../../typing";
-import { JOI_CODE_CHALLENGE, JOI_CODE_METHOD, JOI_EMAIL, JOI_GRANT_TYPE, JOI_STATE } from "../../../constant";
-import { assertValidScopeInput, assertValidResponseTypeInput } from "../../../util";
-import { createSession, getAuthorizationToken } from "../../../support";
-import { getRandomValue, stringComparison } from "@lindorm-io/core";
 import { InvalidDeviceError } from "../../../error";
+import { JOI_CODE_CHALLENGE, JOI_CODE_METHOD, JOI_EMAIL, JOI_STATE } from "../../../constant";
+import { Scope } from "@lindorm-io/jwt";
+import { assertValidResponseTypeInput, assertValidScopeInput } from "../../../util";
+import { createAuthorization, getAuthorizationToken } from "../../../support";
+import { requestCertificateChallenge } from "../../../axios";
+import { stringComparison } from "@lindorm-io/core";
 
 export interface IPerformDeviceSecretInitOptions {
   codeChallenge: string;
   codeMethod: string;
   deviceId: string;
-  grantType: string;
   redirectUri: string;
   responseType: string;
   scope: string;
@@ -19,7 +21,7 @@ export interface IPerformDeviceSecretInitOptions {
 }
 
 export interface IPerformDeviceSecretInitData {
-  deviceChallenge: string;
+  certificateChallenge: string;
   expires: number;
   expiresIn: number;
   redirectUri: string;
@@ -31,7 +33,6 @@ const schema = Joi.object({
   codeChallenge: JOI_CODE_CHALLENGE,
   codeMethod: JOI_CODE_METHOD,
   deviceId: Joi.string().guid().required(),
-  grantType: JOI_GRANT_TYPE,
   redirectUri: Joi.string().uri().required(),
   responseType: Joi.string().required(),
   scope: Joi.string().required(),
@@ -44,9 +45,9 @@ export const performDeviceSecretInit = (ctx: IKoaAuthContext) => async (
 ): Promise<IPerformDeviceSecretInitData> => {
   await schema.validateAsync(options);
 
-  const { client, metadata } = ctx;
-  const { codeChallenge, codeMethod, deviceId, grantType, redirectUri, responseType, state, subject } = options;
-  const scope = options.scope.split(" ");
+  const { client, metadata, repository } = ctx;
+  const { codeChallenge, codeMethod, deviceId, redirectUri, responseType, state, subject } = options;
+  const scope = options.scope.split(" ") as Array<Scope>;
 
   if (!stringComparison(deviceId, metadata.deviceId)) {
     throw new InvalidDeviceError(deviceId);
@@ -55,24 +56,29 @@ export const performDeviceSecretInit = (ctx: IKoaAuthContext) => async (
   assertValidResponseTypeInput(responseType);
   assertValidScopeInput(scope);
 
-  const deviceChallenge = getRandomValue(32);
+  const account = await repository.account.find({ email: subject });
 
-  const session = await createSession(ctx)({
+  const { certificateChallenge, challengeId } = await requestCertificateChallenge({
+    account,
+    deviceId,
+    strategy: ChallengeStrategy.SECRET,
+  });
+
+  const authorization = await createAuthorization(ctx)({
+    challengeId,
     codeChallenge,
     codeMethod,
-    deviceChallenge,
-    grantType,
+    email: subject,
+    grantType: GrantType.DEVICE_SECRET,
     redirectUri,
     responseType,
     scope,
-    state,
-    subject,
   });
 
-  const { expires, expiresIn, token } = getAuthorizationToken(ctx)({ client, session });
+  const { expires, expiresIn, token } = getAuthorizationToken(ctx)({ authorization, client });
 
   return {
-    deviceChallenge,
+    certificateChallenge,
     expires,
     expiresIn,
     redirectUri,

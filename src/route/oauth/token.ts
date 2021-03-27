@@ -23,9 +23,9 @@ router.post(
   async (ctx: IKoaAuthContext): Promise<void> => {
     const {
       bindingCode,
+      certificateVerifier,
       codeVerifier,
       deviceId,
-      deviceVerifier,
       grantType,
       otpCode,
       password,
@@ -38,9 +38,9 @@ router.post(
     switch (grantType) {
       case GrantType.DEVICE_PIN:
         ctx.body = await performDevicePINToken(ctx)({
+          certificateVerifier,
           codeVerifier,
           deviceId,
-          deviceVerifier,
           grantType,
           pin,
           subject,
@@ -49,9 +49,9 @@ router.post(
 
       case GrantType.DEVICE_SECRET:
         ctx.body = await performDeviceSecretToken(ctx)({
+          certificateVerifier,
           codeVerifier,
           deviceId,
-          deviceVerifier,
           grantType,
           secret,
           subject,

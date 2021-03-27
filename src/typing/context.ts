@@ -1,5 +1,5 @@
 import { Account, RequestLimit } from "../entity";
-import { AccountRepository, SessionRepository } from "../infrastructure";
+import { AccountRepository, AuthorizationCache, SessionRepository } from "../infrastructure";
 import { Client, ClientCache, ClientRepository } from "@lindorm-io/koa-client";
 import { IKoaAppContext } from "@lindorm-io/koa";
 import { ITokenIssuerVerifyData, TokenIssuer } from "@lindorm-io/jwt";
@@ -12,6 +12,7 @@ import { RequestLimitCache } from "../infrastructure";
 export interface IKoaAuthContext extends IKoaAppContext {
   account: Account;
   cache: {
+    authorization: AuthorizationCache;
     client: ClientCache;
     keyPair: KeyPairCache;
     requestLimit: RequestLimitCache;

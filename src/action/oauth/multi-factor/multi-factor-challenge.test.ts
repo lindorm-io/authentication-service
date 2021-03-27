@@ -1,18 +1,23 @@
 import { Client, InvalidClientError } from "@lindorm-io/koa-client";
-import { GrantType, MultiFactorChallengeType, ResponseType } from "../../../enum";
+import { MultiFactorChallengeType } from "../../../enum";
 import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
-import { Permission, Scope } from "@lindorm-io/jwt";
-import { Session } from "../../../entity";
-import { baseHash } from "@lindorm-io/core";
-import { getTestRepository, getTestAccount, getTestClient, resetStore } from "../../../test";
+import { Permission } from "@lindorm-io/jwt";
 import { performMultiFactorChallenge } from "./multi-factor-challenge";
+import {
+  getTestAccount,
+  getTestAuthorization,
+  getTestCache,
+  getTestClient,
+  getTestRepository,
+  resetCache,
+  resetStore,
+} from "../../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../../support", () => ({
-  assertSessionIsNotExpired: jest.fn(() => {}),
-  encryptClientSecret: jest.fn((input) => baseHash(input)),
+  assertAuthorizationIsNotExpired: jest.fn(() => {}),
 }));
 
 describe("performMultiFactorChallenge", () => {
@@ -20,40 +25,31 @@ describe("performMultiFactorChallenge", () => {
 
   beforeEach(async () => {
     ctx = {
-      client: getTestClient(),
+      cache: await getTestCache(),
+      client: getTestClient(false),
       repository: await getTestRepository(),
       token: {
-        multiFactor: { subject: "d22a19de-8d33-4dd2-8712-58af46490184" },
+        multiFactor: { subject: "4923fabc-aab2-4804-b92b-2aa96c4999a1" },
       },
     };
 
     await ctx.repository.account.create(getTestAccount("email@lindorm.io"));
-    await ctx.repository.session.create(
-      new Session({
-        id: "d22a19de-8d33-4dd2-8712-58af46490184",
-        authorization: {
-          codeChallenge: "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
-          codeMethod: "sha256",
-          email: "email@lindorm.io",
-          id: "73b5a544-f0c6-429a-a327-6f1847f956e5",
-          redirectUri: "https://lindorm.io",
-          responseType: ResponseType.ACCESS,
-        },
-        clientId: ctx.client.id,
-        expires: new Date("2999-12-12 12:12:12.000"),
-        grantType: GrantType.PASSWORD,
-        scope: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
+    await ctx.cache.authorization.create(
+      getTestAuthorization({
+        client: ctx.client,
       }),
     );
   });
 
-  afterEach(resetStore);
+  afterEach(() => {
+    resetCache();
+    resetStore();
+  });
 
   test("should return challenge data", async () => {
     await expect(
       performMultiFactorChallenge(ctx)({
         challengeType: MultiFactorChallengeType.OTP,
-        grantType: GrantType.REFRESH_TOKEN,
         subject: "email@lindorm.io",
       }),
     ).resolves.toMatchSnapshot();
@@ -65,7 +61,6 @@ describe("performMultiFactorChallenge", () => {
     await expect(
       performMultiFactorChallenge(ctx)({
         challengeType: MultiFactorChallengeType.OTP,
-        grantType: GrantType.REFRESH_TOKEN,
         subject: "email@lindorm.io",
       }),
     ).rejects.toThrow(expect.any(InvalidClientError));
@@ -75,7 +70,6 @@ describe("performMultiFactorChallenge", () => {
     await expect(
       performMultiFactorChallenge(ctx)({
         challengeType: MultiFactorChallengeType.OTP,
-        grantType: GrantType.REFRESH_TOKEN,
         subject: "wrong@lindorm.io",
       }),
     ).rejects.toThrow(expect.any(InvalidSubjectError));
@@ -89,7 +83,6 @@ describe("performMultiFactorChallenge", () => {
     await expect(
       performMultiFactorChallenge(ctx)({
         challengeType: MultiFactorChallengeType.OTP,
-        grantType: GrantType.REFRESH_TOKEN,
         subject: "email@lindorm.io",
       }),
     ).rejects.toStrictEqual(expect.any(InvalidPermissionError));
@@ -99,7 +92,6 @@ describe("performMultiFactorChallenge", () => {
     await expect(
       performMultiFactorChallenge(ctx)({
         challengeType: MultiFactorChallengeType.OOB,
-        grantType: GrantType.REFRESH_TOKEN,
         subject: "email@lindorm.io",
       }),
     ).rejects.toStrictEqual(

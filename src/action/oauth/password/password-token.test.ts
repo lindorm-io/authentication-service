@@ -1,19 +1,16 @@
-import { GrantType, ResponseType } from "../../../enum";
+import { GrantType } from "../../../enum";
 import { performPasswordToken } from "./password-token";
 import { getTestRepository, getTestAccountWithOTP, getTestAccountWithPassword, resetStore } from "../../../test";
 import { baseHash } from "@lindorm-io/core";
 
 jest.mock("../../../support", () => ({
   assertAccountPassword: jest.fn(() => {}),
-  authenticateSession: jest.fn(() => () => "session"),
+  createSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
   encryptAccountPassword: jest.fn((input) => baseHash(input)),
   getMultiFactorToken: jest.fn(() => () => "multi-factor-token"),
-  findValidSession: jest.fn(() => () => ({
-    authorization: {
-      email: "email@lindorm.io",
-      responseType: ResponseType.REFRESH,
-    },
+  validateAuthorization: jest.fn(() => () => ({
+    responseType: "responseType",
   })),
 }));
 

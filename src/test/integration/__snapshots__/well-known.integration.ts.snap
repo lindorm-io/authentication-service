@@ -2,7 +2,7 @@
 
 exports[`/.well-known GET /openid-configuration 1`] = `
 Object {
-  "authorization_endpoint": "https://test.authentication.lindorm.io/oauth/authorization",
+  "authorization_endpoint": "https://test.authentication.lindorm.io/oauth/authorize",
   "claims_parameter_supported": false,
   "grant_types_supported": Array [
     "pin_code",

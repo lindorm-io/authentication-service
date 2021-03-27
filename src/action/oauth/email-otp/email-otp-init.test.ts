@@ -3,21 +3,20 @@ import { Scope } from "@lindorm-io/jwt";
 import { performEmailOTPInit } from "./email-otp-init";
 
 jest.mock("../../../util", () => ({
-  assertValidResponseTypeInput: jest.fn(() => undefined),
-  assertValidScopeInput: jest.fn(() => undefined),
+  assertValidResponseTypeInput: jest.fn(),
+  assertValidScopeInput: jest.fn(),
 }));
 jest.mock("../../../support", () => ({
-  createSession: jest.fn(() => () => "session"),
+  createAuthorization: jest.fn(() => () => "createAuthorization"),
   getAuthorizationToken: jest.fn(() => () => ({
     expires: "expires",
     expiresIn: "expiresIn",
     token: "token",
   })),
-  sendEmailOTP: jest.fn(() => () => undefined),
+  sendEmailOTP: jest.fn(() => () => {}),
 }));
 jest.mock("@lindorm-io/core", () => ({
-  ...jest.requireActual("@lindorm-io/core"),
-  getRandomValue: jest.fn(() => "getRandomValue"),
+  getRandomNumber: jest.fn(() => "123456"),
 }));
 
 describe("performEmailOTPInit", () => {

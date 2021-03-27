@@ -1,15 +1,12 @@
-import { GrantType, ResponseType } from "../../../enum";
+import { GrantType } from "../../../enum";
 import { performEmailLinkToken } from "./email-link-token";
 
 jest.mock("../../../support", () => ({
-  authenticateSession: jest.fn(() => () => "session"),
+  createSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
   findOrCreateAccount: jest.fn(() => () => "account"),
-  findValidSession: jest.fn(() => () => ({
-    authorization: {
-      email: "email@lindorm.io",
-      responseType: ResponseType.REFRESH,
-    },
+  validateAuthorization: jest.fn(() => () => ({
+    responseType: "responseType",
   })),
 }));
 

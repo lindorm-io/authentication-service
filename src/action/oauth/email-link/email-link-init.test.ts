@@ -3,17 +3,17 @@ import { Scope } from "@lindorm-io/jwt";
 import { performEmailLinkInit } from "./email-link-init";
 
 jest.mock("../../../util", () => ({
-  assertValidResponseTypeInput: jest.fn(() => undefined),
-  assertValidScopeInput: jest.fn(() => undefined),
+  assertValidResponseTypeInput: jest.fn(),
+  assertValidScopeInput: jest.fn(),
 }));
 jest.mock("../../../support", () => ({
-  createSession: jest.fn(() => () => "session"),
+  createAuthorization: jest.fn(() => () => "createAuthorization"),
   getAuthorizationToken: jest.fn(() => () => ({
     expires: "expires",
     expiresIn: "expiresIn",
     token: "token",
   })),
-  sendEmailLink: jest.fn(() => () => undefined),
+  sendEmailLink: jest.fn(() => () => {}),
 }));
 
 describe("performEmailLinkInit", () => {

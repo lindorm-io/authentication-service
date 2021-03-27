@@ -4,22 +4,29 @@ export interface IConfigurationData extends IConfigurationDataBase {
   SERVER_PORT: number;
   HOST: string;
 
+  // Secrets
+  CRYPTO_AES_SECRET: string;
+  CRYPTO_SHA_SECRET: string;
+
+  // Tokens
   JWT_ISSUER: string;
+
+  // Authentication
+  ACCOUNT_OTP_ISSUER: string;
+
+  // Emails
+  MAILGUN_API_KEY: string;
+  MAILGUN_DOMAIN: string;
+  MAILGUN_FROM: string;
+
+  // Expiry
   JWT_ACCESS_TOKEN_EXPIRY: string;
   JWT_AUTHORIZATION_TOKEN_EXPIRY: string;
   JWT_IDENTITY_TOKEN_EXPIRY: string;
   JWT_MULTI_FACTOR_TOKEN_EXPIRY: string;
   JWT_REFRESH_TOKEN_EXPIRY: string;
 
-  CRYPTO_AES_SECRET: string;
-  CRYPTO_SHA_SECRET: string;
-
-  ACCOUNT_OTP_ISSUER: string;
-
-  MAILGUN_API_KEY: string;
-  MAILGUN_DOMAIN: string;
-  MAILGUN_FROM: string;
-
+  // Infrastructure
   REDIS_PORT: number;
 
   MONGO_INITDB_ROOT_USERNAME: string;
@@ -28,6 +35,7 @@ export interface IConfigurationData extends IConfigurationDataBase {
   MONGO_EXPOSE_PORT: number;
   MONGO_DB_NAME: string;
 
+  // Services
   DEVICE_SERVICE_BASE_URL: string;
   DEVICE_SERVICE_AUTH_USERNAME: string;
   DEVICE_SERVICE_AUTH_PASSWORD: string;

@@ -35,7 +35,7 @@ describe("/oauth PASSWORD", () => {
 
   test("should resolve", async () => {
     const initResponse = await request(koa.callback())
-      .post("/oauth/authorization")
+      .post("/oauth/authorize")
       .set("X-Client-ID", TEST_CLIENT.id)
       .set("X-Correlation-ID", uuid())
       .send({

@@ -14,17 +14,14 @@ import { requestEnsureIdentity } from "../axios";
 
     const repository = new AccountRepository({ logger: winston, db: mongo.getDatabase() });
 
-    const account = new Account({
-      email: `${getRandomValue(12)}@test.lindorm.io`,
-    });
+    const account = await repository.create(
+      new Account({
+        email: `${getRandomValue(12)}@test.lindorm.io`,
+      }),
+    );
+    await requestEnsureIdentity(account);
 
-    await repository.create(account);
-
-    winston.info("account created", { email: account.email });
-
-    const data = await requestEnsureIdentity(account);
-
-    winston.info("identity created", data);
+    winston.info("account created", { id: account.id, email: account.email });
   } catch (err) {
     winston.error("error", err);
   } finally {

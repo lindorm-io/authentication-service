@@ -48,9 +48,6 @@ export class SessionRepository extends RepositoryBase<Session> implements ISessi
       events: entity.events,
 
       accountId: entity.accountId,
-      agent: entity.agent,
-      authenticated: entity.authenticated,
-      authorization: entity.authorization,
       clientId: entity.clientId,
       deviceId: entity.deviceId,
       expires: entity.expires,

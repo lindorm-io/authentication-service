@@ -2,23 +2,23 @@ import Joi from "@hapi/joi";
 import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { InvalidDeviceError } from "../../../error";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
-import { authenticateSession, createTokens, findValidSession } from "../../../support";
+import { createSession, createTokens, validateAuthorization } from "../../../support";
 import { stringComparison } from "@lindorm-io/core";
 import { requestVerifyDeviceSecret } from "../../../axios";
 
 export interface IPerformDeviceSecretTokenOptions {
+  certificateVerifier: string;
   codeVerifier: string;
   deviceId: string;
-  deviceVerifier: string;
   grantType: string;
   secret: string;
   subject: string;
 }
 
 const schema = Joi.object({
+  certificateVerifier: Joi.string().required(),
   codeVerifier: Joi.string().required(),
   deviceId: Joi.string().guid().required(),
-  deviceVerifier: Joi.string().required(),
   grantType: JOI_GRANT_TYPE,
   secret: Joi.string().required(),
   subject: JOI_EMAIL,
@@ -30,38 +30,38 @@ export const performDeviceSecretToken = (ctx: IKoaAuthContext) => async (
   await schema.validateAsync(options);
 
   const { client, metadata, repository } = ctx;
-  const { codeVerifier, deviceId, deviceVerifier, grantType, secret, subject } = options;
+  const { certificateVerifier, codeVerifier, deviceId, grantType, secret, subject } = options;
   const authMethodsReference = ["biometrics"];
 
   if (!stringComparison(deviceId, metadata.deviceId)) {
     throw new InvalidDeviceError(deviceId);
   }
 
-  const session = await findValidSession(ctx)({
+  const authorization = await validateAuthorization(ctx)({
     codeVerifier,
+    email: subject,
     grantType,
-    subject,
   });
 
-  const account = await repository.account.find({ email: session.authorization.email });
+  const account = await repository.account.find({ email: subject });
 
   await requestVerifyDeviceSecret({
     account,
-    deviceVerifier,
+    authorization,
+    certificateVerifier,
     secret,
-    session,
   });
 
-  const authenticated = await authenticateSession(ctx)({
+  const session = await createSession(ctx)({
     account,
-    session,
+    authorization,
   });
 
   return createTokens(ctx)({
     account,
     authMethodsReference,
     client,
-    responseType: session.authorization.responseType,
-    session: authenticated,
+    responseType: authorization.responseType,
+    session,
   });
 };

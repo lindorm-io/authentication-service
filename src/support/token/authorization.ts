@@ -1,12 +1,12 @@
 import { Audience } from "../../enum";
 import { Client } from "@lindorm-io/koa-client";
-import { Session } from "../../entity";
+import { Authorization } from "../../entity";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 
 export interface IGetAuthorizationTokenOptions {
+  authorization: Authorization;
   client: Client;
-  session: Session;
 }
 
 export const getAuthorizationToken = (ctx: IKoaAuthContext) => (
@@ -14,20 +14,20 @@ export const getAuthorizationToken = (ctx: IKoaAuthContext) => (
 ): ITokenIssuerSignData => {
   const { logger, issuer, metadata } = ctx;
   const { tokenIssuer } = issuer;
-  const { client, session } = options;
+  const { authorization, client } = options;
 
   logger.debug("creating authorization token", {
+    authorization: authorization.id,
     client: client.id,
     device: metadata.deviceId,
-    session: session.id,
   });
 
   return tokenIssuer.sign({
-    id: session.authorization.id,
+    id: authorization.id,
     audience: Audience.AUTHORIZATION,
     clientId: client.id,
     deviceId: metadata.deviceId,
-    expiry: session.expires,
-    subject: session.id,
+    expiry: authorization.expires,
+    subject: authorization.subject,
   });
 };

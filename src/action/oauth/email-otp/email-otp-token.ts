@@ -2,11 +2,11 @@ import Joi from "@hapi/joi";
 import { IKoaAuthContext, ICreateTokensData } from "../../../typing";
 import { JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
 import {
-  assertSessionOTP,
-  authenticateSession,
+  assertAuthorizationOTP,
+  createSession,
   createTokens,
   findOrCreateAccount,
-  findValidSession,
+  validateAuthorization,
 } from "../../../support";
 
 export interface IPerformEmailOTPTokenOptions {
@@ -32,26 +32,26 @@ export const performEmailOTPToken = (ctx: IKoaAuthContext) => async (
   const { codeVerifier, grantType, otpCode, subject } = options;
   const authMethodsReference = ["email", "otp"];
 
-  const session = await findValidSession(ctx)({
+  const authorization = await validateAuthorization(ctx)({
     codeVerifier,
+    email: subject,
     grantType,
-    subject,
   });
 
-  const account = await findOrCreateAccount(ctx)(session.authorization.email);
+  const account = await findOrCreateAccount(ctx)(subject);
 
-  assertSessionOTP(session, otpCode);
+  assertAuthorizationOTP(authorization, otpCode);
 
-  const authenticated = await authenticateSession(ctx)({
+  const session = await createSession(ctx)({
     account,
-    session,
+    authorization,
   });
 
   return createTokens(ctx)({
     account,
     authMethodsReference,
     client,
-    responseType: session.authorization.responseType,
-    session: authenticated,
+    responseType: authorization.responseType,
+    session,
   });
 };

@@ -12,12 +12,11 @@ router.use(tokenValidationMiddleware);
 router.post(
   "/challenge",
   async (ctx: IKoaAuthContext): Promise<void> => {
-    const { authenticatorId, challengeType, grantType, subject } = ctx.request.body;
+    const { authenticatorId, challengeType, subject } = ctx.request.body;
 
     ctx.body = await performMultiFactorChallenge(ctx)({
       authenticatorId,
       challengeType,
-      grantType,
       subject,
     });
 

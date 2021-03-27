@@ -53,6 +53,20 @@ export const OTP_HANDLER_OPTIONS = {
   secret: config.CRYPTO_AES_SECRET,
 };
 
+export const BEARER_AUTH_MW_OPTIONS = {
+  issuer: config.JWT_ISSUER,
+  audience: Audience.ACCESS,
+};
+
+export const TOKEN_ISSUER_MW_OPTIONS = {
+  issuer: config.JWT_ISSUER,
+};
+
+export const REDIS_CONNECTION_OPTIONS = {
+  type: RedisConnectionType.CACHE,
+  port: config.REDIS_PORT,
+};
+
 export const MONGO_CONNECTION_OPTIONS = {
   type: MongoConnectionType.STORAGE,
   auth: {
@@ -66,28 +80,14 @@ export const MONGO_CONNECTION_OPTIONS = {
   databaseName: config.MONGO_DB_NAME,
 };
 
-export const REDIS_CONNECTION_OPTIONS = {
-  type: RedisConnectionType.CACHE,
-  port: config.REDIS_PORT,
-};
-
-export const BEARER_AUTH_MW_OPTIONS = {
-  issuer: config.JWT_ISSUER,
-  audience: Audience.ACCESS,
-};
-
-export const TOKEN_ISSUER_MW_OPTIONS = {
-  issuer: config.JWT_ISSUER,
+export const DEVICE_SERVICE_BASE_URL = config.DEVICE_SERVICE_BASE_URL;
+export const DEVICE_SERVICE_BASIC_AUTH = {
+  username: config.DEVICE_SERVICE_AUTH_USERNAME,
+  password: config.DEVICE_SERVICE_AUTH_PASSWORD,
 };
 
 export const IDENTITY_SERVICE_BASE_URL = config.IDENTITY_SERVICE_BASE_URL;
 export const IDENTITY_SERVICE_BASIC_AUTH = {
   username: config.IDENTITY_SERVICE_AUTH_USERNAME,
   password: config.IDENTITY_SERVICE_AUTH_PASSWORD,
-};
-
-export const DEVICE_SERVICE_BASE_URL = config.DEVICE_SERVICE_BASE_URL;
-export const DEVICE_SERVICE_BASIC_AUTH = {
-  username: config.DEVICE_SERVICE_AUTH_USERNAME,
-  password: config.DEVICE_SERVICE_AUTH_PASSWORD,
 };

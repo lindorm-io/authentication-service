@@ -1,14 +1,14 @@
 import { Audience } from "../../enum";
+import { Authorization } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
-import { Session } from "../../entity";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
 import { JWT_MULTI_FACTOR_TOKEN_EXPIRY } from "../../config";
 
 export interface IGetMultiFactorTokenOptions {
   authMethodsReference: Array<string>;
+  authorization: Authorization;
   client: Client;
-  session: Session;
 }
 
 export const getMultiFactorToken = (ctx: IKoaAuthContext) => (
@@ -16,12 +16,12 @@ export const getMultiFactorToken = (ctx: IKoaAuthContext) => (
 ): ITokenIssuerSignData => {
   const { logger, issuer, metadata } = ctx;
   const { tokenIssuer } = issuer;
-  const { authMethodsReference, client, session } = options;
+  const { authMethodsReference, client, authorization } = options;
 
   logger.debug("creating multi factor token", {
+    authorization: authorization.id,
     client: client.id,
     device: metadata.deviceId,
-    session: session.id,
   });
 
   return tokenIssuer.sign({
@@ -30,6 +30,6 @@ export const getMultiFactorToken = (ctx: IKoaAuthContext) => (
     clientId: client.id,
     deviceId: metadata.deviceId,
     expiry: client?.extra?.jwtMultiFactorTokenExpiry || JWT_MULTI_FACTOR_TOKEN_EXPIRY,
-    subject: session.id,
+    subject: authorization.id,
   });
 };

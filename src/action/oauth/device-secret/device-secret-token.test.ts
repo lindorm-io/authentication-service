@@ -1,16 +1,13 @@
 import { Account } from "../../../entity";
-import { GrantType, ResponseType } from "../../../enum";
-import { getTestRepository, resetStore } from "../../../test";
+import { GrantType } from "../../../enum";
+import { getTestAccount, getTestRepository, resetStore } from "../../../test";
 import { performDeviceSecretToken } from "./device-secret-token";
 
 jest.mock("../../../support", () => ({
-  authenticateSession: jest.fn(() => () => "session"),
+  createSession: jest.fn(() => () => "session"),
   createTokens: jest.fn(() => () => "tokens"),
-  findValidSession: jest.fn(() => () => ({
-    authorization: {
-      email: "email@lindorm.io",
-      responseType: ResponseType.REFRESH,
-    },
+  validateAuthorization: jest.fn(() => () => ({
+    responseType: "responseType",
   })),
 }));
 jest.mock("../../../axios", () => ({
@@ -19,6 +16,7 @@ jest.mock("../../../axios", () => ({
 
 describe("performDeviceSecretToken", () => {
   let ctx: any;
+  let account: Account;
 
   beforeEach(async () => {
     ctx = {
@@ -29,11 +27,7 @@ describe("performDeviceSecretToken", () => {
       repository: await getTestRepository(),
     };
 
-    await ctx.repository.account.create(
-      new Account({
-        email: "email@lindorm.io",
-      }),
-    );
+    account = await ctx.repository.account.create(getTestAccount("email@lindorm.io"));
   });
 
   afterEach(resetStore);
@@ -41,12 +35,12 @@ describe("performDeviceSecretToken", () => {
   test("should return tokens", async () => {
     await expect(
       performDeviceSecretToken(ctx)({
+        certificateVerifier: "certificateVerifier",
         codeVerifier: "codeVerifier",
         deviceId: "96fd2bc9-90d7-41c1-a595-e3a3efe6fb3c",
-        deviceVerifier: "deviceVerifier",
         grantType: GrantType.REFRESH_TOKEN,
         secret: "secret",
-        subject: "email@lindorm.io",
+        subject: account.email,
       }),
     ).resolves.toMatchSnapshot();
   });

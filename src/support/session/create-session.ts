@@ -1,57 +1,37 @@
+import { Account, Authorization, Session } from "../../entity";
 import { IKoaAuthContext } from "../../typing";
-import { JWT_AUTHORIZATION_TOKEN_EXPIRY } from "../../config";
-import { Session } from "../../entity";
-import { encryptSessionOTP } from "./otp";
-import { getSessionExpires } from "./expires";
+import { JWT_REFRESH_TOKEN_EXPIRY } from "../../config";
+import { getExpiryDate } from "../../util";
 import { v4 as uuid } from "uuid";
 
 export interface ICreateSessionOptions {
-  codeChallenge: string;
-  codeMethod: string;
-  grantType: string;
-  redirectUri: string;
-  responseType: string;
-  deviceChallenge?: string;
-  otpCode?: string;
-  scope: Array<string>;
-  state: string;
-  subject: string;
+  account: Account;
+  authorization: Authorization;
 }
 
 export const createSession = (ctx: IKoaAuthContext) => async (options: ICreateSessionOptions): Promise<Session> => {
-  const { client, metadata, repository, userAgent } = ctx;
-  const {
-    codeChallenge,
-    codeMethod,
-    deviceChallenge,
-    grantType,
-    otpCode,
-    redirectUri,
-    responseType,
-    scope,
-    subject,
-  } = options;
+  const { cache, client, repository } = ctx;
+  const { account, authorization } = options;
 
-  const expires = client.extra?.jwtAuthorizationTokenExpiry || JWT_AUTHORIZATION_TOKEN_EXPIRY;
+  const expiry = client.extra?.jwtRefreshTokenExpiry || JWT_REFRESH_TOKEN_EXPIRY;
 
-  return await repository.session.create(
+  const session = await repository.session.create(
     new Session({
-      agent: userAgent,
-      authorization: {
-        codeChallenge,
-        codeMethod,
-        deviceChallenge,
-        email: subject,
-        id: uuid(),
-        otpCode: otpCode ? encryptSessionOTP(otpCode) : null,
-        redirectUri,
-        responseType,
-      },
-      clientId: client.id,
-      deviceId: metadata.deviceId,
-      expires: getSessionExpires(expires),
-      grantType,
-      scope,
+      accountId: account.id,
+      clientId: authorization.clientId,
+      deviceId: authorization.deviceId,
+      expires: getExpiryDate(expiry),
+      grantType: authorization.grantType,
+      refreshId: uuid(),
+      scope: authorization.scope,
     }),
   );
+
+  try {
+    await cache.authorization.remove(authorization);
+  } catch (_) {
+    /* ignored */
+  }
+
+  return session;
 };

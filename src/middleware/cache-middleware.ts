@@ -1,5 +1,7 @@
 import { IKoaAuthContext, TNext } from "../typing";
-import { RequestLimitCache } from "../infrastructure";
+import { AuthorizationCache, RequestLimitCache } from "../infrastructure";
+import { JWT_AUTHORIZATION_TOKEN_EXPIRY } from "../config";
+import { stringToSeconds } from "@lindorm-io/core";
 
 export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<void> => {
   const start = Date.now();
@@ -9,7 +11,16 @@ export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promis
 
   ctx.cache = {
     ...ctx.cache,
-    requestLimit: new RequestLimitCache({ client, logger }),
+    authorization: new AuthorizationCache({
+      client,
+      expiresInSeconds: stringToSeconds(JWT_AUTHORIZATION_TOKEN_EXPIRY) + 60,
+      logger,
+    }),
+    requestLimit: new RequestLimitCache({
+      client,
+      expiresInSeconds: stringToSeconds("91 minutes"),
+      logger,
+    }),
   };
 
   logger.debug("redis cache connected");

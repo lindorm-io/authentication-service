@@ -1,4 +1,5 @@
 export * from "./account";
+export * from "./authorization";
 export * from "./client";
 export * from "./email";
 export * from "./key-pair";

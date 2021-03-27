@@ -4,15 +4,14 @@ import { HttpStatus } from "@lindorm-io/core";
 import { IKoaAuthContext } from "../../../typing";
 import { InvalidClientError } from "@lindorm-io/koa-client";
 import { InvalidPermissionError, InvalidSubjectError } from "../../../error";
-import { JOI_CHALLENGE_TYPE, JOI_EMAIL, JOI_GRANT_TYPE } from "../../../constant";
+import { JOI_CHALLENGE_TYPE, JOI_EMAIL } from "../../../constant";
 import { MultiFactorChallengeType } from "../../../enum";
-import { assertSessionIsNotExpired } from "../../../support";
+import { assertAuthorizationIsNotExpired } from "../../../support";
 import { isLocked } from "@lindorm-io/jwt";
 
 export interface IPerformMultiFactorChallengeOptions {
   authenticatorId?: string;
   challengeType: string;
-  grantType: string;
   subject: string;
 }
 
@@ -25,7 +24,6 @@ export interface IPerformMultiFactorChallengeData {
 const schema = Joi.object({
   authenticatorId: Joi.string(),
   challengeType: JOI_CHALLENGE_TYPE,
-  grantType: JOI_GRANT_TYPE,
   subject: JOI_EMAIL,
 });
 
@@ -34,21 +32,21 @@ export const performMultiFactorChallenge = (ctx: IKoaAuthContext) => async (
 ): Promise<IPerformMultiFactorChallengeData> => {
   await schema.validateAsync(options);
 
-  const { client, repository, token } = ctx;
+  const { cache, client, repository, token } = ctx;
   const { challengeType, subject } = options;
   const {
-    multiFactor: { subject: sessionId },
+    multiFactor: { subject: authorizationId },
   } = token;
 
-  const session = await repository.session.find({ id: sessionId });
+  const authorization = await cache.authorization.find(authorizationId);
 
-  assertSessionIsNotExpired(session);
+  assertAuthorizationIsNotExpired(authorization);
 
-  if (session.clientId !== client.id) {
+  if (authorization.clientId !== client.id) {
     throw new InvalidClientError(client.id);
   }
 
-  if (session.authorization.email !== subject) {
+  if (authorization.email !== subject) {
     throw new InvalidSubjectError(subject);
   }
 
