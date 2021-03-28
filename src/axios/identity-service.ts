@@ -4,10 +4,23 @@ import { IDENTITY_SERVICE_BASIC_AUTH, IDENTITY_SERVICE_BASE_URL } from "../confi
 import { IOpenIdClaims } from "../typing";
 import { camelKeys } from "@lindorm-io/core";
 
-export const requestEnsureIdentity = async (account: Account): Promise<void> => {
+interface IRequestEnsureIdentityData {
+  created: Date;
+  updated: Date;
+}
+
+export const requestEnsureIdentity = async (account: Account): Promise<IRequestEnsureIdentityData> => {
   const url = new URL(`/headless/create/${account.id}`, IDENTITY_SERVICE_BASE_URL);
 
-  await axios.post(url.toString(), null, { auth: IDENTITY_SERVICE_BASIC_AUTH });
+  const response = await axios.post(url.toString(), null, { auth: IDENTITY_SERVICE_BASIC_AUTH });
+
+  const created = response.data?.created ? new Date(response.data.created) : undefined;
+  const updated = response.data?.updated ? new Date(response.data.updated) : undefined;
+
+  return {
+    created,
+    updated,
+  };
 };
 
 export const requestOpenIdClaims = async (account: Account, scope: Array<string>): Promise<IOpenIdClaims> => {

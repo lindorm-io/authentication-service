@@ -1,9 +1,8 @@
 import { IKoaAuthContext } from "../../typing";
 import { orderBy } from "lodash";
-import { Account, ISessionAgent } from "../../entity";
+import { Account } from "../../entity";
 
 export interface IGetAccountSessionsData {
-  agent: ISessionAgent;
   created: Date;
   expires: Date;
   id: string;
@@ -21,7 +20,6 @@ export const getAccountSessions = (ctx: IKoaAuthContext) => async (
 
   for (const session of sessions) {
     sessionArray.push({
-      agent: session.agent,
       created: session.created,
       expires: session.expires,
       id: session.id,

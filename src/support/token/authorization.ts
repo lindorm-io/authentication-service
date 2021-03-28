@@ -28,6 +28,6 @@ export const getAuthorizationToken = (ctx: IKoaAuthContext) => (
     clientId: client.id,
     deviceId: metadata.deviceId,
     expiry: authorization.expires,
-    subject: authorization.subject,
+    subject: authorization.email,
   });
 };

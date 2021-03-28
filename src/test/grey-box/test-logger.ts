@@ -1,9 +1,9 @@
 export const logger = {
-  error: jest.fn(),
-  warn: jest.fn(),
-  info: jest.fn(),
-  verbose: jest.fn(),
-  debug: jest.fn(),
-  silly: jest.fn(),
+  error: (): void => undefined,
+  warn: (): void => undefined,
+  info: (): void => undefined,
+  verbose: (): void => undefined,
+  debug: (): void => undefined,
+  silly: (): void => undefined,
   createChildLogger: (): any => logger,
 };
