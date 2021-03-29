@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SessionRepository should create 1`] = `
+Session {
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "session_created",
+      "payload": Object {
+        "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "expires": 2020-01-01T07:00:00.000Z,
+        "grantType": "email_otp",
+        "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "scope": Array [
+          "default",
+        ],
+      },
+    },
+  ],
+  "_expires": 2020-01-01T07:00:00.000Z,
+  "_grantType": "email_otp",
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_scope": Array [
+    "default",
+  ],
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`SessionRepository should find 1`] = `
+Session {
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "session_created",
+      "payload": Object {
+        "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "expires": 2020-01-01T07:00:00.000Z,
+        "grantType": "email_otp",
+        "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "scope": Array [
+          "default",
+        ],
+      },
+    },
+  ],
+  "_expires": 2020-01-01T07:00:00.000Z,
+  "_grantType": "email_otp",
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_scope": Array [
+    "default",
+  ],
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`SessionRepository should find many 1`] = `
+Array [
+  Session {
+    "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_created": 2020-01-01T07:00:00.000Z,
+    "_deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_events": Array [
+      Object {
+        "date": 2020-01-01T07:00:00.000Z,
+        "name": "session_created",
+        "payload": Object {
+          "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "expires": 2020-01-01T07:00:00.000Z,
+          "grantType": "email_otp",
+          "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "scope": Array [
+            "default",
+          ],
+        },
+      },
+    ],
+    "_expires": 2020-01-01T07:00:00.000Z,
+    "_grantType": "email_otp",
+    "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_scope": Array [
+      "default",
+    ],
+    "_updated": 2020-01-01T07:00:00.000Z,
+    "_version": 0,
+  },
+  Session {
+    "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_created": 2020-01-01T07:00:00.000Z,
+    "_deviceId": null,
+    "_events": Array [
+      Object {
+        "date": 2020-01-01T07:00:00.000Z,
+        "name": "session_created",
+        "payload": Object {
+          "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+          "deviceId": null,
+          "expires": 2020-01-01T07:00:00.000Z,
+          "grantType": "email_link",
+          "refreshId": "74e8763a-84f4-4b83-ac1a-3b6cad63b110",
+          "scope": Array [
+            "default",
+          ],
+        },
+      },
+    ],
+    "_expires": 2020-01-01T07:00:00.000Z,
+    "_grantType": "email_link",
+    "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "_refreshId": "74e8763a-84f4-4b83-ac1a-3b6cad63b110",
+    "_scope": Array [
+      "default",
+    ],
+    "_updated": 2020-01-01T07:00:00.000Z,
+    "_version": 0,
+  },
+]
+`;
+
+exports[`SessionRepository should update 1`] = `
+Session {
+  "_accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_events": Array [
+    Object {
+      "date": 2020-01-01T07:00:00.000Z,
+      "name": "session_created",
+      "payload": Object {
+        "accountId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "clientId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "deviceId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "expires": 2020-01-01T07:00:00.000Z,
+        "grantType": "email_otp",
+        "refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+        "scope": Array [
+          "default",
+        ],
+      },
+    },
+  ],
+  "_expires": 2020-01-01T07:00:00.000Z,
+  "_grantType": "email_otp",
+  "_id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_refreshId": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "_scope": Array [
+    "default",
+  ],
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 1,
+}
+`;

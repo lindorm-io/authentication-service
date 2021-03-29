@@ -36,7 +36,7 @@ describe("createTokens", () => {
 
     account = getTestAccount("email@lindorm.io");
     client = getTestClient();
-    session = getTestSession(account, client, "codeChallenge", "codeMethod");
+    session = getTestSession({ account, client });
   });
 
   test("should return refresh token", async () => {

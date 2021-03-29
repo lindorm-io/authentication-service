@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createSession should create a new authorization 1`] = `
+Authorization {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_id": "591ec96f-2e9f-4c54-8da2-ee982a373935",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+  "challengeId": "f00cad5c-fc34-43bf-837d-b60b81605dda",
+  "clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+  "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+  "codeMethod": "sha256",
+  "deviceId": "2122b49f-3dc0-46c2-9a8b-6cec5e26a389",
+  "email": "email@lindorm.io",
+  "expires": 2020-01-01T07:00:00.000Z,
+  "grantType": "pin_code",
+  "otpCode": "b3RwQ29kZQ==",
+  "redirectUri": "https://lindorm.io",
+  "responseType": "token",
+  "scope": Array [
+    "default",
+  ],
+}
+`;
+
+exports[`createSession should create a new authorization 2`] = `
+Object {
+  "Authorization::591ec96f-2e9f-4c54-8da2-ee982a373935": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"591ec96f-2e9f-4c54-8da2-ee982a373935\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"challengeId\\":\\"f00cad5c-fc34-43bf-837d-b60b81605dda\\",\\"clientId\\":\\"9ba5e0c5-f2aa-4706-a27d-66369b547b0b\\",\\"codeChallenge\\":\\"H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=\\",\\"codeMethod\\":\\"sha256\\",\\"deviceId\\":\\"2122b49f-3dc0-46c2-9a8b-6cec5e26a389\\",\\"email\\":\\"email@lindorm.io\\",\\"expires\\":\\"2020-01-01T07:00:00.000Z\\",\\"grantType\\":\\"pin_code\\",\\"otpCode\\":\\"b3RwQ29kZQ==\\",\\"redirectUri\\":\\"https://lindorm.io\\",\\"responseType\\":\\"token\\",\\"scope\\":[\\"default\\"]},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"challengeId\\":\\"string\\",\\"clientId\\":\\"string\\",\\"codeChallenge\\":\\"string\\",\\"codeMethod\\":\\"string\\",\\"deviceId\\":\\"string\\",\\"email\\":\\"string\\",\\"expires\\":\\"date\\",\\"grantType\\":\\"string\\",\\"otpCode\\":\\"string\\",\\"redirectUri\\":\\"string\\",\\"responseType\\":\\"string\\",\\"scope\\":[\\"string\\"]}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`createSession should create a new authorization without optional values 1`] = `
+Authorization {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_id": "591ec96f-2e9f-4c54-8da2-ee982a373935",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+  "challengeId": null,
+  "clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+  "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+  "codeMethod": "sha256",
+  "deviceId": null,
+  "email": "email@lindorm.io",
+  "expires": 2020-01-01T07:00:00.000Z,
+  "grantType": "pin_code",
+  "otpCode": null,
+  "redirectUri": "https://lindorm.io",
+  "responseType": "token",
+  "scope": Array [
+    "default",
+  ],
+}
+`;
+
+exports[`createSession should create a new authorization without optional values 2`] = `
+Object {
+  "Authorization::591ec96f-2e9f-4c54-8da2-ee982a373935": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"591ec96f-2e9f-4c54-8da2-ee982a373935\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"challengeId\\":\\"null\\",\\"clientId\\":\\"9ba5e0c5-f2aa-4706-a27d-66369b547b0b\\",\\"codeChallenge\\":\\"H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=\\",\\"codeMethod\\":\\"sha256\\",\\"deviceId\\":\\"null\\",\\"email\\":\\"email@lindorm.io\\",\\"expires\\":\\"2020-01-01T07:00:00.000Z\\",\\"grantType\\":\\"pin_code\\",\\"otpCode\\":\\"null\\",\\"redirectUri\\":\\"https://lindorm.io\\",\\"responseType\\":\\"token\\",\\"scope\\":[\\"default\\"]},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"challengeId\\":\\"null\\",\\"clientId\\":\\"string\\",\\"codeChallenge\\":\\"string\\",\\"codeMethod\\":\\"string\\",\\"deviceId\\":\\"null\\",\\"email\\":\\"string\\",\\"expires\\":\\"date\\",\\"grantType\\":\\"string\\",\\"otpCode\\":\\"null\\",\\"redirectUri\\":\\"string\\",\\"responseType\\":\\"string\\",\\"scope\\":[\\"string\\"]}}",
+    "expiresInSeconds": null,
+  },
+}
+`;

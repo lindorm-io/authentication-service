@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validateAuthorization should find and validate authorization 1`] = `
+Authorization {
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_id": "4923fabc-aab2-4804-b92b-2aa96c4999a1",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+  "challengeId": "1997d969-0e46-41c5-8c5e-836d643e78c9",
+  "clientId": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+  "codeChallenge": "H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=",
+  "codeMethod": "sha256",
+  "deviceId": null,
+  "email": "email@lindorm.io",
+  "expires": 2099-01-01T00:00:00.000Z,
+  "grantType": "email_otp",
+  "otpCode": null,
+  "redirectUri": "https://redirect.uri/",
+  "responseType": "code",
+  "scope": Array [
+    "default",
+    "edit",
+    "openid",
+  ],
+}
+`;
+
+exports[`validateAuthorization should find and validate authorization 2`] = `
+Object {
+  "Authorization::4923fabc-aab2-4804-b92b-2aa96c4999a1": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"4923fabc-aab2-4804-b92b-2aa96c4999a1\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"challengeId\\":\\"1997d969-0e46-41c5-8c5e-836d643e78c9\\",\\"clientId\\":\\"9ba5e0c5-f2aa-4706-a27d-66369b547b0b\\",\\"codeChallenge\\":\\"H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=\\",\\"codeMethod\\":\\"sha256\\",\\"deviceId\\":\\"null\\",\\"email\\":\\"email@lindorm.io\\",\\"expires\\":\\"2099-01-01T00:00:00.000Z\\",\\"grantType\\":\\"email_otp\\",\\"otpCode\\":\\"null\\",\\"redirectUri\\":\\"https://redirect.uri/\\",\\"responseType\\":\\"code\\",\\"scope\\":[\\"default\\",\\"edit\\",\\"openid\\"]},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"challengeId\\":\\"string\\",\\"clientId\\":\\"string\\",\\"codeChallenge\\":\\"string\\",\\"codeMethod\\":\\"string\\",\\"deviceId\\":\\"null\\",\\"email\\":\\"string\\",\\"expires\\":\\"date\\",\\"grantType\\":\\"string\\",\\"otpCode\\":\\"null\\",\\"redirectUri\\":\\"string\\",\\"responseType\\":\\"string\\",\\"scope\\":[\\"string\\",\\"string\\",\\"string\\"]}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`validateAuthorization should throw error when authorizationId is wrong 1`] = `
+Object {
+  "Authorization::4923fabc-aab2-4804-b92b-2aa96c4999a1": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"4923fabc-aab2-4804-b92b-2aa96c4999a1\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"challengeId\\":\\"1997d969-0e46-41c5-8c5e-836d643e78c9\\",\\"clientId\\":\\"9ba5e0c5-f2aa-4706-a27d-66369b547b0b\\",\\"codeChallenge\\":\\"H4LnTn7e1DltMsohJgIeKSNgpvppJ1qP6QRRD9Ai1pw=\\",\\"codeMethod\\":\\"sha256\\",\\"deviceId\\":\\"null\\",\\"email\\":\\"email@lindorm.io\\",\\"expires\\":\\"2099-01-01T00:00:00.000Z\\",\\"grantType\\":\\"email_otp\\",\\"otpCode\\":\\"null\\",\\"redirectUri\\":\\"https://redirect.uri/\\",\\"responseType\\":\\"code\\",\\"scope\\":[\\"default\\",\\"edit\\",\\"openid\\"]},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"challengeId\\":\\"string\\",\\"clientId\\":\\"string\\",\\"codeChallenge\\":\\"string\\",\\"codeMethod\\":\\"string\\",\\"deviceId\\":\\"null\\",\\"email\\":\\"string\\",\\"expires\\":\\"date\\",\\"grantType\\":\\"string\\",\\"otpCode\\":\\"null\\",\\"redirectUri\\":\\"string\\",\\"responseType\\":\\"string\\",\\"scope\\":[\\"string\\",\\"string\\",\\"string\\"]}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`validateAuthorization should throw error when clientId is wrong 1`] = `
+Object {
+  "Authorization::4923fabc-aab2-4804-b92b-2aa96c4999a1": undefined,
+}
+`;
+
+exports[`validateAuthorization should throw error when deviceId is wrong 1`] = `
+Object {
+  "Authorization::4923fabc-aab2-4804-b92b-2aa96c4999a1": undefined,
+}
+`;
+
+exports[`validateAuthorization should throw error when email is wrong 1`] = `
+Object {
+  "Authorization::4923fabc-aab2-4804-b92b-2aa96c4999a1": undefined,
+}
+`;
+
+exports[`validateAuthorization should throw error when grantType is wrong 1`] = `
+Object {
+  "Authorization::4923fabc-aab2-4804-b92b-2aa96c4999a1": undefined,
+}
+`;

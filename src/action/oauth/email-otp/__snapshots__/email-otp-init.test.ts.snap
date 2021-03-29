@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`performEmailOTPInit should create a new session 1`] = `
+Object {
+  "expires": "expires",
+  "expiresIn": "expiresIn",
+  "redirectUri": "https://redirect.uri/",
+  "state": "1bVcJqZ1pBeqVLxV",
+  "token": "token",
+}
+`;

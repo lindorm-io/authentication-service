@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getMultiFactorToken should return a multi-factor token 1`] = `
+Object {
+  "expires": 1577863800,
+  "expiresIn": 1800,
+  "id": "be3a62d1-24a0-401c-96dd-3aff95356811",
+  "level": undefined,
+  "token": Object {
+    "amr": "authMethodsReference",
+    "aud": "multi-factor",
+    "cid": "9ba5e0c5-f2aa-4706-a27d-66369b547b0b",
+    "did": "4a8c6c97-6155-4ddf-b02f-696cf0ec8dd5",
+    "exp": 1577863800,
+    "iat": 1577862000,
+    "iss": "https://test.authentication.lindorm.io",
+    "jti": "be3a62d1-24a0-401c-96dd-3aff95356811",
+    "nbf": 1577862000,
+    "sub": "4923fabc-aab2-4804-b92b-2aa96c4999a1",
+  },
+}
+`;

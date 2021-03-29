@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createOrUpdateRequestLimit should create a request limit in the cache 1`] = `
+Object {
+  "RequestLimit::pin_code::subject@lindorm.io": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"addde23d-83fe-46bf-a32f-dbc77efa0484\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"backOffUntil\\":\\"null\\",\\"failedTries\\":\\"1\\",\\"grantType\\":\\"pin_code\\",\\"subject\\":\\"subject@lindorm.io\\"},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"backOffUntil\\":\\"null\\",\\"failedTries\\":\\"number\\",\\"grantType\\":\\"string\\",\\"subject\\":\\"string\\"}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`createOrUpdateRequestLimit should create a request limit in the cache 2`] = `
+RequestLimit {
+  "_backOffUntil": null,
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_failedTries": 1,
+  "_grantType": "pin_code",
+  "_id": "addde23d-83fe-46bf-a32f-dbc77efa0484",
+  "_subject": "subject@lindorm.io",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;
+
+exports[`createOrUpdateRequestLimit should update existing request limit 1`] = `
+Object {
+  "RequestLimit::pin_code::subject@lindorm.io": Object {
+    "blob": "{\\"json\\":{\\"id\\":\\"addde23d-83fe-46bf-a32f-dbc77efa0484\\",\\"version\\":\\"0\\",\\"created\\":\\"2020-01-01T07:00:00.000Z\\",\\"updated\\":\\"2020-01-01T07:00:00.000Z\\",\\"events\\":[],\\"backOffUntil\\":\\"2020-01-01T08:30:00.000Z\\",\\"failedTries\\":\\"11\\",\\"grantType\\":\\"pin_code\\",\\"subject\\":\\"subject@lindorm.io\\"},\\"meta\\":{\\"id\\":\\"string\\",\\"version\\":\\"number\\",\\"created\\":\\"date\\",\\"updated\\":\\"date\\",\\"events\\":[],\\"backOffUntil\\":\\"date\\",\\"failedTries\\":\\"number\\",\\"grantType\\":\\"string\\",\\"subject\\":\\"string\\"}}",
+    "expiresInSeconds": null,
+  },
+}
+`;
+
+exports[`createOrUpdateRequestLimit should update existing request limit 2`] = `
+RequestLimit {
+  "_backOffUntil": 2020-01-01T08:30:00.000Z,
+  "_created": 2020-01-01T07:00:00.000Z,
+  "_events": Array [],
+  "_failedTries": 11,
+  "_grantType": "pin_code",
+  "_id": "addde23d-83fe-46bf-a32f-dbc77efa0484",
+  "_subject": "subject@lindorm.io",
+  "_updated": 2020-01-01T07:00:00.000Z,
+  "_version": 0,
+}
+`;

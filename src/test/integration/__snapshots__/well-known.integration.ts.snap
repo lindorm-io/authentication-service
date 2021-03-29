@@ -19,7 +19,7 @@ Object {
     "RS512",
   ],
   "issuer": "https://test.authentication.lindorm.io",
-  "jwks_uri": "https://test.authentication.lindorm.io/.well-known/jwks",
+  "jwks_uri": "https://test.authentication.lindorm.io/.well-known/jwks.json",
   "request_parameter_supported": false,
   "request_uri_parameter_supported": false,
   "response_types_supported": Array [
