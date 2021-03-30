@@ -1,4 +1,3 @@
-export { router as appRoute } from "./app";
 export { router as accountRoute } from "./account";
 export { router as clientRoute } from "./client";
 export { router as keyPairRoute } from "./key-pair";

@@ -47,12 +47,4 @@ export interface IKoaAuthContext extends IKoaAppContext {
     multiFactor?: ITokenIssuerVerifyData;
     refresh?: ITokenIssuerVerifyData;
   };
-  userAgent: {
-    browser: string;
-    geoIp: Record<string, any>;
-    os: string;
-    platform: string;
-    source: string;
-    version: string;
-  };
 }

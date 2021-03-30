@@ -1,15 +1,13 @@
 import { AccountRepository, RequestLimitCache, SessionRepository } from "../../infrastructure";
 import { Client, ClientCache, ClientRepository } from "@lindorm-io/koa-client";
-import { JWT_ISSUER } from "../../config";
 import { KeyPairCache, KeyPairRepository } from "@lindorm-io/koa-keystore";
-import { KeyPairHandler, Keystore } from "@lindorm-io/key-pair";
+import { KeyPairHandler } from "@lindorm-io/key-pair";
 import { TokenIssuer } from "@lindorm-io/jwt";
 import { getTestCache } from "./test-cache";
 import { getTestClient } from "./test-client";
+import { getTestIssuer } from "./test-issuer";
 import { getTestKeyPairEC, getTestKeyPairRSA } from "./test-key-pair";
 import { getTestRepository } from "./test-repository";
-import { winston } from "../../logger";
-import { inMemoryKeys } from "./in-memory";
 
 export let TEST_ACCOUNT_REPOSITORY: AccountRepository;
 export let TEST_CLIENT_REPOSITORY: ClientRepository;
@@ -45,13 +43,7 @@ export const setupIntegration = async (): Promise<void> => {
   TEST_KEY_PAIR_CACHE = keyPairCache;
   TEST_REQUEST_LIMIT_CACHE = requestLimit;
 
-  inMemoryKeys.push(keyPairEC);
-
-  TEST_TOKEN_ISSUER = new TokenIssuer({
-    issuer: JWT_ISSUER,
-    logger: winston,
-    keystore: new Keystore({ keys: inMemoryKeys }),
-  });
+  TEST_TOKEN_ISSUER = getTestIssuer();
   TEST_KEY_PAIR_HANDLER = new KeyPairHandler(keyPairRSA);
 
   TEST_CLIENT = getTestClient();

@@ -18,7 +18,7 @@ const handler = new ConfigHandler({
 });
 
 export const { NODE_ENVIRONMENT } = environmentConfig;
-const config = handler.get(NODE_ENVIRONMENT);
+export const config = handler.get(NODE_ENVIRONMENT);
 
 export const SERVER_PORT = config.SERVER_PORT;
 export const HOST = config.HOST;

@@ -28,7 +28,7 @@ describe("createKeyPair", () => {
   test("should create key pair", async () => {
     await expect(createKeyPair(ctx)({ type: KeyType.EC })).resolves.toStrictEqual({
       algorithm: "ES512",
-      keyPairId: "be3a62d1-24a0-401c-96dd-3aff95356811",
+      keyPairId: "74efb644-6c0b-4cd4-8ee8-6e776205b02d",
       type: "ec",
     });
 

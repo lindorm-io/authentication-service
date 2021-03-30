@@ -2,6 +2,7 @@ import { Algorithm, KeyPair, KeyType } from "@lindorm-io/key-pair";
 
 export const getTestKeyPairEC = (): KeyPair =>
   new KeyPair({
+    id: "74efb644-6c0b-4cd4-8ee8-6e776205b02d",
     algorithm: Algorithm.ES512,
     privateKey:
       "-----BEGIN PRIVATE KEY-----\n" +
@@ -24,6 +25,7 @@ export const getTestKeyPairEC = (): KeyPair =>
 
 export const getTestKeyPairRSA = (): KeyPair =>
   new KeyPair({
+    id: "2dac5c16-a0ae-4010-9d2b-1b638150767e",
     algorithm: Algorithm.RS512,
     privateKey:
       "-----BEGIN RSA PRIVATE KEY-----\n" +
