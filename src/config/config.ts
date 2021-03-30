@@ -5,6 +5,7 @@ import { MongoConnectionType } from "@lindorm-io/mongo";
 import { NodeEnvironment } from "@lindorm-io/koa-config";
 import { RedisConnectionType } from "@lindorm-io/redis";
 import { developmentConfig, environmentConfig, productionConfig, stagingConfig, testConfig } from "./files";
+import { AUTH_KEYSTORE_NAME, AUTH_TOKEN_ISSUER } from "../constant";
 
 if (!process.env.NODE_ENV) dotenv.config();
 
@@ -55,11 +56,14 @@ export const OTP_HANDLER_OPTIONS = {
 
 export const BEARER_AUTH_MW_OPTIONS = {
   issuer: config.JWT_ISSUER,
+  issuerName: AUTH_TOKEN_ISSUER,
   audience: Audience.ACCESS,
 };
 
 export const TOKEN_ISSUER_MW_OPTIONS = {
   issuer: config.JWT_ISSUER,
+  issuerName: AUTH_TOKEN_ISSUER,
+  keystoreName: AUTH_KEYSTORE_NAME,
 };
 
 export const REDIS_CONNECTION_OPTIONS = {

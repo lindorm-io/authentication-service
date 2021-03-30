@@ -5,7 +5,7 @@ import { performDevicePINInit } from "./device-pin-init";
 import { Account } from "../../../entity";
 
 jest.mock("../../../axios", () => ({
-  requestCertificateChallenge: jest.fn(() => ({
+  requestCertificateChallenge: jest.fn(() => () => ({
     certificateChallenge: "certificateChallenge",
     challengeId: "3b96cd46-26f0-417d-b293-e82457800142",
   })),

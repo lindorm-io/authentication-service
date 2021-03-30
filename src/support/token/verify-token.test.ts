@@ -20,7 +20,7 @@ describe("verifyToken", () => {
 
     ctx = {
       logger,
-      issuer: { tokenIssuer: issuer },
+      issuer: { auth: issuer },
       metadata: { deviceId: "deviceId" },
     };
 

@@ -2,24 +2,24 @@ import { KoaApp } from "@lindorm-io/koa";
 import { NODE_ENVIRONMENT } from "../config";
 import { NodeEnvironment } from "@lindorm-io/koa-config";
 import { SERVER_PORT } from "../config";
-import {
-  cacheMiddleware,
-  getMongoMiddleware,
-  getRedisMiddleware,
-  repositoryMiddleware,
-  tokenIssuerMiddleware,
-} from "../middleware";
 import { clientCacheMiddleware, clientRepositoryMiddleware } from "@lindorm-io/koa-client";
 import { clientCacheWorker, keyPairCacheWorker, sessionCleanupWorker } from "../worker";
 import { winston } from "../logger";
+import { keyPairRepositoryMiddleware } from "@lindorm-io/koa-keystore";
 import {
-  cachedKeystoreMiddleware,
+  cacheMiddleware,
+  deviceAxiosMiddleware,
+  identityAxiosMiddleware,
   keyPairCacheMiddleware,
-  keyPairRepositoryMiddleware,
-} from "@lindorm-io/koa-keystore";
+  keystoreMiddleware,
+  mongoMiddleware,
+  redisMiddleware,
+  repositoryMiddleware,
+  tokenIssuerMiddleware,
+} from "../middleware";
 import {
-  appRoute,
   accountRoute,
+  // appRoute,
   clientRoute,
   keyPairRoute,
   mfaRoute,
@@ -34,20 +34,23 @@ export const koa = new KoaApp({
   port: SERVER_PORT,
 });
 
-koa.addMiddleware(getMongoMiddleware());
+koa.addMiddleware(mongoMiddleware);
 koa.addMiddleware(repositoryMiddleware);
 koa.addMiddleware(clientRepositoryMiddleware);
 koa.addMiddleware(keyPairRepositoryMiddleware);
 
-koa.addMiddleware(getRedisMiddleware());
+koa.addMiddleware(redisMiddleware);
 koa.addMiddleware(cacheMiddleware);
 koa.addMiddleware(clientCacheMiddleware);
 koa.addMiddleware(keyPairCacheMiddleware);
 
-koa.addMiddleware(cachedKeystoreMiddleware);
+koa.addMiddleware(keystoreMiddleware);
 koa.addMiddleware(tokenIssuerMiddleware);
 
-koa.addRoute("/", appRoute);
+koa.addMiddleware(deviceAxiosMiddleware);
+koa.addMiddleware(identityAxiosMiddleware);
+
+// koa.addRoute("/", appRoute);
 koa.addRoute("/account", accountRoute);
 koa.addRoute("/client", clientRoute);
 koa.addRoute("/key-pair", keyPairRoute);

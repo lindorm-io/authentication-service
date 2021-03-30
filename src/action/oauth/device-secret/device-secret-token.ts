@@ -45,7 +45,7 @@ export const performDeviceSecretToken = (ctx: IKoaAuthContext) => async (
 
   const account = await repository.account.find({ email: subject });
 
-  await requestVerifyDeviceSecret({
+  await requestVerifyDeviceSecret(ctx)({
     account,
     authorization,
     certificateVerifier,

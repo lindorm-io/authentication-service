@@ -5,6 +5,7 @@ import { MongoConnection } from "@lindorm-io/mongo";
 import { generateKeyPair } from "../support";
 import { winston } from "../logger";
 import { RedisConnection } from "@lindorm-io/redis";
+import { AUTH_KEYSTORE_NAME } from "../constant";
 
 (async () => {
   const mongo = new MongoConnection(MONGO_CONNECTION_OPTIONS);
@@ -15,7 +16,7 @@ import { RedisConnection } from "@lindorm-io/redis";
     await redis.connect();
 
     const repository = new KeyPairRepository({ logger: winston, db: mongo.getDatabase() });
-    const cache = new KeyPairCache({ logger: winston, client: redis.getClient() });
+    const cache = new KeyPairCache({ logger: winston, client: redis.getClient(), keystoreName: AUTH_KEYSTORE_NAME });
 
     const keyPair = await generateKeyPair(KeyType.EC);
     keyPair.allowed = true;

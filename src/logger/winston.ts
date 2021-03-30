@@ -22,7 +22,13 @@ if (NODE_ENVIRONMENT === NodeEnvironment.PRODUCTION) {
   winston.addFileTransport(LogLevel.DEBUG);
   winston.addFileTransport(LogLevel.SILLY);
 
+  // Koa
   winston.addFilter("request.header.authorization", sanitiseToken);
+
+  // Axios
+  winston.addFilter("config.auth.username");
+  winston.addFilter("config.auth.password");
+  winston.addFilter("request.headers.Authorization", sanitiseToken);
 }
 
 if (NODE_ENVIRONMENT !== NodeEnvironment.PRODUCTION) {

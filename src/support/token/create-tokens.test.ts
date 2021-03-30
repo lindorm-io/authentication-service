@@ -29,7 +29,7 @@ describe("createTokens", () => {
   beforeEach(async () => {
     ctx = {
       logger,
-      issuer: { tokenIssuer: getTestIssuer() },
+      issuer: { auth: getTestIssuer() },
       metadata: { deviceId: "deviceId" },
       repository: await getTestRepository(),
     };

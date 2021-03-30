@@ -14,7 +14,6 @@ export interface IGetRefreshTokenOptions {
 
 export const getRefreshToken = (ctx: IKoaAuthContext) => (options: IGetRefreshTokenOptions): ITokenIssuerSignData => {
   const { logger, issuer, metadata } = ctx;
-  const { tokenIssuer } = issuer;
   const { authMethodsReference, client, account, scope, session } = options;
 
   logger.debug("creating refresh token", {
@@ -25,7 +24,7 @@ export const getRefreshToken = (ctx: IKoaAuthContext) => (options: IGetRefreshTo
     session: session.id,
   });
 
-  return tokenIssuer.sign({
+  return issuer.auth.sign({
     audience: Audience.REFRESH,
     authMethodsReference: authMethodsReference,
     clientId: client.id,

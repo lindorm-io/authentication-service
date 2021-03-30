@@ -14,7 +14,6 @@ export interface IGetAccessTokenOptions {
 
 export const getAccessToken = (ctx: IKoaAuthContext) => (options: IGetAccessTokenOptions): ITokenIssuerSignData => {
   const { logger, issuer, metadata } = ctx;
-  const { tokenIssuer } = issuer;
   const { account, authMethodsReference, client, scope } = options;
 
   logger.debug("creating access token", {
@@ -24,7 +23,7 @@ export const getAccessToken = (ctx: IKoaAuthContext) => (options: IGetAccessToke
     scope,
   });
 
-  return tokenIssuer.sign({
+  return issuer.auth.sign({
     audience: Audience.ACCESS,
     authMethodsReference: authMethodsReference,
     clientId: client.id,

@@ -27,7 +27,11 @@ export let TEST_CLIENT: Client;
 
 export const setupIntegration = async (): Promise<void> => {
   const { account, client, keyPair, session } = await getTestRepository();
-  const { client: clientCache, keyPair: keyPairCache, requestLimit } = await getTestCache();
+  const {
+    client: clientCache,
+    keyPair: { auth: keyPairCache },
+    requestLimit,
+  } = await getTestCache();
 
   const keyPairEC = getTestKeyPairEC();
   const keyPairRSA = getTestKeyPairRSA();

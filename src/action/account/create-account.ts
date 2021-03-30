@@ -41,7 +41,7 @@ export const createAccount = (ctx: IKoaAuthContext) => async (
     accountId: account.id,
   });
 
-  const { created, updated } = await requestEnsureIdentity(account);
+  const { created, updated } = await requestEnsureIdentity(ctx)(account);
 
   logger.debug("identity created", { created, updated });
 

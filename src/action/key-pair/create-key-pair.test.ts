@@ -1,15 +1,7 @@
 import MockDate from "mockdate";
 import { KeyType } from "@lindorm-io/key-pair";
 import { createKeyPair } from "./create-key-pair";
-import {
-  getTestCache,
-  getTestRepository,
-  getTestKeyPairEC,
-  inMemoryCache,
-  inMemoryStore,
-  resetStore,
-  logger,
-} from "../../test";
+import { getTestRepository, getTestKeyPairEC, inMemoryStore, resetStore, logger } from "../../test";
 
 jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
@@ -26,7 +18,6 @@ describe("createKeyPair", () => {
 
   beforeEach(async () => {
     ctx = {
-      cache: await getTestCache(),
       logger,
       repository: await getTestRepository(),
     };
@@ -41,7 +32,6 @@ describe("createKeyPair", () => {
       type: "ec",
     });
 
-    expect(inMemoryCache).toMatchSnapshot();
     expect(inMemoryStore).toMatchSnapshot();
   });
 });

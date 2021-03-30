@@ -7,11 +7,10 @@ export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TNex
   const start = Date.now();
 
   const { issuer, logger, metadata } = ctx;
-  const { tokenIssuer } = issuer;
   const { authorizationToken, multiFactorToken, refreshToken } = ctx.request.body;
 
   if (isString(authorizationToken)) {
-    const verified = tokenIssuer.verify({
+    const verified = issuer.auth.verify({
       audience: Audience.AUTHORIZATION,
       clientId: metadata.clientId,
       deviceId: metadata.deviceId,
@@ -25,7 +24,7 @@ export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TNex
   }
 
   if (isString(multiFactorToken)) {
-    const verified = tokenIssuer.verify({
+    const verified = issuer.auth.verify({
       audience: Audience.MULTI_FACTOR,
       clientId: metadata.clientId,
       deviceId: metadata.deviceId,
@@ -39,7 +38,7 @@ export const tokenValidationMiddleware = async (ctx: IKoaAuthContext, next: TNex
   }
 
   if (isString(refreshToken)) {
-    const verified = tokenIssuer.verify({
+    const verified = issuer.auth.verify({
       audience: Audience.REFRESH,
       clientId: metadata.clientId,
       deviceId: metadata.deviceId,

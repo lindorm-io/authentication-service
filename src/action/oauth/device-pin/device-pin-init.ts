@@ -58,7 +58,7 @@ export const performDevicePINInit = (ctx: IKoaAuthContext) => async (
 
   const account = await repository.account.find({ email: subject });
 
-  const { certificateChallenge, challengeId } = await requestCertificateChallenge({
+  const { certificateChallenge, challengeId } = await requestCertificateChallenge(ctx)({
     account,
     deviceId,
     strategy: ChallengeStrategy.PIN,

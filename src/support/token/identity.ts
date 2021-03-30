@@ -16,7 +16,6 @@ export const getIdentityToken = (ctx: IKoaAuthContext) => async (
   options: IGetIdentityTokenOptions,
 ): Promise<ITokenIssuerSignData> => {
   const { logger, issuer, metadata } = ctx;
-  const { tokenIssuer } = issuer;
   const { account, client, scope } = options;
 
   logger.debug("creating identity token", {
@@ -25,9 +24,9 @@ export const getIdentityToken = (ctx: IKoaAuthContext) => async (
     account: account.id,
   });
 
-  const payload = await requestOpenIdClaims(account, scope);
+  const payload = await requestOpenIdClaims(ctx)(account, scope);
 
-  return tokenIssuer.sign({
+  return issuer.auth.sign({
     audience: Audience.IDENTITY,
     clientId: client.id,
     deviceId: metadata.deviceId,

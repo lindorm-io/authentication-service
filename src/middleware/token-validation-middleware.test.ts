@@ -9,7 +9,7 @@ describe("tokenValidationMiddleware", () => {
   beforeEach(() => {
     ctx = {
       issuer: {
-        tokenIssuer: {
+        auth: {
           verify: (input: any) => input,
         },
       },

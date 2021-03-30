@@ -11,7 +11,7 @@ jest.mock("uuid", () => ({
   v4: jest.fn(() => "be3a62d1-24a0-401c-96dd-3aff95356811"),
 }));
 jest.mock("../../axios", () => ({
-  requestOpenIdClaims: jest.fn(() => ({
+  requestOpenIdClaims: jest.fn(() => () => ({
     claim1: "claim1",
     claim2: "claim2",
   })),
@@ -27,7 +27,7 @@ describe("getIdentityToken", () => {
   beforeEach(() => {
     ctx = {
       logger,
-      issuer: { tokenIssuer: getTestIssuer() },
+      issuer: { auth: getTestIssuer() },
       metadata: { deviceId: "deviceId" },
     };
 

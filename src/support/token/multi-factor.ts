@@ -15,7 +15,6 @@ export const getMultiFactorToken = (ctx: IKoaAuthContext) => (
   options: IGetMultiFactorTokenOptions,
 ): ITokenIssuerSignData => {
   const { logger, issuer, metadata } = ctx;
-  const { tokenIssuer } = issuer;
   const { authMethodsReference, client, authorization } = options;
 
   logger.debug("creating multi factor token", {
@@ -24,7 +23,7 @@ export const getMultiFactorToken = (ctx: IKoaAuthContext) => (
     device: metadata.deviceId,
   });
 
-  return tokenIssuer.sign({
+  return issuer.auth.sign({
     audience: Audience.MULTI_FACTOR,
     authMethodsReference: authMethodsReference,
     clientId: client.id,

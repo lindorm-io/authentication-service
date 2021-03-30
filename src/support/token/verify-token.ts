@@ -11,7 +11,6 @@ export interface IGetDecodedTokenOptions {
 
 export const verifyToken = (ctx: IKoaAuthContext) => (options: IGetDecodedTokenOptions): ITokenIssuerVerifyData => {
   const { logger, issuer, metadata } = ctx;
-  const { tokenIssuer } = issuer;
   const { audience, client, token } = options;
 
   logger.debug("decoding token", {
@@ -21,7 +20,7 @@ export const verifyToken = (ctx: IKoaAuthContext) => (options: IGetDecodedTokenO
     token,
   });
 
-  return tokenIssuer.verify({
+  return issuer.auth.verify({
     audience,
     clientId: client?.id,
     deviceId: metadata.deviceId,

@@ -1,8 +1,7 @@
-import axios from "axios";
 import { Account, Authorization } from "../../entity";
+import { AuthType } from "@lindorm-io/axios/dist/enum";
 import { ChallengeStrategy } from "../../enum";
-import { DEVICE_SERVICE_BASE_URL, DEVICE_SERVICE_BASIC_AUTH } from "../../config";
-import { snakeKeys } from "@lindorm-io/core";
+import { IKoaAuthContext } from "../../typing";
 
 export interface IRequestVerifyCertificateChallengeOptions {
   account: Account;
@@ -10,23 +9,22 @@ export interface IRequestVerifyCertificateChallengeOptions {
   certificateVerifier: string;
 }
 
-export const requestVerifyCertificateChallenge = async (
+export const requestVerifyCertificateChallenge = (ctx: IKoaAuthContext) => async (
   options: IRequestVerifyCertificateChallengeOptions,
 ): Promise<void> => {
-  const url = new URL("/headless/challenge/verify", DEVICE_SERVICE_BASE_URL);
+  const {
+    axios: { device },
+  } = ctx;
   const { account, certificateVerifier, authorization } = options;
 
-  await axios.post(
-    url.toString(),
-    snakeKeys({
+  await device.post("/headless/challenge/verify", {
+    auth: AuthType.BASIC,
+    data: {
       accountId: account.id,
       certificateVerifier,
       challengeId: authorization.challengeId,
       deviceId: authorization.deviceId,
       strategy: ChallengeStrategy.IMPLICIT,
-    }),
-    {
-      auth: DEVICE_SERVICE_BASIC_AUTH,
     },
-  );
+  });
 };

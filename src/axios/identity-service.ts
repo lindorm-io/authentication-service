@@ -1,21 +1,27 @@
-import axios from "axios";
 import { Account } from "../entity";
-import { IDENTITY_SERVICE_BASIC_AUTH, IDENTITY_SERVICE_BASE_URL } from "../config";
-import { IOpenIdClaims } from "../typing";
-import { camelKeys } from "@lindorm-io/core";
+import { AuthType } from "@lindorm-io/axios/dist/enum";
+import { IKoaAuthContext, IOpenIdClaims } from "../typing";
+import { axiosBearerAuthMiddleware } from "@lindorm-io/axios";
+import { isString } from "lodash";
 
 interface IRequestEnsureIdentityData {
   created: Date;
   updated: Date;
 }
 
-export const requestEnsureIdentity = async (account: Account): Promise<IRequestEnsureIdentityData> => {
-  const url = new URL(`/headless/create/${account.id}`, IDENTITY_SERVICE_BASE_URL);
+export const requestEnsureIdentity = (ctx: IKoaAuthContext) => async (
+  account: Account,
+): Promise<IRequestEnsureIdentityData> => {
+  const {
+    axios: { identity },
+  } = ctx;
 
-  const response = await axios.post(url.toString(), null, { auth: IDENTITY_SERVICE_BASIC_AUTH });
+  const response = await identity.post(`/headless/create/${account.id}`, {
+    auth: AuthType.BASIC,
+  });
 
-  const created = response.data?.created ? new Date(response.data.created) : undefined;
-  const updated = response.data?.updated ? new Date(response.data.updated) : undefined;
+  const created = isString(response.data?.created) ? new Date(response.data.created) : undefined;
+  const updated = isString(response.data?.updated) ? new Date(response.data.updated) : undefined;
 
   return {
     created,
@@ -23,20 +29,33 @@ export const requestEnsureIdentity = async (account: Account): Promise<IRequestE
   };
 };
 
-export const requestOpenIdClaims = async (account: Account, scope: Array<string>): Promise<IOpenIdClaims> => {
-  const url = new URL(`/headless/open-id/${account.id}`, IDENTITY_SERVICE_BASE_URL);
+export const requestOpenIdClaims = (ctx: IKoaAuthContext) => async (
+  account: Account,
+  scope: Array<string>,
+): Promise<IOpenIdClaims> => {
+  const {
+    axios: { identity },
+  } = ctx;
 
-  const response = await axios.post(url.toString(), { scope }, { auth: IDENTITY_SERVICE_BASIC_AUTH });
-
-  return camelKeys(response?.data || {}) as IOpenIdClaims;
-};
-
-export const requestOpenIdInformation = async (accessToken: string): Promise<IOpenIdClaims> => {
-  const url = new URL("/open-id", IDENTITY_SERVICE_BASE_URL);
-
-  const response = await axios.get(url.toString(), {
-    headers: { Authorization: `Bearer ${accessToken}` },
+  const response = await identity.post(`/headless/create/${account.id}`, {
+    auth: AuthType.BASIC,
+    data: { scope },
   });
 
-  return camelKeys(response?.data || {}) as IOpenIdClaims;
+  return response?.data as IOpenIdClaims;
+};
+
+export const requestOpenIdInformation = (ctx: IKoaAuthContext) => async (
+  accessToken: string,
+): Promise<IOpenIdClaims> => {
+  const {
+    axios: { identity },
+  } = ctx;
+
+  const response = await identity.get("/open-id", {
+    auth: AuthType.NONE,
+    middleware: [axiosBearerAuthMiddleware(accessToken)],
+  });
+
+  return response?.data as IOpenIdClaims;
 };

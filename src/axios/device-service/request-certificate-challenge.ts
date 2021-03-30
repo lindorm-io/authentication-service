@@ -1,8 +1,7 @@
-import axios from "axios";
 import { Account } from "../../entity";
-import { DEVICE_SERVICE_BASE_URL, DEVICE_SERVICE_BASIC_AUTH } from "../../config";
-import { camelKeys, snakeKeys } from "@lindorm-io/core";
+import { AuthType } from "@lindorm-io/axios/dist/enum";
 import { ChallengeStrategy } from "../../enum";
+import { IKoaAuthContext } from "../../typing";
 
 export interface IRequestCertificateChallengeOptions {
   account: Account;
@@ -15,24 +14,24 @@ export interface IRequestCertificateChallengeData {
   certificateChallenge: string;
 }
 
-export const requestCertificateChallenge = async (
+export const requestCertificateChallenge = (ctx: IKoaAuthContext) => async (
   options: IRequestCertificateChallengeOptions,
 ): Promise<IRequestCertificateChallengeData> => {
-  const url = new URL("/headless/challenge/initialise", DEVICE_SERVICE_BASE_URL);
+  const {
+    axios: { device },
+  } = ctx;
   const { account, deviceId, strategy } = options;
   const accountId = account.id;
 
-  const response = await axios.post(
-    url.toString(),
-    snakeKeys({
+  const response = await device.post("/headless/challenge/initialise", {
+    auth: AuthType.BASIC,
+    data: {
       accountId,
       deviceId,
       strategy,
-    }),
-    {
-      auth: DEVICE_SERVICE_BASIC_AUTH,
     },
-  );
+  });
+  const data: unknown = response.data;
 
-  return camelKeys(response?.data || {}) as IRequestCertificateChallengeData;
+  return data as IRequestCertificateChallengeData;
 };

@@ -11,7 +11,7 @@ jest.mock("../../../support", () => ({
   })),
 }));
 jest.mock("../../../axios", () => ({
-  requestVerifyDeviceSecret: jest.fn(),
+  requestVerifyDeviceSecret: jest.fn(() => () => undefined),
 }));
 
 describe("performDeviceSecretToken", () => {

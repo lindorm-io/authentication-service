@@ -21,7 +21,7 @@ describe("getMultiFactorToken", () => {
   beforeEach(() => {
     ctx = {
       logger,
-      issuer: { tokenIssuer: getTestIssuer() },
+      issuer: { auth: getTestIssuer() },
       metadata: getTestMetadata(),
     };
 

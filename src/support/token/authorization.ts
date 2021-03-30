@@ -13,7 +13,6 @@ export const getAuthorizationToken = (ctx: IKoaAuthContext) => (
   options: IGetAuthorizationTokenOptions,
 ): ITokenIssuerSignData => {
   const { logger, issuer, metadata } = ctx;
-  const { tokenIssuer } = issuer;
   const { authorization, client } = options;
 
   logger.debug("creating authorization token", {
@@ -22,7 +21,7 @@ export const getAuthorizationToken = (ctx: IKoaAuthContext) => (
     device: metadata.deviceId,
   });
 
-  return tokenIssuer.sign({
+  return issuer.auth.sign({
     id: authorization.id,
     audience: Audience.AUTHORIZATION,
     clientId: client.id,

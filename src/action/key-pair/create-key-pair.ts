@@ -22,7 +22,7 @@ export const createKeyPair = (ctx: IKoaAuthContext) => async (
 ): Promise<ICreateKeyPairData> => {
   await schema.validateAsync(options);
 
-  const { cache, logger, repository } = ctx;
+  const { logger, repository } = ctx;
   const { type } = options;
 
   await assertAccountAdmin(ctx)();
@@ -30,7 +30,6 @@ export const createKeyPair = (ctx: IKoaAuthContext) => async (
   const keyPair = await generateKeyPair(type);
 
   await repository.keyPair.create(keyPair);
-  await cache.keyPair.create(keyPair);
 
   logger.debug("key pair created", {
     algorithm: keyPair.algorithm,

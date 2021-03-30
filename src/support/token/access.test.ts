@@ -21,7 +21,7 @@ describe("getAccessToken", () => {
   beforeEach(() => {
     ctx = {
       logger,
-      issuer: { tokenIssuer: getTestIssuer() },
+      issuer: { auth: getTestIssuer() },
       metadata: { deviceId: "deviceId" },
     };
 

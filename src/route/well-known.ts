@@ -48,7 +48,7 @@ router.get(
 router.get(
   "/jwks.json",
   async (ctx: IKoaAuthContext): Promise<void> => {
-    const usableKeys = ctx.keystore.getUsableKeys();
+    const usableKeys = ctx.keystore.auth.getUsableKeys();
     const keys: Array<any> = [];
 
     for (const key of usableKeys) {

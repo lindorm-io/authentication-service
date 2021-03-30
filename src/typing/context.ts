@@ -19,14 +19,18 @@ export interface IKoaAuthContext extends IKoaAppContext {
   cache: {
     authorization: AuthorizationCache;
     client: ClientCache;
-    keyPair: KeyPairCache;
+    keyPair: {
+      auth: KeyPairCache;
+    };
     requestLimit: RequestLimitCache;
   };
   client: Client;
   issuer: {
-    tokenIssuer: TokenIssuer;
+    auth: TokenIssuer;
   };
-  keystore: Keystore;
+  keystore: {
+    auth: Keystore;
+  };
   mongo: MongoConnection;
   redis: RedisConnection;
   repository: {

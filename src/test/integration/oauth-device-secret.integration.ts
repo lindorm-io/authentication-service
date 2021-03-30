@@ -15,12 +15,12 @@ import {
 } from "../grey-box";
 
 jest.mock("../../axios", () => ({
-  requestCertificateChallenge: jest.fn(() => ({
+  requestCertificateChallenge: jest.fn(() => () => ({
     challengeId: "3588b6f3-d9cb-40d4-a885-bc5f4c762284",
     certificateChallenge: "CE9B988A76BB44ED8BD31F91FE016647",
   })),
-  requestVerifyDeviceSecret: jest.fn(),
-  requestOpenIdClaims: jest.fn(() => ({ claim: "claim" })),
+  requestVerifyDeviceSecret: jest.fn(() => () => undefined),
+  requestOpenIdClaims: jest.fn(() => () => ({ claim: "claim" })),
 }));
 
 MockDate.set("2020-01-01 08:00:00.000");

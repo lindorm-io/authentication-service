@@ -44,7 +44,7 @@ export const performDevicePINToken = (ctx: IKoaAuthContext) => {
 
     const account = await repository.account.find({ email: subject });
 
-    await requestVerifyDevicePIN({
+    await requestVerifyDevicePIN(ctx)({
       account,
       authorization,
       certificateVerifier,
