@@ -1,9 +1,14 @@
 import { IKoaAuthContext } from "../../typing";
-import { IS_TEST, MAIL_HANDLER_CONFIG } from "../../config";
+import { config, IS_TEST, NODE_ENVIRONMENT } from "../../config";
 import { MailHandler } from "../../class";
 import { inMemoryEmail } from "../../test";
 
-const mailHandler = new MailHandler(MAIL_HANDLER_CONFIG);
+const mailHandler = new MailHandler({
+  apiKey: config.MAILGUN_API_KEY,
+  domain: config.MAILGUN_DOMAIN,
+  environment: NODE_ENVIRONMENT,
+  from: config.MAILGUN_FROM,
+});
 
 export interface ISendEmailLinkOptions {
   grantType: string;

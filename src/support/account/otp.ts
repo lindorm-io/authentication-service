@@ -1,8 +1,11 @@
 import { Account } from "../../entity";
-import { OTP_HANDLER_OPTIONS } from "../../config";
+import { config } from "../../config";
 import { IOTPHandlerGenerateData, OTPHandler } from "../../class";
 
-const handler = new OTPHandler(OTP_HANDLER_OPTIONS);
+const handler = new OTPHandler({
+  issuer: config.ACCOUNT_OTP_ISSUER,
+  secret: config.CRYPTO_AES_SECRET,
+});
 
 export const generateAccountOTP = (): IOTPHandlerGenerateData => {
   return handler.generate();

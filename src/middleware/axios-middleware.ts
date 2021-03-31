@@ -1,19 +1,20 @@
 import { axiosMiddleware } from "@lindorm-io/koa-axios";
-import {
-  DEVICE_SERVICE_BASE_URL,
-  DEVICE_SERVICE_BASIC_AUTH,
-  IDENTITY_SERVICE_BASE_URL,
-  IDENTITY_SERVICE_BASIC_AUTH,
-} from "../config";
+import { config } from "../config";
 
 export const deviceAxiosMiddleware = axiosMiddleware({
-  baseUrl: DEVICE_SERVICE_BASE_URL,
-  basicAuth: DEVICE_SERVICE_BASIC_AUTH,
+  baseUrl: config.DEVICE_SERVICE_BASE_URL,
+  basicAuth: {
+    username: config.DEVICE_SERVICE_AUTH_USERNAME,
+    password: config.DEVICE_SERVICE_AUTH_PASSWORD,
+  },
   name: "device",
 });
 
 export const identityAxiosMiddleware = axiosMiddleware({
-  baseUrl: IDENTITY_SERVICE_BASE_URL,
-  basicAuth: IDENTITY_SERVICE_BASIC_AUTH,
+  baseUrl: config.IDENTITY_SERVICE_BASE_URL,
+  basicAuth: {
+    username: config.IDENTITY_SERVICE_AUTH_USERNAME,
+    password: config.IDENTITY_SERVICE_AUTH_PASSWORD,
+  },
   name: "identity",
 });

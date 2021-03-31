@@ -1,5 +1,5 @@
 import { KoaApp } from "@lindorm-io/koa";
-import { IS_TEST, SERVER_PORT } from "../config";
+import { config, IS_TEST } from "../config";
 import { clientCacheMiddleware, clientRepositoryMiddleware } from "@lindorm-io/koa-client";
 import { clientCacheWorker, keyPairCacheWorker, sessionCleanupWorker } from "../worker";
 import { keyPairRepositoryMiddleware } from "@lindorm-io/koa-keystore";
@@ -28,7 +28,7 @@ import {
 
 export const koa = new KoaApp({
   logger: winston,
-  port: SERVER_PORT,
+  port: config.SERVER_PORT,
 });
 
 // mongo

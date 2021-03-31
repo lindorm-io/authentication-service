@@ -1,7 +1,7 @@
 import { Authorization } from "../../entity";
 import { GrantType } from "../../enum";
 import { IKoaAuthContext } from "../../typing";
-import { JWT_AUTHORIZATION_TOKEN_EXPIRY } from "../../config";
+import { config } from "../../config";
 import { encryptAuthorizationOTP } from "./otp";
 import { Scope } from "@lindorm-io/jwt";
 import { getExpiryDate } from "../../util";
@@ -42,7 +42,7 @@ export const createAuthorization = (ctx: IKoaAuthContext) => async (
       codeMethod,
       deviceId: metadata.deviceId,
       email,
-      expires: getExpiryDate(JWT_AUTHORIZATION_TOKEN_EXPIRY),
+      expires: getExpiryDate(config.JWT_AUTHORIZATION_TOKEN_EXPIRY),
       grantType,
       otpCode: otpCode ? encryptAuthorizationOTP(otpCode) : null,
       redirectUri,

@@ -3,7 +3,7 @@ import { Audience } from "../../enum";
 import { Client } from "@lindorm-io/koa-client";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
-import { JWT_ACCESS_TOKEN_EXPIRY } from "../../config";
+import { config } from "../../config";
 
 export interface IGetAccessTokenOptions {
   account: Account;
@@ -28,7 +28,7 @@ export const getAccessToken = (ctx: IKoaAuthContext) => (options: IGetAccessToke
     authMethodsReference: authMethodsReference,
     clientId: client.id,
     deviceId: metadata.deviceId,
-    expiry: client?.extra?.jwtAccessTokenExpiry || JWT_ACCESS_TOKEN_EXPIRY,
+    expiry: client?.extra?.jwtAccessTokenExpiry || config.JWT_ACCESS_TOKEN_EXPIRY,
     permission: account.permission,
     scope,
     subject: account.id,

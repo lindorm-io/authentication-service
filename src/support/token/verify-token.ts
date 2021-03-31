@@ -1,7 +1,7 @@
 import { Client } from "@lindorm-io/koa-client";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerVerifyData } from "@lindorm-io/jwt";
-import { JWT_ISSUER } from "../../config";
+import { config } from "../../config";
 
 export interface IGetDecodedTokenOptions {
   audience: string;
@@ -24,7 +24,7 @@ export const verifyToken = (ctx: IKoaAuthContext) => (options: IGetDecodedTokenO
     audience,
     clientId: client?.id,
     deviceId: metadata.deviceId,
-    issuer: JWT_ISSUER,
+    issuer: config.JWT_ISSUER,
     token,
   });
 };

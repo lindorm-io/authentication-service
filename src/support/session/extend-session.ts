@@ -1,7 +1,7 @@
 import { IKoaAuthContext } from "../../typing";
 import { InvalidClientError } from "@lindorm-io/koa-client";
 import { InvalidDeviceError, InvalidRefreshTokenError } from "../../error";
-import { JWT_REFRESH_TOKEN_EXPIRY } from "../../config";
+import { config } from "../../config";
 import { Session } from "../../entity";
 import { assertSessionIsNotExpired } from "./expires";
 import { getExpiryDate } from "../../util";
@@ -29,7 +29,7 @@ export const extendSession = (ctx: IKoaAuthContext) => async (): Promise<Session
     throw new InvalidDeviceError(metadata.deviceId);
   }
 
-  const expiry = client.extra?.jwtRefreshTokenExpiry || JWT_REFRESH_TOKEN_EXPIRY;
+  const expiry = client.extra?.jwtRefreshTokenExpiry || config.JWT_REFRESH_TOKEN_EXPIRY;
 
   session.expires = getExpiryDate(expiry);
   session.refreshId = uuid();

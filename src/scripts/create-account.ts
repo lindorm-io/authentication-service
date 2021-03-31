@@ -1,5 +1,5 @@
 import { AccountRepository } from "../infrastructure";
-import { IDENTITY_SERVICE_BASE_URL, IDENTITY_SERVICE_BASIC_AUTH, MONGO_CONNECTION_OPTIONS } from "../config";
+import { config, MONGO_CONNECTION_OPTIONS } from "../config";
 import { MongoConnection } from "@lindorm-io/mongo";
 import { winston } from "../logger";
 import { Account } from "../entity";
@@ -13,9 +13,12 @@ import { Axios } from "@lindorm-io/axios";
     axios: {
       identity: new Axios({
         auth: {
-          basic: IDENTITY_SERVICE_BASIC_AUTH,
+          basic: {
+            username: config.IDENTITY_SERVICE_AUTH_USERNAME,
+            password: config.IDENTITY_SERVICE_AUTH_PASSWORD,
+          },
         },
-        baseUrl: IDENTITY_SERVICE_BASE_URL,
+        baseUrl: config.IDENTITY_SERVICE_BASE_URL,
         logger: winston,
         name: "identity",
       }),

@@ -3,7 +3,7 @@ import { Authorization } from "../../entity";
 import { Client } from "@lindorm-io/koa-client";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
-import { JWT_MULTI_FACTOR_TOKEN_EXPIRY } from "../../config";
+import { config } from "../../config";
 
 export interface IGetMultiFactorTokenOptions {
   authMethodsReference: Array<string>;
@@ -28,7 +28,7 @@ export const getMultiFactorToken = (ctx: IKoaAuthContext) => (
     authMethodsReference: authMethodsReference,
     clientId: client.id,
     deviceId: metadata.deviceId,
-    expiry: client?.extra?.jwtMultiFactorTokenExpiry || JWT_MULTI_FACTOR_TOKEN_EXPIRY,
+    expiry: client?.extra?.jwtMultiFactorTokenExpiry || config.JWT_MULTI_FACTOR_TOKEN_EXPIRY,
     subject: authorization.id,
   });
 };

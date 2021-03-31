@@ -2,43 +2,7 @@
 
 exports[`config should provide configuration 1`] = `
 Object {
-  "BEARER_AUTH_MW_OPTIONS": Object {
-    "audience": "access",
-    "issuer": "https://test.authentication.lindorm.io",
-    "issuerName": "auth",
-  },
-  "CRYPTO_PASSWORD_OPTIONS": Object {
-    "aesSecret": "secret",
-    "shaSecret": "secret",
-  },
-  "CRYPTO_SECRET_OPTIONS": Object {
-    "aesSecret": "secret",
-    "shaSecret": "secret",
-  },
-  "DEVICE_SERVICE_BASE_URL": "https://test.device.lindorm.io",
-  "DEVICE_SERVICE_BASIC_AUTH": Object {
-    "password": "secret",
-    "username": "secret",
-  },
-  "HOST": "https://test.authentication.lindorm.io",
-  "IDENTITY_SERVICE_BASE_URL": "https://test.identity.lindorm.io",
-  "IDENTITY_SERVICE_BASIC_AUTH": Object {
-    "password": "secret",
-    "username": "secret",
-  },
   "IS_TEST": true,
-  "JWT_ACCESS_TOKEN_EXPIRY": "2 minutes",
-  "JWT_AUTHORIZATION_TOKEN_EXPIRY": "45 minutes",
-  "JWT_IDENTITY_TOKEN_EXPIRY": "1 days",
-  "JWT_ISSUER": "https://test.authentication.lindorm.io",
-  "JWT_MULTI_FACTOR_TOKEN_EXPIRY": "30 minutes",
-  "JWT_REFRESH_TOKEN_EXPIRY": "1 days",
-  "MAIL_HANDLER_CONFIG": Object {
-    "apiKey": "api-key",
-    "domain": "test.lindorm.io",
-    "environment": "test",
-    "from": "auth@lindorm.io",
-  },
   "MONGO_CONNECTION_OPTIONS": Object {
     "auth": Object {
       "password": "example",
@@ -52,19 +16,38 @@ Object {
     },
   },
   "NODE_ENVIRONMENT": "test",
-  "OTP_HANDLER_OPTIONS": Object {
-    "issuer": "test.authentication.lindorm.io",
-    "secret": "secret",
-  },
   "REDIS_CONNECTION_OPTIONS": Object {
     "port": 6379,
     "type": "CACHE",
   },
-  "SERVER_PORT": 3000,
-  "TOKEN_ISSUER_MW_OPTIONS": Object {
-    "issuer": "https://test.authentication.lindorm.io",
-    "issuerName": "auth",
-    "keystoreName": "auth",
+  "config": Object {
+    "ACCOUNT_OTP_ISSUER": "test.authentication.lindorm.io",
+    "CRYPTO_AES_SECRET": "secret",
+    "CRYPTO_SHA_SECRET": "secret",
+    "DEVICE_SERVICE_AUTH_PASSWORD": "secret",
+    "DEVICE_SERVICE_AUTH_USERNAME": "secret",
+    "DEVICE_SERVICE_BASE_URL": "https://test.device.lindorm.io",
+    "HOST": "https://test.authentication.lindorm.io",
+    "IDENTITY_SERVICE_AUTH_PASSWORD": "secret",
+    "IDENTITY_SERVICE_AUTH_USERNAME": "secret",
+    "IDENTITY_SERVICE_BASE_URL": "https://test.identity.lindorm.io",
+    "JWT_ACCESS_TOKEN_EXPIRY": "2 minutes",
+    "JWT_AUTHORIZATION_TOKEN_EXPIRY": "45 minutes",
+    "JWT_IDENTITY_TOKEN_EXPIRY": "1 days",
+    "JWT_ISSUER": "https://test.authentication.lindorm.io",
+    "JWT_MULTI_FACTOR_TOKEN_EXPIRY": "30 minutes",
+    "JWT_REFRESH_TOKEN_EXPIRY": "1 days",
+    "MAILGUN_API_KEY": "api-key",
+    "MAILGUN_DOMAIN": "test.lindorm.io",
+    "MAILGUN_FROM": "auth@lindorm.io",
+    "MONGO_DB_NAME": "authentication",
+    "MONGO_EXPOSE_PORT": 27017,
+    "MONGO_HOST": "localhost",
+    "MONGO_INITDB_ROOT_PASSWORD": "example",
+    "MONGO_INITDB_ROOT_USERNAME": "root",
+    "NODE_ENVIRONMENT": "test",
+    "REDIS_PORT": 6379,
+    "SERVER_PORT": 3000,
   },
 }
 `;

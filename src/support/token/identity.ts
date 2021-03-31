@@ -3,7 +3,7 @@ import { Audience } from "../../enum";
 import { Client } from "@lindorm-io/koa-client";
 import { IKoaAuthContext } from "../../typing";
 import { ITokenIssuerSignData } from "@lindorm-io/jwt";
-import { JWT_IDENTITY_TOKEN_EXPIRY } from "../../config";
+import { config } from "../../config";
 import { requestOpenIdClaims } from "../../axios";
 
 export interface IGetIdentityTokenOptions {
@@ -30,7 +30,7 @@ export const getIdentityToken = (ctx: IKoaAuthContext) => async (
     audience: Audience.IDENTITY,
     clientId: client.id,
     deviceId: metadata.deviceId,
-    expiry: JWT_IDENTITY_TOKEN_EXPIRY,
+    expiry: config.JWT_IDENTITY_TOKEN_EXPIRY,
     subject: account.id,
     payload,
   });

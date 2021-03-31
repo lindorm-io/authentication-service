@@ -1,6 +1,6 @@
 import { Account, Authorization, Session } from "../../entity";
 import { IKoaAuthContext } from "../../typing";
-import { JWT_REFRESH_TOKEN_EXPIRY } from "../../config";
+import { config } from "../../config";
 import { getExpiryDate } from "../../util";
 import { v4 as uuid } from "uuid";
 
@@ -13,7 +13,7 @@ export const createSession = (ctx: IKoaAuthContext) => async (options: ICreateSe
   const { cache, client, repository } = ctx;
   const { account, authorization } = options;
 
-  const expiry = client.extra?.jwtRefreshTokenExpiry || JWT_REFRESH_TOKEN_EXPIRY;
+  const expiry = client.extra?.jwtRefreshTokenExpiry || config.JWT_REFRESH_TOKEN_EXPIRY;
 
   const session = await repository.session.create(
     new Session({

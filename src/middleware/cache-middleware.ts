@@ -1,6 +1,6 @@
 import { IKoaAuthContext, TNext } from "../typing";
 import { AuthorizationCache, RequestLimitCache } from "../infrastructure";
-import { JWT_AUTHORIZATION_TOKEN_EXPIRY } from "../config";
+import { config } from "../config";
 import { stringToSeconds } from "@lindorm-io/core";
 
 export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promise<void> => {
@@ -13,7 +13,7 @@ export const cacheMiddleware = async (ctx: IKoaAuthContext, next: TNext): Promis
     ...ctx.cache,
     authorization: new AuthorizationCache({
       client,
-      expiresInSeconds: stringToSeconds(JWT_AUTHORIZATION_TOKEN_EXPIRY) + 60,
+      expiresInSeconds: stringToSeconds(config.JWT_AUTHORIZATION_TOKEN_EXPIRY) + 60,
       logger,
     }),
     requestLimit: new RequestLimitCache({

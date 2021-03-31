@@ -1,8 +1,11 @@
 import { Account } from "../../entity";
-import { CRYPTO_PASSWORD_OPTIONS } from "../../config";
+import { config } from "../../config";
 import { CryptoPassword } from "@lindorm-io/crypto";
 
-const crypto = new CryptoPassword(CRYPTO_PASSWORD_OPTIONS);
+const crypto = new CryptoPassword({
+  aesSecret: config.CRYPTO_AES_SECRET,
+  shaSecret: config.CRYPTO_SHA_SECRET,
+});
 
 export const encryptAccountPassword = async (password: string): Promise<string> => {
   return crypto.encrypt(password);

@@ -18,53 +18,8 @@ const handler = new ConfigHandler({
 });
 
 export const { NODE_ENVIRONMENT } = environmentConfig;
-export const config = handler.get(NODE_ENVIRONMENT);
-
-export const SERVER_PORT = config.SERVER_PORT;
-export const HOST = config.HOST;
-
 export const IS_TEST = NODE_ENVIRONMENT === NodeEnvironment.TEST;
-
-export const JWT_ISSUER = config.JWT_ISSUER;
-export const JWT_ACCESS_TOKEN_EXPIRY = config.JWT_ACCESS_TOKEN_EXPIRY;
-export const JWT_AUTHORIZATION_TOKEN_EXPIRY = config.JWT_AUTHORIZATION_TOKEN_EXPIRY;
-export const JWT_IDENTITY_TOKEN_EXPIRY = config.JWT_IDENTITY_TOKEN_EXPIRY;
-export const JWT_MULTI_FACTOR_TOKEN_EXPIRY = config.JWT_MULTI_FACTOR_TOKEN_EXPIRY;
-export const JWT_REFRESH_TOKEN_EXPIRY = config.JWT_REFRESH_TOKEN_EXPIRY;
-
-export const MAIL_HANDLER_CONFIG = {
-  apiKey: config.MAILGUN_API_KEY,
-  domain: config.MAILGUN_DOMAIN,
-  environment: NODE_ENVIRONMENT,
-  from: config.MAILGUN_FROM,
-};
-
-export const CRYPTO_PASSWORD_OPTIONS = {
-  aesSecret: config.CRYPTO_AES_SECRET,
-  shaSecret: config.CRYPTO_SHA_SECRET,
-};
-
-export const CRYPTO_SECRET_OPTIONS = {
-  aesSecret: config.CRYPTO_AES_SECRET,
-  shaSecret: config.CRYPTO_SHA_SECRET,
-};
-
-export const OTP_HANDLER_OPTIONS = {
-  issuer: config.ACCOUNT_OTP_ISSUER,
-  secret: config.CRYPTO_AES_SECRET,
-};
-
-export const BEARER_AUTH_MW_OPTIONS = {
-  issuer: config.JWT_ISSUER,
-  issuerName: AUTH_TOKEN_ISSUER,
-  audience: Audience.ACCESS,
-};
-
-export const TOKEN_ISSUER_MW_OPTIONS = {
-  issuer: config.JWT_ISSUER,
-  issuerName: AUTH_TOKEN_ISSUER,
-  keystoreName: AUTH_KEYSTORE_NAME,
-};
+export const config = handler.get(process.env.NODE_ENV);
 
 export const REDIS_CONNECTION_OPTIONS = {
   type: RedisConnectionType.CACHE,
@@ -82,16 +37,4 @@ export const MONGO_CONNECTION_OPTIONS = {
     port: config.MONGO_EXPOSE_PORT,
   },
   databaseName: config.MONGO_DB_NAME,
-};
-
-export const DEVICE_SERVICE_BASE_URL = config.DEVICE_SERVICE_BASE_URL;
-export const DEVICE_SERVICE_BASIC_AUTH = {
-  username: config.DEVICE_SERVICE_AUTH_USERNAME,
-  password: config.DEVICE_SERVICE_AUTH_PASSWORD,
-};
-
-export const IDENTITY_SERVICE_BASE_URL = config.IDENTITY_SERVICE_BASE_URL;
-export const IDENTITY_SERVICE_BASIC_AUTH = {
-  username: config.IDENTITY_SERVICE_AUTH_USERNAME,
-  password: config.IDENTITY_SERVICE_AUTH_PASSWORD,
 };

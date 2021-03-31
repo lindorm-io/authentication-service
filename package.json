@@ -49,7 +49,7 @@
     "@lindorm-io/koa-client": "^0.2.1",
     "@lindorm-io/koa-config": "0.0.2",
     "@lindorm-io/koa-jwt": "^0.3.0",
-    "@lindorm-io/koa-keystore": "^0.1.1",
+    "@lindorm-io/koa-keystore": "^0.1.2",
     "@lindorm-io/koa-mongo": "^0.2.6",
     "@lindorm-io/koa-redis": "^0.0.4",
     "@lindorm-io/mongo": "^0.2.8",

@@ -1,5 +1,5 @@
 import { GrantType, ResponseType } from "../enum";
-import { HOST, JWT_ISSUER } from "../config";
+import { config } from "../config";
 import { HttpStatus } from "@lindorm-io/core";
 import { IKoaAuthContext } from "../typing";
 import { Router } from "@lindorm-io/koa";
@@ -12,11 +12,11 @@ router.get(
   "/openid-configuration",
   async (ctx: IKoaAuthContext): Promise<void> => {
     ctx.body = {
-      issuer: JWT_ISSUER,
-      authorization_endpoint: new URL("/oauth/authorize", HOST).toString(),
-      token_endpoint: new URL("/oauth/token", HOST).toString(),
-      userinfo_endpoint: new URL("/userinfo", HOST).toString(),
-      jwks_uri: new URL("/.well-known/jwks.json", HOST).toString(),
+      issuer: config.JWT_ISSUER,
+      authorization_endpoint: new URL("/oauth/authorize", config.HOST).toString(),
+      token_endpoint: new URL("/oauth/token", config.HOST).toString(),
+      userinfo_endpoint: new URL("/userinfo", config.HOST).toString(),
+      jwks_uri: new URL("/.well-known/jwks.json", config.HOST).toString(),
       scopes_supported: [Scope.DEFAULT, Scope.EDIT, Scope.OPENID],
       response_types_supported: Object.values(ResponseType),
       token_endpoint_auth_methods_supported: ["biometrics", "email", "pin", "pwd", "token"],
