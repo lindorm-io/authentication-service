@@ -20,8 +20,8 @@ describe("getAccessToken", () => {
 
   beforeEach(() => {
     ctx = {
-      logger,
       issuer: { auth: getTestIssuer() },
+      logger,
       metadata: { deviceId: "deviceId" },
     };
 

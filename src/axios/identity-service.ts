@@ -20,12 +20,9 @@ export const requestEnsureIdentity = (ctx: IKoaAuthContext) => async (
     auth: AuthType.BASIC,
   });
 
-  const created = isString(response.data?.created) ? new Date(response.data.created) : undefined;
-  const updated = isString(response.data?.updated) ? new Date(response.data.updated) : undefined;
-
   return {
-    created,
-    updated,
+    created: isString(response.data.created) ? new Date(response.data.created) : undefined,
+    updated: isString(response.data.updated) ? new Date(response.data.updated) : undefined,
   };
 };
 
@@ -42,7 +39,7 @@ export const requestOpenIdClaims = (ctx: IKoaAuthContext) => async (
     data: { scope },
   });
 
-  return response?.data as IOpenIdClaims;
+  return response.data as IOpenIdClaims;
 };
 
 export const requestOpenIdInformation = (ctx: IKoaAuthContext) => async (
@@ -57,5 +54,5 @@ export const requestOpenIdInformation = (ctx: IKoaAuthContext) => async (
     middleware: [axiosBearerAuthMiddleware(accessToken)],
   });
 
-  return response?.data as IOpenIdClaims;
+  return response.data as IOpenIdClaims;
 };

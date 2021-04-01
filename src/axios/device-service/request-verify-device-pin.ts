@@ -1,7 +1,7 @@
 import { Account, Authorization } from "../../entity";
 import { AuthType } from "@lindorm-io/axios/dist/enum";
 import { ChallengeStrategy } from "../../enum";
-import { IKoaAuthContext } from "../../typing";
+import { IKoaAuthContext, IRequestChallengeVerifyData } from "../../typing";
 
 export interface IRequestVerifyDevicePINOptions {
   account: Account;
@@ -12,13 +12,13 @@ export interface IRequestVerifyDevicePINOptions {
 
 export const requestVerifyDevicePIN = (ctx: IKoaAuthContext) => async (
   options: IRequestVerifyDevicePINOptions,
-): Promise<void> => {
+): Promise<IRequestChallengeVerifyData> => {
   const {
     axios: { device },
   } = ctx;
   const { account, certificateVerifier, pin, authorization } = options;
 
-  await device.post("/headless/challenge/verify", {
+  const response = await device.post("/challenge/verify", {
     auth: AuthType.BASIC,
     data: {
       accountId: account.id,
@@ -29,4 +29,6 @@ export const requestVerifyDevicePIN = (ctx: IKoaAuthContext) => async (
       strategy: ChallengeStrategy.PIN,
     },
   });
+  const data: unknown = response.data;
+  return data as IRequestChallengeVerifyData;
 };

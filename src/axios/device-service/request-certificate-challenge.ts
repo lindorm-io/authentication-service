@@ -2,6 +2,7 @@ import { Account } from "../../entity";
 import { AuthType } from "@lindorm-io/axios/dist/enum";
 import { ChallengeStrategy } from "../../enum";
 import { IKoaAuthContext } from "../../typing";
+import { ChallengeScope } from "../../enum/challenge-scope";
 
 export interface IRequestCertificateChallengeOptions {
   account: Account;
@@ -23,11 +24,12 @@ export const requestCertificateChallenge = (ctx: IKoaAuthContext) => async (
   const { account, deviceId, strategy } = options;
   const accountId = account.id;
 
-  const response = await device.post("/headless/challenge/initialise", {
+  const response = await device.post("/challenge/initialise", {
     auth: AuthType.BASIC,
     data: {
       accountId,
       deviceId,
+      scope: ChallengeScope.SIGN_IN,
       strategy,
     },
   });

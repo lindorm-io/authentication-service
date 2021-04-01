@@ -5,7 +5,6 @@ Object {
   "expires": 4070908800,
   "expiresIn": 2493046800,
   "id": "46757f59-e48c-4726-83f8-320208bf5c49",
-  "level": undefined,
   "token": Object {
     "amr": "authMethodsReference",
     "aud": "refresh",

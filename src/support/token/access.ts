@@ -13,13 +13,13 @@ export interface IGetAccessTokenOptions {
 }
 
 export const getAccessToken = (ctx: IKoaAuthContext) => (options: IGetAccessTokenOptions): ITokenIssuerSignData => {
-  const { logger, issuer, metadata } = ctx;
+  const { issuer, logger, metadata } = ctx;
   const { account, authMethodsReference, client, scope } = options;
 
   logger.debug("creating access token", {
+    account: account.id,
     client: client.id,
     device: metadata.deviceId,
-    account: account.id,
     scope,
   });
 
